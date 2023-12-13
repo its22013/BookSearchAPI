@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Box,
   Button,
@@ -11,6 +11,7 @@ import {
 } from "@chakra-ui/react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { signInWithEmailAndPassword } from "firebase/auth";
+import { onAuthStateChanged } from "firebase/auth"; // 追加
 import { useRouter } from "next/router";
 import { useAuth, useUser } from "../hooks/firebase.js";
 import Link from "next/link";
@@ -39,6 +40,19 @@ export default function Login() {
     e.preventDefault();
     login();
   };
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // ログイン成功したらホームにリダイレクト
+        router.push("/");
+      }
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, [auth, router]);
 
   return (
     <Flex
@@ -132,3 +146,4 @@ export default function Login() {
     </Flex>
   );
 }
+

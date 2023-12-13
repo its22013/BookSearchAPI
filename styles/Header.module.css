@@ -1,154 +1,44 @@
-/* Header.module.css */
+/* styles/Header.module.css */
 
 .container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px;
-    height: 99px;
-    background-color: #54e4e4;
-    color: rgb(255, 255, 255);
-    flex-direction: row;
-  }
-  /* BookSearch */
-  .s1 {
-    padding-left: 25px;
-    margin-right: auto;
-    font-size: 34px;
-    text-shadow: 5px 5px #2188aa;
-  }
-  
-  .s2 {
-    color: rgb(0, 0, 0);
-    margin-left: 20px;
-    border: 4px solid #0f1010;
-    border-radius: 10px;
-    font-size: auto;
-    background-color: aliceblue;
-  }
-  
-  /* 間隔を空ける設定 */
-  .space {
-    margin-right: 15px;
-}
-
-.menuToggle {
-  display: none; /* 初期状態では非表示 */
-  cursor: pointer;
-  font-size: 1.5rem;
-}
-
-.menu {
-  display: flex;
-  flex-direction: column;
-  position: absolute;
-  top: 70px; /* メニューの表示位置を調整 */
-  right: 20px;
-  background-color: #333;
-  padding: 1rem;
-  border-radius: 8px;
-  z-index: 1000;
-}
-
-.menu a {
-  color: white;
-  text-decoration: none;
-  margin-bottom: 0.5rem;
-}
-
-.linkSpacer {
-  padding-right: 15px;
-}
-
-.headerTitle {
-  font-size: 1.5rem; /* 適切なサイズに調整 */
-}
-
-.linkContainer {
-  display: flex;
-}
-
-.linkWithImage01 {
   display: flex;
   align-items: center;
-  flex-direction: column; 
-  text-align: center;
-  position: relative;
-  /* margin-right: 8px; */
-  padding: 20px;
+  justify-content: space-between;
+  padding: 10px 20px;
+  background-color: #54e4e4;
 }
 
-.linkWithImage02 {
-  display: flex;
-  align-items: center;
-  flex-direction: column; 
-  text-align: center;
-  position: relative;
-  margin-right: 8px;
-  margin-top: 30px;
-  /* margin-left: 8px; */
+.space {
+  margin-right: 15px;
 }
 
-.linkWithImage03 {
-  display: flex;
-  align-items: center;
-  flex-direction: column; 
-  text-align: center;
-  position: relative;
-  /* margin-right: 15px; */
-  margin-top: 20px;
+.s1 {
+  margin-left: 10px;
 }
 
-.linkText01 {
-  font-weight: bold;
-  text-shadow: 3px 3px 0 rgb(85, 205, 221);
-  -webkit-text-stroke: 1px #ebe3e3;
-  /* margin-left: 8px; */
-}    
-
-.linkText02 {
-  margin-top: 10px;
-  /* margin-right: 3px; */
-  text-shadow: 3px 3px 0 rgb(221, 85, 171);
-  -webkit-text-stroke: 1px #ffffff;
-} 
-
-.linkText03 {
-  text-shadow: 3px 3px 0 rgb(85, 137, 221);
-  -webkit-text-stroke: 1px #ffffff;
-} 
-
-/* 新規登録ログインボタン */
 .loginButton {
-  display: inline-block;
-  padding: 10px 20px; 
-  background-color: #454594;
-  color: #fff;
+  margin-left: 20px;
   text-decoration: none;
-  border-radius: 5px; 
-  transition: background-color 0.3s ease; 
+  color: #fff;
+  padding: 8px 16px;
+  border: 1px solid #396b9d;
+  border-radius: 4px;
 }
 
 .loginButton:hover {
-  background-color: #396b9d; 
+  background-color: #454594;
+  color: #fff;
 }
 
+/* メディアクエリ */
 @media (max-width: 768px) {
-  .s1 {
-    font-size: 20px;
+  .container {
+    flex-direction: column; /* 画面幅が768px以下の場合は縦に並べる */
+    text-align: center; /* 中央揃えにする */
   }
 
   .loginButton {
-    display: inline-block;
-    padding: 5px 10px; 
-    background-color: #454594;
-    color: #fff;
-    text-decoration: none;
-    border-radius: 5px; 
-    transition: background-color 0.3s ease; 
-  }
-  
-  .loginButton:hover {
-    background-color: #396b9d; 
+    margin-left: 0; /* 画面幅が768px以下の場合は左に寄せない */
+    margin-top: 10px; /* ボタン間の余白を追加 */
   }
 }
