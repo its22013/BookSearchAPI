@@ -21,7 +21,7 @@ export default function Header() {
       <div className={styles.s1}>
       <h1>Book Serach</h1>
       </div>
-      <Link legacyBehavior href="/login">
+      <Link legacyBehavior href="/signup">
         <a className={styles.loginButton}>新規登録・ログイン</a>
       </Link>
     </div>
