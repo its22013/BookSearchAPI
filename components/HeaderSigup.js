@@ -28,6 +28,10 @@ export default function Header() {
           <Link legacyBehavior href="/mypage">
             <a className={styles.loginButton}>マイページ</a>
           </Link>
+
+          {/* Add space between "マイページ" and "ログアウト" */}
+          <div className={styles.space}></div>
+
           <Link legacyBehavior href="/logout">
             <a className={styles.loginButton}>ログアウト</a>
           </Link>
@@ -40,4 +44,3 @@ export default function Header() {
     </div>
   );
 }
-
