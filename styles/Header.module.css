@@ -1,0 +1,154 @@
+/* Header.module.css */
+
+.container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    height: 99px;
+    background-color: #54e4e4;
+    color: rgb(255, 255, 255);
+    flex-direction: row;
+  }
+  /* BookSearch */
+  .s1 {
+    padding-left: 25px;
+    margin-right: auto;
+    font-size: 34px;
+    text-shadow: 5px 5px #2188aa;
+  }
+  
+  .s2 {
+    color: rgb(0, 0, 0);
+    margin-left: 20px;
+    border: 4px solid #0f1010;
+    border-radius: 10px;
+    font-size: auto;
+    background-color: aliceblue;
+  }
+  
+  /* 間隔を空ける設定 */
+  .space {
+    margin-right: 15px;
+}
+
+.menuToggle {
+  display: none; /* 初期状態では非表示 */
+  cursor: pointer;
+  font-size: 1.5rem;
+}
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 70px; /* メニューの表示位置を調整 */
+  right: 20px;
+  background-color: #333;
+  padding: 1rem;
+  border-radius: 8px;
+  z-index: 1000;
+}
+
+.menu a {
+  color: white;
+  text-decoration: none;
+  margin-bottom: 0.5rem;
+}
+
+.linkSpacer {
+  padding-right: 15px;
+}
+
+.headerTitle {
+  font-size: 1.5rem; /* 適切なサイズに調整 */
+}
+
+.linkContainer {
+  display: flex;
+}
+
+.linkWithImage01 {
+  display: flex;
+  align-items: center;
+  flex-direction: column; 
+  text-align: center;
+  position: relative;
+  /* margin-right: 8px; */
+  padding: 20px;
+}
+
+.linkWithImage02 {
+  display: flex;
+  align-items: center;
+  flex-direction: column; 
+  text-align: center;
+  position: relative;
+  margin-right: 8px;
+  margin-top: 30px;
+  /* margin-left: 8px; */
+}
+
+.linkWithImage03 {
+  display: flex;
+  align-items: center;
+  flex-direction: column; 
+  text-align: center;
+  position: relative;
+  /* margin-right: 15px; */
+  margin-top: 20px;
+}
+
+.linkText01 {
+  font-weight: bold;
+  text-shadow: 3px 3px 0 rgb(85, 205, 221);
+  -webkit-text-stroke: 1px #ebe3e3;
+  /* margin-left: 8px; */
+}    
+
+.linkText02 {
+  margin-top: 10px;
+  /* margin-right: 3px; */
+  text-shadow: 3px 3px 0 rgb(221, 85, 171);
+  -webkit-text-stroke: 1px #ffffff;
+} 
+
+.linkText03 {
+  text-shadow: 3px 3px 0 rgb(85, 137, 221);
+  -webkit-text-stroke: 1px #ffffff;
+} 
+
+/* 新規登録ログインボタン */
+.loginButton {
+  display: inline-block;
+  padding: 10px 20px; 
+  background-color: #454594;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 5px; 
+  transition: background-color 0.3s ease; 
+}
+
+.loginButton:hover {
+  background-color: #396b9d; 
+}
+
+@media (max-width: 768px) {
+  .s1 {
+    font-size: 20px;
+  }
+
+  .loginButton {
+    display: inline-block;
+    padding: 5px 10px; 
+    background-color: #454594;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px; 
+    transition: background-color 0.3s ease; 
+  }
+  
+  .loginButton:hover {
+    background-color: #396b9d; 
+  }
+}

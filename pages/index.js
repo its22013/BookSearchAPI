@@ -1,3 +1,12 @@
+import Header from "../components/HeaderSigup";
+
 export default function FirstPost() {
-  return<h1>こんにちは</h1>
+  return (
+    <div>
+    <Header />
+    <main>
+    <h1>こんにちは</h1>
+    </main>
+    </div>
+  );
 }
