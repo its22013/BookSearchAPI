@@ -1,0 +1,65 @@
+/* ボタンを横並び */
+.all {
+    display: flex;
+}
+
+.button {
+    display: inline-block;
+    align-items: center;
+    height: 200px;
+    width: 280px;
+    padding: 60px 20px;
+    font-size: 40px;
+    text-align: center;
+    text-decoration: none;
+    background-color: #007bff; 
+    color: #fff;
+    border-radius: 5px;
+    cursor: pointer;
+} 
+
+.button:hover {
+    background-color: #0056b3; 
+  }
+
+/* ボタン1の高さを設定するスタイル */
+.button1 {
+    margin-top: 120px;
+    height: 250px; 
+  }
+  
+  /* ボタン2の高さを設定するスタイル */
+  .button2 {
+    height: 250px; 
+  }
+  
+  /* テキストを中央揃えにするスタイル */
+  .centerText {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  
+  /* ボタンに隙間を追加するスタイル */
+  .buttonWithPadding {
+    padding: 60px;
+  }
+  
+  /* ボタンを中央配置するスタイル */
+  .buttonCentered {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  /* ボタン間のスペースを追加するスタイル */
+  .buttonSpacing {
+    margin-top: 120px; 
+  }
+  
+  @media (max-width: 768px) {
+    .rk {
+      font-size: 34px;
+    }
+  }  

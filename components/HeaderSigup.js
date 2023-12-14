@@ -25,9 +25,26 @@ export default function Header() {
       </div>
       {currentUser ? (
         <div className={styles.loggedContainer}>
+          <div className={styles.linkWithImage01}>
+              <Link legacyBehavior href="/ranking">
+                <Image
+                  src="/images/ran.png" 
+                  alt="Ranking Image"
+                  width={50}
+                  height={50}
+              />
+            </Link>
+              <div className={styles.linkText01}>
+            <Link legacyBehavior href="/ranking">ランキング</Link>
+            </div>
+            </div>
+
           <Link legacyBehavior href="/mypage">
             <a className={styles.loginButton}>マイページ</a>
           </Link>
+
+          <div className={styles.space}></div>
+
           <Link legacyBehavior href="/logout">
             <a className={styles.loginButton}>ログアウト</a>
           </Link>
@@ -40,4 +57,3 @@ export default function Header() {
     </div>
   );
 }
-
