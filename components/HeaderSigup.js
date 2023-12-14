@@ -37,16 +37,27 @@ export default function Header() {
       </div>
 
       {/* ハンバーガーメニューのトグルボタン */}
-      <div className={styles.mobileMenuToggle} onClick={toggleMobileMenu}>
-        <div className={styles.hamburgerIcon}></div>
-      </div>
+      {currentUser ? (
+        <div
+          className={`${styles.mobileMenuToggle} ${
+            isMobileMenuOpen ? styles.open : ""
+          }`}
+          onClick={toggleMobileMenu}
+        >
+          <div className={styles.hamburgerIcon}></div>
+        </div>
+      ) : null}
 
       {/* モバイルメニュー */}
       {isMobileMenuOpen && <MobileMenu onClose={closeMobileMenu} />}
 
       {currentUser ? (
         // ログイン時のメニュー
-        <div className={`${styles.loggedContainer} ${isMobileMenuOpen ? styles.showMobileMenu : ""}`}>
+        <div
+          className={`${styles.loggedContainer} ${
+            isMobileMenuOpen ? styles.showMobileMenu : ""
+          }`}
+        >
           <div className={styles.linkWithImage01}>
             <Link href="/ranking">
               <Image

@@ -1,5 +1,4 @@
 /* styles/Header.module.css */
-
 .container {
   display: flex;
   justify-content: space-between;
@@ -22,9 +21,8 @@
   text-shadow: 5px 5px #2188aa;
 }
 
-  /* 間隔を空ける設定 */
-  .space {
-    margin-right: 15px;
+.space {
+  margin-right: 15px;
 }
 
 .loggedContainer {
@@ -32,27 +30,24 @@
   align-items: center;
 }
 
-
-/* 新規登録ログインボタン */
 .loginButton {
   display: inline-block;
-  padding: 10px 20px; 
+  padding: 10px 20px;
   background-color: #454594;
   color: #fff;
   text-decoration: none;
-  border-radius: 5px; 
-  transition: background-color 0.3s ease; 
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
 }
 
 .loginButton:hover {
-  background-color: #396b9d; 
+  background-color: #396b9d;
 }
 
-/* ランキング */
 .linkWithImage01 {
   display: flex;
   align-items: center;
-  flex-direction: column; 
+  flex-direction: column;
   text-align: center;
   position: relative;
   margin-right: 10px;
@@ -64,13 +59,12 @@
   font-size: 15px;
   text-shadow: 3px 3px 0 #cd5;
   -webkit-text-stroke: 1px #ebe3e3;
-}  
+}
 
-/* お気に入り */
 .linkWithImage02 {
   display: flex;
   align-items: center;
-  flex-direction: column; 
+  flex-direction: column;
   text-align: center;
   position: relative;
   margin-right: 8px;
@@ -83,19 +77,16 @@
   font-size: 15px;
   text-shadow: 3px 3px 0 rgb(221, 85, 171);
   -webkit-text-stroke: 1px #ffffff;
-} 
+}
 
-
-/* ハンバーガーメニュー追加 */
 .hamburgerIcon {
   width: 30px;
   height: 3px;
   background-color: #333;
   margin: 6px 0;
-  transition: 0.4s; /* アイコンのアニメーション効果を追加 */
+  transition: 0.4s;
 }
 
-/* ハンバーガーアイコンの横線を三本に変更 */
 .hamburgerIcon::before,
 .hamburgerIcon::after {
   content: "";
@@ -103,7 +94,7 @@
   height: 3px;
   background-color: #333;
   position: absolute;
-  transition: 0.4s; /* アイコンのアニメーション効果を追加 */
+  transition: 0.4s;
 }
 
 .hamburgerIcon::before {
@@ -131,7 +122,8 @@
 }
 
 .showMobileMenu a {
-  display: block;
+  display: flex; /* modified */
+  align-items: center; /* modified */
   padding: 10px;
   color: #fff;
   text-decoration: none;
@@ -145,8 +137,6 @@
   padding: 10px;
 }
 
-
-/* メディアクエリ */
 @media (max-width: 780px) {
   .s1 {
     font-size: 20px;
@@ -164,15 +154,15 @@
 
   .loginButton {
     display: inline-block;
-    padding: 5px 10px; 
+    padding: 5px 10px;
     background-color: #454594;
     color: #fff;
     text-decoration: none;
-    border-radius: 5px; 
-    transition: background-color 0.3s ease; 
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
   }
-  
+
   .loginButton:hover {
-    background-color: #396b9d; 
+    background-color: #396b9d;
   }
 }
