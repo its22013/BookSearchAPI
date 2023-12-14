@@ -48,9 +48,27 @@
   background-color: #396b9d; 
 }
 
+/* ランキング */
+.linkWithImage01 {
+  display: flex;
+  align-items: center;
+  flex-direction: column; 
+  text-align: center;
+  position: relative;
+  /* margin-right: 8px; */
+  padding: 20px;
+}
+
+.linkText01 {
+  font-weight: bold;
+  text-shadow: 3px 3px 0 #cd5;
+  -webkit-text-stroke: 1px #ebe3e3;
+}  
+
+
 
 /* メディアクエリ */
-@media (max-width: 768px) {
+@media (max-width: 780px) {
   .s1 {
     font-size: 20px;
   }
