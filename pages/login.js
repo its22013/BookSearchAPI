@@ -21,6 +21,7 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [isProcessingLogin, setIsProcessingLogin] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const auth = useAuth();
   const currentUser = useUser();
   const router = useRouter();
@@ -32,12 +33,16 @@ export default function Login() {
       setIsProcessingLogin(false);
     } catch (error) {
       console.error("Login error:", error.message);
-      // エラーメッセージを表示するなどの処理を追加することができます。
+      setErrorMessage("ログインに失敗しました。ユーザー名とパスワードを確認してください。");
+      setIsProcessingLogin(false); // ログイン失敗時に isProcessingLogin を false に戻す
+      alert("ログインに失敗しました")
     }
   };
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setErrorMessage(""); // フォームが再送信されたときにエラーメッセージをリセット
+    setIsProcessingLogin(true); // ログインボタンを無効化
     login();
   };
 
@@ -83,7 +88,7 @@ export default function Login() {
           alignItems="center"
         >
           <form onSubmit={handleLogin}>
-            <Flex flexDirection="column" mb="50" alignItems="center">
+            <Flex flexDirection="column" mb="30" alignItems="center">
               <FormLabel fontWeight="bold" mb="2">
                 Email
               </FormLabel>
