@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { getAuth, onAuthStateChanged, GoogleAuthProvider } from "firebase/auth";
 import { useState, useEffect } from "react";
 
 const firebaseConfig = {
@@ -9,7 +9,7 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
-
+const googleProvider = new GoogleAuthProvider();
 export function useAuth() {
   return auth;
 }

@@ -16,6 +16,8 @@ import { useForm } from "react-hook-form";
 import { useAuth, useUser } from "../hooks/firebase.js";
 import Link from "next/link";
 import style from "../styles/signup.module.css";
+import { signInWithPopup, GoogleAuthProvider} from "firebase/auth";
+import { FaGoogle } from "react-icons/fa";
 
 export default function Signup() {
   const {
@@ -61,7 +63,23 @@ export default function Signup() {
       router.push("/");
     }
   }, [currentUser, isProcessingSignup, router]);
+  const googleProvider = new GoogleAuthProvider();
+  const handleGoogleLogin = async () => {
+    try {
+      setIsProcessingSignup(true);
+      const result = await signInWithPopup(auth, googleProvider);
+      const user = result.user;
+      // 必要に応じてユーザーデータを処理できます
+      console.log("Googleログイン成功:", user);
+      setIsProcessingSignup(false);
 
+      // ログインが成功した場合、ユーザーがすでに存在しないか確認し、新規登録するなどの処理を追加できます
+    } catch (error) {
+      console.error("Googleログインエラー:", error.message);
+      setIsProcessingSignup(false);
+      alert("ログインに失敗しました")
+    }
+  };
   return (
     <Flex
       minHeight="100vh"
@@ -167,19 +185,15 @@ export default function Signup() {
             </Flex>
 
             <Flex flexDirection="column" alignItems="center">
-              <Text mb="8" textAlign="center">
-                すでにアカウントをお持ちですか?{" "}
-                <Link legacyBehavior href="/login">
-                  <a style={{ color: 'blue' }}>ログイン</a>
-                </Link>
-              </Text>
+          
               <Button className={style.touroku} 
                 type="submit"
                 color="black"
                 background="gray.800"
                 size="lg"
-                paddingX="80px"
+                paddingX="60px"
                 m="0 auto"
+                marginBottom="30"
                 isLoading={isProcessingSignup}
                 _hover={{
                   background: "gray.700",
@@ -187,7 +201,39 @@ export default function Signup() {
               >
                 登録
               </Button>
-            </Flex>
+          
+      <h3> または</h3>
+              <Button
+          className={style.google}
+          type="button"
+          color="black"
+          background="gray.800"
+          size="lg"
+          paddingX="80px"
+          m="0 auto"
+          marginBottom="4"
+          isLoading={isProcessingSignup}
+          _hover={{
+            background: "gray.700",
+          }}
+          onClick={handleGoogleLogin}
+        >
+          <Flex align="center">
+            <IconButton
+              icon={<FaGoogle />}
+              fontSize="20px"
+              marginRight="2"  
+            />
+            Googleで登録・ログイン
+          </Flex>
+        </Button>
+              <Text mb="8" textAlign="center">
+                すでにアカウントをお持ちですか?{" "}
+                <Link legacyBehavior href="/login">
+                  <a style={{ color: 'blue' }}>ログイン</a>
+                </Link>
+              </Text>
+              </Flex>
           </form>
         </Box>
       </Box>
