@@ -1,6 +1,7 @@
 // components/Header.js
 import Link from "next/link";
 import styles from "../styles/Header.module.css";
+import Styles from "../styles/heart.module.css"
 import Image from "next/image";
 import { useUser } from "../hooks/firebase";  
 
@@ -38,6 +39,20 @@ export default function Header() {
             <Link legacyBehavior href="/ranking">ランキング</Link>
             </div>
             </div>
+
+            <div className={styles.space}></div>
+
+            <div className={styles.linkWithImage02}>
+              <Link legacyBehavior href="/liked-books">
+              <div className={Styles.heart}></div>
+            </Link>
+              <div className={styles.linkText02}>
+            <Link legacyBehavior href="/liked-books">お気に入り</Link>
+            </div>
+            </div>
+
+
+            <div className={styles.space}></div>            
 
           <Link legacyBehavior href="/mypage">
             <a className={styles.loginButton}>マイページ</a>
