@@ -55,16 +55,38 @@
   flex-direction: column; 
   text-align: center;
   position: relative;
-  /* margin-right: 8px; */
-  padding: 20px;
+  margin-right: 10px;
+  padding: 11px;
 }
 
 .linkText01 {
   font-weight: bold;
+  font-size: 15px;
   text-shadow: 3px 3px 0 #cd5;
   -webkit-text-stroke: 1px #ebe3e3;
 }  
 
+/* お気に入り */
+.linkWithImage02 {
+  display: flex;
+  align-items: center;
+  flex-direction: column; 
+  text-align: center;
+  position: relative;
+  margin-right: 8px;
+  margin-top: 11px;
+}
+
+.linkText02 {
+  margin-top: 5px;
+  margin-right: 10px;
+  font-size: 15px;
+  text-shadow: 3px 3px 0 rgb(221, 85, 171);
+  -webkit-text-stroke: 1px #ffffff;
+} 
+
+
+/* ハンバーガーメニュー追加 */
 
 
 /* メディアクエリ */

@@ -1,0 +1,29 @@
+/* styles.module.css */
+
+.heart {
+    width: 34px;
+    height: 34px;
+    position: relative;
+  }
+  
+  .heart::before,
+  .heart::after {
+    content: "";
+    width: 50%;
+    height: 80%;
+    background: #E0548E;
+    border-radius: 25px 25px 0 0;
+    display: block;
+    position: absolute;
+  }
+  
+  .heart::before {
+    transform: rotate(-45deg);
+    left: 14%;
+  }
+  
+  .heart::after {
+    transform: rotate(45deg);
+    right: 14%;
+  }
+  
