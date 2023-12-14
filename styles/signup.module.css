@@ -1,0 +1,47 @@
+.touroku {
+    position: relative;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+    width: 100%;
+    max-width: 350px; /* ボタンの最大幅 */
+  }
+  
+.touroku::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    top: 4px;
+    left: 4px;
+    width: 100%;
+    height: 100%;
+    -moz-border-radius: 100vh;
+    -webkit-border-radius: 100vh;
+    border-radius: 100vh;
+    background-color: #4D9BC1; /* 後ろの背景色 */
+  }
+  
+  .touroku span {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    font-weight: bold; /* 文字の太さ */
+    border-radius: 100vh;
+    border: solid 1px #4D9BC1; /* 線の色 */
+    color: #4D9BC1; /* 文字色 */
+    padding: 1em 2em;
+    background-color: #FFF; /* 背景色 */
+    -moz-transition: all 0.2s ease-in-out;
+    -o-transition: all 0.2s ease-in-out;
+    -webkit-transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out;
+  }
+  
+  /* マウスオーバーした際のデザイン */
+  .touroku:hover span {
+    background-color: #FFFF00; /* 背景色 */
+    transform: translate(4px, 4px);
+    transition: all 0.3s ease-in-out;
+  }

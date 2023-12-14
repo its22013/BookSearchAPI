@@ -15,6 +15,7 @@ import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 import { useAuth, useUser } from "../hooks/firebase.js";
 import Link from "next/link";
+import style from "../styles/signup.module.css";
 
 export default function Signup() {
   const {
@@ -46,7 +47,7 @@ export default function Signup() {
     if (password === confirmationPassword) {
       signup(email, password);
     } else {
-      alert("Passwords do not match");
+      alert("パスワードが一致しません");
     }
   };
 
@@ -74,7 +75,7 @@ export default function Signup() {
         justifyContent="center"
       >
         <Heading color="gray.800" mb="60px" textAlign="center" size="xl">
-          新規登録
+          <h2>新規登録</h2>
         </Heading>
         <Box
           boxShadow="lg"
@@ -96,7 +97,7 @@ export default function Signup() {
               </FormLabel>
               {errors.email && (
                 <Text color="red.400" mb="2">
-                  Email is required
+                 <font color="red"> Emailが入力されていません</font>
                 </Text>
               )}
               <Input
@@ -112,7 +113,7 @@ export default function Signup() {
               </FormLabel>
               {errors.password && (
                 <Text color="red.400" mb="2">
-                  Password is required
+                  <font color="red">パスワードが入力されていません</font>
                 </Text>
               )}
               <Flex alignItems="center">
@@ -138,7 +139,7 @@ export default function Signup() {
               </FormLabel>
               {errors.confirmationPassword && (
                 <Text color="red.400" mb="2">
-                  Confirm Password is required
+                 <font color="red">パスワード(再確認)が入力されていません</font>
                 </Text>
               )}
               <Flex alignItems="center">
@@ -167,12 +168,12 @@ export default function Signup() {
 
             <Flex flexDirection="column" alignItems="center">
               <Text mb="8" textAlign="center">
-                Already have an account?{" "}
+                すでにアカウントをお持ちですか?{" "}
                 <Link legacyBehavior href="/login">
-                  <a style={{ color: 'blue' }}>Login here</a>
+                  <a style={{ color: 'blue' }}>ログイン</a>
                 </Link>
               </Text>
-              <Button
+              <Button className={style.touroku} 
                 type="submit"
                 color="black"
                 background="gray.800"
