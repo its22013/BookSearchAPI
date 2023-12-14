@@ -1,12 +1,23 @@
 // components/Header.js
+import { useState } from "react";
 import Link from "next/link";
 import styles from "../styles/Header.module.css";
-import Styles from "../styles/heart.module.css"
+import Styles from "../styles/heart.module.css";
 import Image from "next/image";
-import { useUser } from "../hooks/firebase";  
+import { useUser } from "../hooks/firebase";
+import MobileMenu from "./MobileMenu";
 
 export default function Header() {
   const currentUser = useUser();
+  const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const toggleMobileMenu = () => {
+    setMobileMenuOpen(!isMobileMenuOpen);
+  };
+
+  const closeMobileMenu = () => {
+    setMobileMenuOpen(false);
+  };
 
   return (
     <div className={styles.container}>
@@ -24,35 +35,44 @@ export default function Header() {
       <div className={styles.s1}>
         <h1>Book Search</h1>
       </div>
+
+      {/* ハンバーガーメニューのトグルボタン */}
+      <div className={styles.mobileMenuToggle} onClick={toggleMobileMenu}>
+        <div className={styles.hamburgerIcon}></div>
+      </div>
+
+      {/* モバイルメニュー */}
+      {isMobileMenuOpen && <MobileMenu onClose={closeMobileMenu} />}
+
       {currentUser ? (
-        <div className={styles.loggedContainer}>
+        // ログイン時のメニュー
+        <div className={`${styles.loggedContainer} ${isMobileMenuOpen ? styles.showMobileMenu : ""}`}>
           <div className={styles.linkWithImage01}>
-              <Link legacyBehavior href="/ranking">
-                <Image
-                  src="/images/ran.png" 
-                  alt="Ranking Image"
-                  width={50}
-                  height={50}
+            <Link href="/ranking">
+              <Image
+                src="/images/ran.png"
+                alt="Ranking Image"
+                width={50}
+                height={50}
               />
             </Link>
-              <div className={styles.linkText01}>
-            <Link legacyBehavior href="/ranking">ランキング</Link>
+            <div className={styles.linkText01}>
+              <Link href="/ranking">ランキング</Link>
             </div>
-            </div>
+          </div>
 
-            <div className={styles.space}></div>
+          <div className={styles.space}></div>
 
-            <div className={styles.linkWithImage02}>
-              <Link legacyBehavior href="/liked-books">
+          <div className={styles.linkWithImage02}>
+            <Link href="/liked-books">
               <div className={Styles.heart}></div>
             </Link>
-              <div className={styles.linkText02}>
-            <Link legacyBehavior href="/liked-books">お気に入り</Link>
+            <div className={styles.linkText02}>
+              <Link href="/liked-books">お気に入り</Link>
             </div>
-            </div>
+          </div>
 
-
-            <div className={styles.space}></div>            
+          <div className={styles.space}></div>
 
           <Link legacyBehavior href="/mypage">
             <a className={styles.loginButton}>マイページ</a>
@@ -65,6 +85,7 @@ export default function Header() {
           </Link>
         </div>
       ) : (
+        // 非ログイン時のメニュー
         <Link legacyBehavior href="/signup">
           <a className={styles.loginButton}>新規登録・ログイン</a>
         </Link>

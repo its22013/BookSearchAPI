@@ -87,12 +87,79 @@
 
 
 /* ハンバーガーメニュー追加 */
+.hamburgerIcon {
+  width: 30px;
+  height: 3px;
+  background-color: #333;
+  margin: 6px 0;
+  transition: 0.4s; /* アイコンのアニメーション効果を追加 */
+}
+
+/* ハンバーガーアイコンの横線を三本に変更 */
+.hamburgerIcon::before,
+.hamburgerIcon::after {
+  content: "";
+  width: 30px;
+  height: 3px;
+  background-color: #333;
+  position: absolute;
+  transition: 0.4s; /* アイコンのアニメーション効果を追加 */
+}
+
+.hamburgerIcon::before {
+  transform: translateY(-8px);
+}
+
+.hamburgerIcon::after {
+  transform: translateY(8px);
+}
+
+.mobileMenuToggle {
+  display: none;
+  cursor: pointer;
+}
+
+.showMobileMenu {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  position: absolute;
+  top: 99px;
+  left: 0;
+  width: 100%;
+  background-color: #54e4e4;
+}
+
+.showMobileMenu a {
+  display: block;
+  padding: 10px;
+  color: #fff;
+  text-decoration: none;
+  border-bottom: 1px solid #fff;
+}
+
+.showMobileMenu .linkWithImage {
+  display: flex;
+  align-items: center;
+  margin-right: 0;
+  padding: 10px;
+}
 
 
 /* メディアクエリ */
 @media (max-width: 780px) {
   .s1 {
     font-size: 20px;
+  }
+
+  .mobileMenuToggle {
+    display: block;
+  }
+
+  .loggedContainer {
+    flex-direction: column;
+    align-items: flex-start;
+    display: none;
   }
 
   .loginButton {
