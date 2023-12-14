@@ -15,7 +15,7 @@ import { onAuthStateChanged } from "firebase/auth"; // 追加
 import { useRouter } from "next/router";
 import { useAuth, useUser } from "../hooks/firebase.js";
 import Link from "next/link";
-
+import style from "../styles/signup.module.css";
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -83,7 +83,7 @@ export default function Login() {
           alignItems="center"
         >
           <form onSubmit={handleLogin}>
-            <Flex flexDirection="column" mb="25" alignItems="center">
+            <Flex flexDirection="column" mb="50" alignItems="center">
               <FormLabel fontWeight="bold" mb="2">
                 Email
               </FormLabel>
@@ -95,7 +95,7 @@ export default function Login() {
                 onChange={(e) => setEmail(e.target.value)}
               />
             </Flex>
-            <Flex flexDirection="column" mb="25" alignItems="center">
+            <Flex flexDirection="column" mb="50" alignItems="center">
               <FormLabel fontWeight="bold" mb="2">
                 パスワード
               </FormLabel>
@@ -119,7 +119,7 @@ export default function Login() {
             </Flex>
 
             <Flex flexDirection="column" alignItems="center">
-              <Button
+              <Button className={style.touroku}
                 type="submit"
                 color="black"
                 background="gray.800"
