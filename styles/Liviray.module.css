@@ -1,0 +1,15 @@
+.loading-spinner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px; /* 適切な高さを設定してください */
+  }
+  
+  .loading-spinner img {
+    width: 50px; /* GIFの幅に合わせて調整してください */
+    height: 50px; /* GIFの高さに合わせて調整してください */
+  }
+  
+  .ss1 {
+    color: blue;
+  }

@@ -1,3 +1,4 @@
+import Link from "next/link";
 import Header from "../components/HeaderSigup";
 import Styles from "../styles/Home.module.css";
 
@@ -13,11 +14,13 @@ export default function FirstPost() {
             </a>
           </div>
 
+          <Link legacyBehavior href="/library_search">
           <div className={`${Styles.buttonSpacing} ${Styles.buttonWithPadding}`}>
             <a className={`${Styles.button} ${Styles.centerText} ${Styles.button2}`}>
               図書館で<br />検索
             </a>
           </div>
+          </Link>
         </div>
       </main>
     </div>
