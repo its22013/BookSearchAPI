@@ -111,7 +111,9 @@ const Liviray = () => {
     <div>
       <Header />
       <main>
-      <h1>本の検索</h1>
+      <div className={Styles.container}>
+      <h1>図書館で検索</h1>
+      <div className={Styles.searchContainer}>
       <select value={selectedSystemId} onChange={(e) => setSelectedSystemId(e.target.value)}>
         {libraries.map((library) => (
           <option key={library.systemid} value={library.systemid}>
@@ -119,14 +121,17 @@ const Liviray = () => {
           </option>
         ))}
       </select>
-      <input
+      <div className={Styles.form}>
+      <input className={Styles.text}
         type="text"
         value={keyword}
         onChange={(e) => setKeyword(e.target.value)}
         onKeyDown={handleEnterKeyPress}
         placeholder="キーワードを入力"
       />
+      </div>
       <button onClick={handleSearchButtonClick}>検索</button>
+      </div>
 
       {loading && (
         <div className="loading-spinner">
@@ -143,7 +148,9 @@ const Liviray = () => {
 
             return (
               <div key={index}>
+                <div className={Styles.image01}>
                 {bookImage && <img src={bookImage} alt="本の画像" style={{ maxWidth: '100px', maxHeight: '150px' }} />}
+                </div>
                 <strong>{book.title}</strong> - {book.authors}
                 {bookData.availability && bookData.availability.books && Object.keys(bookData.availability.books).length > 0 ? (
                   <div>
@@ -177,6 +184,7 @@ const Liviray = () => {
           </div>
         </div>
       )}
+      </div>  
       </main>  
     </div>
 

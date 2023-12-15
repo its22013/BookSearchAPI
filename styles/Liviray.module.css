@@ -1,15 +1,46 @@
+/* styles/Liviray.module.css */
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.form {
+  margin-right: -10px;
+  /* width: 300px;
+  height: 10em; */
+  
+}
+
+.text {
+  width: 215px;
+  height: 45px;
+  padding: 3px 10px;
+  border-radius: 5px;
+  border: 2px solid #b3b3b3;
+}
+
+.searchContainer {
+  display: flex;
+  gap: 10px; /* フォーム要素間のスペース */
+}
+
 .loading-spinner {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100px; /* 適切な高さを設定してください */
-  }
-  
-  .loading-spinner img {
-    width: 50px; /* GIFの幅に合わせて調整してください */
-    height: 50px; /* GIFの高さに合わせて調整してください */
-  }
-  
-  .ss1 {
-    color: blue;
-  }
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* 画面全体の高さに合わせる */
+}
+
+.loading-spinner img {
+  width: 50px; /* GIFの幅に合わせて調整してください */
+  height: 50px; /* GIFの高さに合わせて調整してください */
+}
+
+.ss1 {
+  color: blue;
+  text-align: center; /* テキストを中央揃えにする */
+  margin-top: 10px; /* 適切なマージンを設定してください */
+}
