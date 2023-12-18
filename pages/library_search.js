@@ -16,8 +16,25 @@ const Liviray = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const booksPerPage = 10;
 
+  // ローディング時間を9.9秒に設定
+  const loadingTimeout = 9999;
+
   useEffect(() => {
-    if (keyword && searchButtonClicked) {
+    let timer;
+
+    if (loading) {
+      timer = setTimeout(() => {
+        setLoading(false);
+      }, loadingTimeout);
+    }
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [loading]);
+
+  useEffect(() => {
+    if (searchButtonClicked) {
       searchBooks();
     }
   }, [searchButtonClicked]);
@@ -47,7 +64,7 @@ const Liviray = () => {
     } catch (error) {
       console.error('検索エラー:', error);
     } finally {
-      setLoading(false);
+      // setLoading(false); // ローディングがすぐに非表示になるようにコメントアウト
     }
   };
 
@@ -103,6 +120,18 @@ const Liviray = () => {
     }
   };
 
+  const handleNextButtonClick = () => {
+    if (currentPage < Math.ceil(availability.length / booksPerPage)) {
+      setCurrentPage((prevPage) => prevPage + 1);
+    }
+  };
+
+  const handlePrevButtonClick = () => {
+    if (currentPage > 1) {
+      setCurrentPage((prevPage) => prevPage - 1);
+    }
+  };
+
   const paginate = (array, page_size, page_number) => {
     return array.slice((page_number - 1) * page_size, page_number * page_size);
   };
@@ -111,83 +140,91 @@ const Liviray = () => {
     <div>
       <Header />
       <main>
-      <div className={Styles.container}>
-      <h1>図書館で検索</h1>
-      <div className={Styles.searchContainer}>
-      <select value={selectedSystemId} onChange={(e) => setSelectedSystemId(e.target.value)}>
-        {libraries.map((library) => (
-          <option key={library.systemid} value={library.systemid}>
-            {library.name}
-          </option>
-        ))}
-      </select>
-      <div className={Styles.form}>
-      <input className={Styles.text}
-        type="text"
-        value={keyword}
-        onChange={(e) => setKeyword(e.target.value)}
-        onKeyDown={handleEnterKeyPress}
-        placeholder="キーワードを入力"
-      />
-      </div>
-      <button onClick={handleSearchButtonClick}>検索</button>
-      </div>
+        <div className={Styles.container}>
+          <h1>図書館で検索</h1>
+          <div className={Styles.searchContainer}>
+            <select value={selectedSystemId} onChange={(e) => setSelectedSystemId(e.target.value)}>
+              {libraries.map((library) => (
+                <option key={library.systemid} value={library.systemid}>
+                  {library.name}
+                </option>
+              ))}
+            </select>
+            <div className={Styles.form}>
+              <input
+                className={Styles.text}
+                type="text"
+                value={keyword}
+                onChange={(e) => setKeyword(e.target.value)}
+                onKeyDown={handleEnterKeyPress}
+                placeholder="キーワードを入力"
+              />
+            </div>
+            <button onClick={handleSearchButtonClick}>検索</button>
+          </div>
 
-      {loading && (
-        <div className="loading-spinner">
-          loading...
-        </div>
-      )}
+          {(loading || searchButtonClicked) && (
+            <div className={Styles.loadingContainer}>
+              <div className={Styles.loadingSpinner}>
+                検索中
+                <div className={Styles.dot}></div>
+                <div className={Styles.dot}></div>
+                <div className={Styles.dot}></div>
+              </div>
+            </div>
+          )}
 
-      {Array.isArray(availability) && availability.length > 0 && !loading && (
-        <div>
-          {paginate(availability, booksPerPage, currentPage).map((bookData, index) => {
-            const book = bookData.book;
-            const bookDetails = bookData.details;
-            const bookImage = bookDetails?.volumeInfo?.imageLinks?.thumbnail || null;
+          {Array.isArray(availability) && availability.length > 0 && !loading && (
+            <div>
+              {paginate(availability, booksPerPage, currentPage).map((bookData, index) => {
+                const book = bookData.book;
+                const bookDetails = bookData.details;
+                const bookImage = bookDetails?.volumeInfo?.imageLinks?.thumbnail || null;
 
-            return (
-              <div key={index}>
-                <div className={Styles.image01}>
-                {bookImage && <img src={bookImage} alt="本の画像" style={{ maxWidth: '100px', maxHeight: '150px' }} />}
-                </div>
-                <strong>{book.title}</strong> - {book.authors}
-                {bookData.availability && bookData.availability.books && Object.keys(bookData.availability.books).length > 0 ? (
-                  <div>
-                    <p>貸出状況: {getStatusDisplay(bookData.availability.books[Object.keys(bookData.availability.books)[0]])}</p>
-                    {bookData.availability.books[Object.keys(bookData.availability.books)[0]][selectedSystemId]?.reserveurl && (
-                      <p>
-                        予約URL: <a href={bookData.availability.books[Object.keys(bookData.availability.books)[0]][selectedSystemId]?.reserveurl} target="_blank" rel="noopener noreferrer">
-                          <div className={Styles.ss1}>予約はこちら</div></a>
-                      </p>
+                return (
+                  <div key={index} className={Styles.results}>
+                    <div className={Styles.image01}>
+                      {bookImage && <img src={bookImage} alt="本の画像" style={{ maxWidth: '100px', maxHeight: '150px' }} />}
+                    </div>
+                    <strong>{book.title}</strong> - {book.authors}
+                    {bookData.availability && bookData.availability.books && Object.keys(bookData.availability.books).length > 0 ? (
+                      <div>
+                        <p>貸出状況: {getStatusDisplay(bookData.availability.books[Object.keys(bookData.availability.books)[0]])}</p>
+                        {bookData.availability.books[Object.keys(bookData.availability.books)[0]][selectedSystemId]?.reserveurl && (
+                          <p>
+                            予約URL: <a href={bookData.availability.books[Object.keys(bookData.availability.books)[0]][selectedSystemId]?.reserveurl} target="_blank" rel="noopener noreferrer">
+                              <div className={Styles.ss1}>予約はこちら</div>
+                            </a>
+                          </p>
+                        )}
+                      </div>
+                    ) : (
+                      <p>取り扱いなし</p>
                     )}
                   </div>
-                ) : (
-                  <p>取り扱いなし</p>
-                )}
+                );
+              })}
+
+              {/* ページネーションのリンク */}
+              <div className={Styles.pagination}>
+                <button onClick={handlePrevButtonClick}>前へ</button>
+                {[...Array(Math.ceil(availability.length / booksPerPage))].map((_, index) => (
+                  <span
+                    key={index}
+                    className={index + 1 === currentPage ? `${Styles.currentPage} ${Styles.page}` : Styles.page}
+                    onClick={() => setCurrentPage(index + 1)}
+                  >
+                    {index + 1}
+                    {index + 1 < Math.ceil(availability.length / booksPerPage) && '\u00A0'}
+                  </span>
+                ))}
+                <button onClick={handleNextButtonClick}>次へ</button>
               </div>
-            );
-          })}
-
-          {/* ページネーションのリンク */}
-          <div className={Styles.pagination}>
-            {[...Array(Math.ceil(availability.length / booksPerPage))].map((_, index) => (
-              <span
-                key={index}
-                className={index + 1 === currentPage ? `${Styles.currentPage} ${Styles.page}` : Styles.page}
-                onClick={() => setCurrentPage(index + 1)}
-              >
-                {index + 1}
-                {index + 1 < Math.ceil(availability.length / booksPerPage) && '\u00A0'}
-              </span>
-            ))}
-          </div>
+            </div>
+          )}
         </div>
-      )}
-      </div>  
-      </main>  
+      </main>
     </div>
-
   );
 };
 

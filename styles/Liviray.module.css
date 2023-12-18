@@ -39,8 +39,79 @@
   height: 50px; /* GIFの高さに合わせて調整してください */
 }
 
+.loadingContainer {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.loadingSpinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  background-color: #333;
+  border-radius: 50%;
+  margin: 0 5px;
+  animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+  0%, 50%, 100% {
+    opacity: 0;
+  }
+  25%, 75% {
+    opacity: 1;
+  }
+}
+
 .ss1 {
   color: blue;
   text-align: center; /* テキストを中央揃えにする */
   margin-top: 10px; /* 適切なマージンを設定してください */
+}
+
+/* ページネーション */
+.pagination {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.page {
+  margin: 0 5px;
+  padding: 5px 10px;
+  cursor: pointer;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.currentPage {
+  background-color: #007BFF;
+  color: #fff;
+}
+
+/* 結果表示の全体 */
+.results {
+  height: 150px;
+  width: 850px;
+  display: flex;
+  margin-bottom: 30px;
+  margin-top: 34px;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid #3ecfff;
+  /* margin-left: 10%; 画面幅の割合に変更 */
+  margin-right: 10%; /* 画面幅の割合に変更 */
+  background-color: rgb(250, 238, 223);
+  box-sizing: border-box; /* border-box ボックスモデルを使用して、borderとpaddingも含めたサイズを指定 */
 }
