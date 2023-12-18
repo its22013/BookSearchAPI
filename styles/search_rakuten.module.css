@@ -1,0 +1,20 @@
+.search {
+    display: inline-block;
+    width: 100%;
+    max-width: 350px; /* ボタン幅 */
+    color: #4D9BC1; /* 文字色 */
+    border: 2px solid #4D9BC1; /* 線幅・種類・色 */
+    background: #fff; /* 背景色 */
+    padding: 1em 2em;
+    font-weight: bold; /* 文字の太さ */
+    text-decoration: none;
+    text-align: center;
+    transition: 0.3s;
+    margin-top: 40px;
+  }
+  .search:hover {
+    color: #fff; /* 文字色 */
+    background: #4D9BC1; /* 背景色 */
+  }
+  .paginationStyle {
+  }

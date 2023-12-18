@@ -6,14 +6,15 @@ export default function FirstPost() {
   return (
     <div>
       <Header />
-      <main>
+      <main>   
         <div className={`${Styles.all} ${Styles.buttonCentered}`}>
+          <Link legacyBehavior href="/rakuten_search">
           <div className={`${Styles.buttonWithPadding}`}>
             <a className={`${Styles.button} ${Styles.centerText} ${Styles.button1}`}>
               楽天本APIで<br />検索
             </a>
           </div>
-
+          </Link>
           <Link legacyBehavior href="/library_search">
           <div className={`${Styles.buttonSpacing} ${Styles.buttonWithPadding}`}>
             <a className={`${Styles.button} ${Styles.centerText} ${Styles.button2}`}>
