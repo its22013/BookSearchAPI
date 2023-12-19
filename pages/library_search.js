@@ -5,6 +5,7 @@ import fetchJsonp from 'fetch-jsonp';
 import libraries from '../pages/libraries/libraries';
 import Styles from '../styles/Liviray.module.css';
 import Header from "../components/HeaderSigup";
+import Image from "next/image";
 
 const Liviray = () => {
   const [keyword, setKeyword] = useState('');
@@ -15,9 +16,8 @@ const Liviray = () => {
   const [searchButtonClicked, setSearchButtonClicked] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const booksPerPage = 10;
-
-  // ローディング時間を9.9秒に設定
-  const loadingTimeout = 9999;
+  const loadingTimeout = 14000;
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     let timer;
@@ -44,10 +44,19 @@ const Liviray = () => {
       setLoading(true);
       setSearchButtonClicked(false);
 
+      if (!keyword) { 
+        setBooks([]);
+        setAvailability([]);
+        setLoading(false);
+        setError('検索キーワードを入力してください');
+        return;
+      }
+
       const response = await fetch(`http://localhost:3000/api/search?keyword=${encodeURIComponent(keyword)}&library=${selectedSystemId}`);
       const data = await response.json();
 
       setBooks(data);
+      setError(null);
 
       const availabilityData = await Promise.all(data.map(async (book) => {
         const isbn = book.availability;
@@ -63,6 +72,7 @@ const Liviray = () => {
       setAvailability(availabilityData);
     } catch (error) {
       console.error('検索エラー:', error);
+      setError('検索中にエラーが発生しました');
     } finally {
       // setLoading(false); // ローディングがすぐに非表示になるようにコメントアウト
     }
@@ -80,28 +90,28 @@ const Liviray = () => {
 
   const getStatusDisplay = (libkey) => {
     if (!libkey || !libkey[selectedSystemId] || !libkey[selectedSystemId].libkey) {
-      return '蔵書なし';
+      return <span className={Styles.displayNotAvailable}>蔵書なし</span>;
     }
 
     const systemLibkey = libkey[selectedSystemId].libkey;
     const libraryKeys = Array.isArray(systemLibkey) ? systemLibkey : Object.keys(systemLibkey);
 
     if (libraryKeys.some(libraryKey => systemLibkey[libraryKey] === '貸出中')) {
-      return '貸出中';
+      return <span className={Styles.displayLoaned}>貸出中</span>;
     } else if (libraryKeys.some(libraryKey => systemLibkey[libraryKey] === '貸出可')) {
-      return '貸出可';
+      return <span className={Styles.displayAvailable}>貸出可</span>;
     } else if (libraryKeys.some(libraryKey => systemLibkey[libraryKey] === '蔵書あり')) {
-      return '蔵書あり';
+      return <span className={Styles.displayAvailable}>蔵書あり</span>;
     } else if (libraryKeys.some(libraryKey => systemLibkey[libraryKey] === '館内のみ')) {
-      return '館内のみ';
+      return <span className={Styles.displayAvailable}>館内のみ</span>;
     } else if (libraryKeys.some(libraryKey => systemLibkey[libraryKey] === '予約中')) {
-      return '予約中';
+      return <span className={Styles.displayAvailable}>予約中</span>;
     } else if (libraryKeys.some(libraryKey => systemLibkey[libraryKey] === '準備中')) {
-      return '準備中';
+      return <span className={Styles.displayAvailable}>準備中</span>;
     } else if (libraryKeys.some(libraryKey => systemLibkey[libraryKey] === '休館中')) {
-      return '休館中';
+      return <span className={Styles.displayAvailable}>休館中</span>;
     } else {
-      return '蔵書なし';
+      return <span className={Styles.displayNotAvailable}>蔵書なし</span>;
     }
   };
 
@@ -114,9 +124,9 @@ const Liviray = () => {
   const handleSearchButtonClick = () => {
     if (selectedSystemId) {
       setSearchButtonClicked(true);
-      setCurrentPage(1); // 新しい検索時にページをリセット
+      setCurrentPage(1);
     } else {
-      alert('図書館を選択してください');
+      setError('図書館を選択してください');
     }
   };
 
@@ -150,6 +160,7 @@ const Liviray = () => {
                 </option>
               ))}
             </select>
+            
             <div className={Styles.form}>
               <input
                 className={Styles.text}
@@ -160,7 +171,7 @@ const Liviray = () => {
                 placeholder="キーワードを入力"
               />
             </div>
-            <button onClick={handleSearchButtonClick}>検索</button>
+            <button onClick={handleSearchButtonClick}><Image src="/images/search.png" alt="Search Image" width={30} height={30}/></button>
           </div>
 
           {(loading || searchButtonClicked) && (
@@ -174,38 +185,47 @@ const Liviray = () => {
             </div>
           )}
 
+          {error && (
+            <div className={Styles.errorContainer}>
+              {error}
+            </div>
+          )}
+
           {Array.isArray(availability) && availability.length > 0 && !loading && (
             <div>
               {paginate(availability, booksPerPage, currentPage).map((bookData, index) => {
                 const book = bookData.book;
                 const bookDetails = bookData.details;
-                const bookImage = bookDetails?.volumeInfo?.imageLinks?.thumbnail || null;
+                const defaultImageUrl = "/images/images.png";
+                const bookImage = bookDetails?.volumeInfo?.imageLinks?.thumbnail || defaultImageUrl;
+                const isLongTitle = book.title.length > 20;
 
                 return (
                   <div key={index} className={Styles.results}>
                     <div className={Styles.image01}>
-                      {bookImage && <img src={bookImage} alt="本の画像" style={{ maxWidth: '100px', maxHeight: '150px' }} />}
+                      <img src={bookImage} alt="本の画像" style={{ maxWidth: '103px', maxHeight: '150px' }} />
                     </div>
-                    <strong>{book.title}</strong> - {book.authors}
+                    <strong className={isLongTitle ? `${Styles.bookTitle} ${Styles.breakLine}` : Styles.bookTitle}>{book.title}</strong> - {book.authors}
                     {bookData.availability && bookData.availability.books && Object.keys(bookData.availability.books).length > 0 ? (
                       <div>
-                        <p>貸出状況: {getStatusDisplay(bookData.availability.books[Object.keys(bookData.availability.books)[0]])}</p>
+                        <div className={Styles.display}>
+                          貸出状況: <div className={Styles.space}></div>{getStatusDisplay(bookData.availability.books[Object.keys(bookData.availability.books)[0]])}
+                        </div>
                         {bookData.availability.books[Object.keys(bookData.availability.books)[0]][selectedSystemId]?.reserveurl && (
-                          <p>
-                            予約URL: <a href={bookData.availability.books[Object.keys(bookData.availability.books)[0]][selectedSystemId]?.reserveurl} target="_blank" rel="noopener noreferrer">
+                          <div>
+                            <a href={bookData.availability.books[Object.keys(bookData.availability.books)[0]][selectedSystemId]?.reserveurl} target="_blank" rel="noopener noreferrer">
                               <div className={Styles.ss1}>予約はこちら</div>
                             </a>
-                          </p>
+                          </div>
                         )}
                       </div>
                     ) : (
-                      <p>取り扱いなし</p>
+                      <p className={Styles.display}>取り扱いなし</p>
                     )}
                   </div>
                 );
               })}
 
-              {/* ページネーションのリンク */}
               <div className={Styles.pagination}>
                 <button onClick={handlePrevButtonClick}>前へ</button>
                 {[...Array(Math.ceil(availability.length / booksPerPage))].map((_, index) => (
