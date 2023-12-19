@@ -40,8 +40,13 @@ export default function Signup() {
       setIsProcessingSignup(true);
       await createUserWithEmailAndPassword(auth, email, password);
       setIsProcessingSignup(false);
-    } catch (e) {
-      console.error(e);
+    } catch (error) {
+      setIsProcessingSignup(false);
+      if (error.code === 'auth/email-already-in-use') {
+        alert('すでにアカウントが存在します');
+      } else {
+        console.error('Signup Error:', error);
+      }
     }
   };
 
@@ -92,8 +97,8 @@ export default function Signup() {
         flexDirection="column"
         justifyContent="center"
       >
-        <Heading color="gray.800" mb="60px" textAlign="center" size="xl">
-          <h2>新規登録</h2>
+        <Heading color="gray.800" mb="60px" textAlign="center" size="2xl">
+          新規登録
         </Heading>
         <Box
           boxShadow="lg"
@@ -120,9 +125,12 @@ export default function Signup() {
               )}
               <Input
                 type="email"
-                size="xl"
+                size="2lg"
+                borderRadius="md"
                 placeholder="example@test.com"
                 {...register("email", { required: true })}
+                width="100%"
+                height="30px"
               />
             </Flex>
             <Flex flexDirection="column" mb="25" alignItems="center">
@@ -138,7 +146,10 @@ export default function Signup() {
                 <Input
                   type={isPasswordVisible ? "text" : "password"}
                   {...register("password", { required: true })}
-                  size="xl"
+                  size="lg"
+                  borderRadius="md"
+                  height="30px"
+                  width="300px"
                 />
                 <IconButton
                   icon={isPasswordVisible ? <ViewOffIcon /> : <ViewIcon />}
@@ -151,7 +162,7 @@ export default function Signup() {
                 />
               </Flex>
             </Flex>
-            <Flex flexDirection="column" mb="25" alignItems="center">
+            <Flex flexDirection="column" mb="40" alignItems="center">
               <FormLabel fontWeight="bold" mb="2">
                 パスワード(再確認)
               </FormLabel>
@@ -164,7 +175,10 @@ export default function Signup() {
                 <Input
                   type={isConfirmPasswordVisible ? "text" : "password"}
                   {...register("confirmationPassword", { required: true })}
-                  size="xl"
+                  size="lg"
+                  borderRadius="md"
+                  width="300px"
+                  height="30px"
                 />
                 <IconButton
                   icon={

@@ -71,7 +71,7 @@ export default function Login() {
         flexDirection="column"
         justifyContent="center"
       >
-        <Heading color="gray.800" mb="60px" textAlign="center" size="xl">
+        <Heading color="gray.800" mb="60px" textAlign="center" size="2xl">
           ログイン
         </Heading>
         <Box
@@ -94,8 +94,11 @@ export default function Login() {
               </FormLabel>
               <Input
                 type="email"
-                size="xl"
+                size="lg"
+                borderRadius="md"
                 placeholder="example@test.com"
+                width="100%"
+                height="30px"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
@@ -107,7 +110,10 @@ export default function Login() {
               <Flex alignItems="center">
                 <Input
                   type={isPasswordVisible ? "text" : "password"}
-                  size="xl"
+                  size="lg"
+                  borderRadius="md"
+                  width="300px"
+                  height="30px"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
@@ -125,9 +131,7 @@ export default function Login() {
 
             <Flex flexDirection="column" alignItems="center">
               <Button className={style.touroku}
-                type="submit"
-                color="black"
-                background="gray.800"
+                type="submit"             
                 size="lg"
                 paddingX="80px"
                 m="0 auto"

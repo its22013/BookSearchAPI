@@ -1,26 +1,18 @@
 .touroku {
-    position: relative;
-    text-decoration: none;
-    display: inline-block;
-    text-align: center;
-    width: 100%;
-    max-width: 300px; /* ボタンの最大幅 */
-  }
-  
-.touroku::before {
-    content: "";
-    position: absolute;
-    z-index: -1;
-    top: 4px;
-    left: 4px;
-    width: 100%;
-    height: 100%;
-    -moz-border-radius: 100vh;
-    -webkit-border-radius: 100vh;
-    border-radius: 100vh;
-    background-color: #4D9BC1; /* 後ろの背景色 */
-  }
-  
+  border: 3px solid #2544c6;
+  border-radius: 5px;
+  display: block;
+  width: 310px;
+  height: 38px;
+  padding: 15px;
+  box-sizing: border-box;
+  background: #eaf2fc;
+  color: #333;
+  text-decoration: none;
+  text-align: center;
+  margin: 10px 0;
+}
+
   .google {
     display: flex;
     align-items: center;
