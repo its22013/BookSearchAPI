@@ -16,6 +16,7 @@ import { useRouter } from "next/router";
 import { useAuth, useUser } from "../hooks/firebase.js";
 import Link from "next/link";
 import style from "../styles/signup.module.css";
+import Footer from "../components/Footer.js";
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -60,6 +61,8 @@ export default function Login() {
   }, [auth, router]);
 
   return (
+    <div className={style.mainContainer}>
+      <main>
     <Flex
       minHeight="100vh"
       alignItems="center"
@@ -153,6 +156,9 @@ export default function Login() {
         </Text>
       </Box>
     </Flex>
+    </main>
+    <Footer />
+    </div>
   );
 }
 

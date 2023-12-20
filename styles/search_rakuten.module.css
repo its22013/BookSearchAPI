@@ -1,3 +1,9 @@
+.mainContainer {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
 .search {
     display: inline-block;
     width: 100%;

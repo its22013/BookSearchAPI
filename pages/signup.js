@@ -18,6 +18,7 @@ import Link from "next/link";
 import style from "../styles/signup.module.css";
 import { signInWithPopup, GoogleAuthProvider} from "firebase/auth";
 import { FaGoogle } from "react-icons/fa";
+import Footer  from "@/components/Footer.js";
 
 export default function Signup() {
   const {
@@ -86,6 +87,8 @@ export default function Signup() {
     }
   };
   return (
+    <div className={style.mainContainer}>
+    <main> 
     <Flex
       minHeight="100vh"
       alignItems="center"
@@ -252,5 +255,8 @@ export default function Signup() {
         </Box>
       </Box>
     </Flex>
+    </main> 
+    <Footer/>
+    </div>
   );
 }
