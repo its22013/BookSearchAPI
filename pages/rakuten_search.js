@@ -3,6 +3,7 @@ import axios from 'axios';
 import Header from '../components/HeaderSigup';
 import style from '../styles/search_rakuten.module.css';
 import Footer from '@/components/Footer';
+import { env } from '@/next.config';
 
 const RakutenSearch = () => {
   const [searchType, setSearchType] = useState('title');
@@ -40,11 +41,11 @@ const RakutenSearch = () => {
       } else if (searchType === 'publisher') {
         searchQuery = `publisherName=${encodeURIComponent(publisherName)}`;
       }
-
+      const apiKey = env.APP_ID;
       const outOfStockFlagValue = getOutOfStockFlagValue(outOfStockFlag);
 
       const response = await axios.get(
-        `https://app.rakuten.co.jp/services/api/BooksBook/Search/20170404?format=json&sort=sales&applicationId=1058786829737523251&${searchQuery}&page=${page}&outOfStockFlag=${outOfStockFlagValue}`
+        `https://app.rakuten.co.jp/services/api/BooksBook/Search/20170404?format=json&sort=sales&applicationId=${apiKey}&${searchQuery}&page=${page}&outOfStockFlag=${outOfStockFlagValue}`
       );
 
       setSearchResults(response.data.Items || []);
