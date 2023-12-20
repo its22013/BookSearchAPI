@@ -16,7 +16,7 @@ const Liviray = () => {
   const [searchButtonClicked, setSearchButtonClicked] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const booksPerPage = 10;
-  const loadingTimeout = 14000;
+  const loadingTimeout = 15000;  // ローディング時間15秒
   const [error, setError] = useState(null);
 
   useEffect(() => {
