@@ -59,7 +59,7 @@ export default function Header() {
           }`}
         >
           <div className={styles.linkWithImage01}>
-            <Link href="/ranking">
+            <Link href="/Ranking">
               <Image
                 src="/images/ran.png"
                 alt="Ranking Image"
@@ -68,7 +68,7 @@ export default function Header() {
               />
             </Link>
             <div className={styles.linkText01}>
-              <Link href="/ranking">ランキング</Link>
+              <Link href="/Ranking">ランキング</Link>
             </div>
           </div>
 
