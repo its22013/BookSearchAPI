@@ -6,6 +6,7 @@ import libraries from '../pages/libraries/libraries';
 import Styles from '../styles/Liviray.module.css';
 import Header from "../components/HeaderSigup";
 import Image from "next/image";
+import Footer from '@/components/Footer';
 
 const Liviray = () => {
   const [keyword, setKeyword] = useState('');
@@ -147,7 +148,7 @@ const Liviray = () => {
   };
 
   return (
-    <div>
+    <div className={Styles.mainContainer}>
       <Header />
       <main>
         <div className={Styles.container}>
@@ -244,6 +245,7 @@ const Liviray = () => {
           )}
         </div>
       </main>
+      <Footer />
     </div>
   );
 };

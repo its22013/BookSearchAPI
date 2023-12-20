@@ -1,10 +1,11 @@
 import Link from "next/link";
 import Header from "../components/HeaderSigup";
 import Styles from "../styles/Home.module.css";
+import Footer from "@/components/Footer";
 
 export default function FirstPost() {
   return (
-    <div>
+    <div className={Styles.mainContainer}>
       <Header />
       <main>   
         <div className={`${Styles.all} ${Styles.buttonCentered}`}>
@@ -24,6 +25,7 @@ export default function FirstPost() {
           </Link>
         </div>
       </main>
+      <Footer />
     </div>
   );
 }

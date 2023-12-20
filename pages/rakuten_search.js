@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import Header from '../components/HeaderSigup';
 import style from '../styles/search_rakuten.module.css';
+import Footer from '@/components/Footer';
 
 const RakutenSearch = () => {
   const [searchType, setSearchType] = useState('title');
@@ -74,7 +75,7 @@ const RakutenSearch = () => {
   };
 
   return (
-    <div>
+    <div className={style.mainContainer}>
       <Header />
       <main>
         <div style={{ textAlign: 'center', marginTop: '50px' }}>
@@ -223,6 +224,7 @@ const RakutenSearch = () => {
           )}
         </div>
       </main>
+      <Footer />
     </div>
   );
 };

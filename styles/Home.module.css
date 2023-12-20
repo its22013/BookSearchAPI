@@ -57,6 +57,13 @@
   .buttonSpacing {
     margin-top: 120px; 
   }
+
+  /*Footerの固定  */
+  .mainContainer {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
   
   @media (max-width: 768px) {
     .rk {
