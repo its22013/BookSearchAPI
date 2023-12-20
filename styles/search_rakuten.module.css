@@ -17,4 +17,29 @@
     background: #4D9BC1; /* 背景色 */
   }
   .paginationStyle {
+  margin-bottom: 100px;
   }
+
+  /* search_rakuten.module.css */
+
+/* search_rakuten.module.css */
+.scrollToTopButton {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: rgba(0, 123, 255, 0.5);
+  color: white;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.scrollToTopButton:hover {
+  background-color: rgba(0, 123, 255, 0.8);
+}
+
+.paginationContainer {
+  position: relative;
+}
