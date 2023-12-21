@@ -1,0 +1,41 @@
+.mypage02 {
+    padding-left: 10px;
+}
+
+.mypage01 {
+    padding-right: 10px;
+}
+
+.secondContainer {
+    margin: 45px;
+}
+
+.h1 {
+    font-size: 56px;
+    margin-top: 15px;
+    height: 45px;
+}
+
+.box1 {
+    padding: 0.5em 1.5em;
+    margin: 2em 0;
+    color: #232323;
+    background: #fff8e8;
+    border-left: solid 10px #6ee7ff;
+}
+
+.box1 a {
+    margin: 0;
+    padding: 0;
+}
+
+.menuItem {
+    border-bottom: 2px solid #ccc;
+    width: 210px;
+    padding-bottom: 9px;
+    margin-bottom: 45px;
+  }
+
+ .menuItem :hover {
+    color: #565656;
+ } 

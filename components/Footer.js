@@ -12,9 +12,10 @@ export default function Footer() {
         <FaGithub className={styles.githubIcon} />
         GitHub
       </a>
-      <a>
+      <div className={styles.space01}></div>
+      <a href="https://www.it-college.ac.jp/?gclid=CjwKCAiAvoqsBhB9EiwA9XTWGZYeNJJvtzm6FiBpkpR2QO5CBdlt1uy6NEBZxQG7Pfg8YgyqHg62aRoCAAUQAvD_BwE" target="_blank" rel="noopener noreferrer">
       <FaSlack className={styles.githubIcon} />
-        Slack
+        ItCollege
       </a>
     </footer>
   );
