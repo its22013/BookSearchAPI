@@ -10,7 +10,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 import { useAuth, useUser } from "../hooks/firebase.js";
@@ -41,12 +41,12 @@ export default function Signup() {
       setIsProcessingSignup(true);
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
-
+  
       // ユーザーの表示名を設定
       await updateProfile(user, {
-        displayName: displayName
+        displayName: displayName,
       });
-
+  
       setIsProcessingSignup(false);
     } catch (error) {
       setIsProcessingSignup(false);
