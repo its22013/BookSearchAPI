@@ -7,7 +7,8 @@
 }
 
 .secondContainer {
-    margin: 45px;
+    margin: 20px 160px 160px;
+    margin-bottom: 10px;
 }
 
 .h1 {
@@ -33,9 +34,74 @@
     border-bottom: 2px solid #ccc;
     width: 210px;
     padding-bottom: 9px;
-    margin-bottom: 45px;
+    margin-bottom: 23px;
   }
 
  .menuItem :hover {
     color: #565656;
  } 
+
+.space {
+    margin-left: 30px;
+}
+
+.menuAndNotification {
+    display: flex;
+    align-items: flex-start; /* 上端に揃える */
+  }
+  
+  .menuContainer {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .notification {
+    display: flex;
+    align-items: center;
+    border-bottom: 2px solid #ccc;
+    margin-left: 90px;
+    margin-top: -5px;
+    width: 500px;
+  }
+  
+  .notification h3 {
+    margin-right: 10px;
+  }
+  
+  .notification p {
+    margin: 0;
+  }
+  
+  .setumei{
+    margin-left: 95px;
+    margin-top: 20px;
+  }
+
+  @media (max-width: 992px) {
+    .secondContainer {
+      margin: 34px;
+    }
+  
+    .notification {
+      display: flex;
+      align-items: center;
+      border-bottom: 2px solid #ccc;
+      padding-right: 200px;
+      margin-left: 20px;
+      height: 45px;
+      /* 下線の横の長さを変更 */
+      border-bottom-width: 50%; /* 50%の幅に設定 */
+    }
+  
+    .notification h3 {
+      margin-right: 10px;
+    }
+  
+    .notification p {
+      margin: 0;
+    }
+
+    .additionalInfo {
+        margin-top: 5px; /* 追加情報とお知らせの下線の間に余白を追加 */
+      }
+  }

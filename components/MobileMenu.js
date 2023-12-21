@@ -1,12 +1,15 @@
 // components/MobileMenu.js
 import Link from "next/link";
 import styles from "../styles/MobileMenu.module.css";
+import { useUser } from "../hooks/firebase";
 
 export default function MobileMenu({ onClose }) {
+  const currentUser = useUser();
+
   return (
     <div className={styles.mobileMenu}>
       <div className={styles.menuItem}>
-        <Link legacyBehavior href="/ranking">
+        <Link legacyBehavior href="/Ranking">
           <a onClick={onClose}>ランキング</a>
         </Link>
       </div>
@@ -16,9 +19,11 @@ export default function MobileMenu({ onClose }) {
         </Link>
       </div>
       <div className={styles.menuItem}>
-        <Link legacyBehavior href="/mypage">
-          <a onClick={onClose}>マイページ</a>
-        </Link>
+      {currentUser && currentUser.displayName && (
+            <Link legacyBehavior href="/mypage">
+              <a>{currentUser.displayName || 'マイページ'}</a>
+            </Link>
+          )}
       </div>
       <div className={styles.menuItem}>
         <Link legacyBehavior href="/logout">

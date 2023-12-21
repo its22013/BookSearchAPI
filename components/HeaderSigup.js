@@ -92,10 +92,7 @@ export default function Header() {
           )}
 
           <div className={styles.space}></div>
-
-          <Link legacyBehavior href="/logout">
-            <a className={styles.loginButton}>ログアウト</a>
-          </Link>
+          
         </div>
       ) : (
         // 非ログイン時のメニュー
