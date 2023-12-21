@@ -85,7 +85,7 @@ export default function Header() {
 
           <div className={styles.space}></div>
 
-          {currentUser && (
+          {currentUser.displayName && (
             <Link legacyBehavior href="/mypage">
               <a className={styles.loginButton}>{currentUser.displayName || 'マイページ'}</a>
             </Link>
