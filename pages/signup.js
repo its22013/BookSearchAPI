@@ -36,10 +36,17 @@ export default function Signup() {
   );
   const router = useRouter();
 
-  const signup = async (email, password) => {
+  const signup = async (email, password, displayName) => {
     try {
       setIsProcessingSignup(true);
-      await createUserWithEmailAndPassword(auth, email, password);
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+
+      // ユーザーの表示名を設定
+      await updateProfile(user, {
+        displayName: displayName
+      });
+
       setIsProcessingSignup(false);
     } catch (error) {
       setIsProcessingSignup(false);
@@ -51,14 +58,14 @@ export default function Signup() {
     }
   };
 
-  const onSubmit = async ({ email, password, confirmationPassword }) => {
+  const onSubmit = async ({ email, password, confirmationPassword, displayName }) => {
     if (password === confirmationPassword) {
-      signup(email, password);
+      signup(email, password, displayName);
     } else {
       alert("パスワードが一致しません");
     }
   };
-
+  
   useEffect(() => {
     console.log("currentUser:", currentUser);
     console.log("pathname:", router.pathname);
@@ -75,6 +82,11 @@ export default function Signup() {
       setIsProcessingSignup(true);
       const result = await signInWithPopup(auth, googleProvider);
       const user = result.user;
+      if (user.displayName === null) {
+        await updateProfile(user, {
+          displayName: user.email.split('@')[0] // Googleメールアドレスの最初の部分を表示名として設定
+        });
+      }
       console.log("Googleログイン成功:", user);
       setIsProcessingSignup(false);
     } catch (error) {
@@ -83,10 +95,12 @@ export default function Signup() {
       alert("ログインに失敗しました");
     }
   };
-
+  
   return (
     <div className={style.mainContainer}>
       <main>
+
+        
         <Flex
           minHeight="100vh"
           alignItems="center"
@@ -116,6 +130,26 @@ export default function Signup() {
                 新規登録
               </Heading>
               <form onSubmit={handleSubmit(onSubmit)}>
+              <Flex flexDirection="column" mb="25" alignItems="center">
+                  <FormLabel fontWeight="bold" mb="2">
+                    ユーザー名
+                  </FormLabel>
+                  {errors.displayName && (
+                    <Text color="red.400" mb="2">
+                      ユーザー名が入力されていません
+                    </Text>
+                  )}
+                  <Input
+                    type="text"
+                    size="2lg"
+                    borderRadius="md"
+                    placeholder="ユーザー名を入力してください"
+                    {...register("displayName", { required: true })}
+                    width="100%"
+                    height="30px"
+                  />
+                </Flex>
+
                 <Flex flexDirection="column" mb="25" alignItems="center">
                   <FormLabel fontWeight="bold" mb="2">
                     Email
