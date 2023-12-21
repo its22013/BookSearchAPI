@@ -4,9 +4,8 @@ const nextConfig = {
 }
 
 module.exports = {
+  ...nextConfig,
   env: {
     APP_ID: process.env.APP_ID,
   },
 };
-
-module.exports = nextConfig
