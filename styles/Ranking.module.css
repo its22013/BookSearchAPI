@@ -1,0 +1,74 @@
+/* Ranking.module.css */
+
+.container {
+    text-align: center;
+    margin-top: 50px;
+  }
+  
+  .h1 {
+    font-size: 28px;
+  }
+  
+  .ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .listItem {
+    display: flex;
+    align-items: center;
+    margin: 10px;
+    padding: 10px;
+    max-width: 600px; /* 最大横幅を設定 */
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .rank {
+    font-size: 18px;
+    font-weight: bold;
+    margin-right: 10px; /* ランクとコンテンツの間の余白 */
+  }
+  
+  .content {
+    display: flex;
+    align-items: center;
+    flex-grow: 1; /* コンテンツが残りのスペースを占めるように */
+  }
+  
+  .title {
+    font-size: 18px;
+    margin-right: 20px; /* タイトルと画像の間の余白 */
+    flex-grow: 1; /* タイトルが残りのスペースを占めるように */
+  }
+  
+  .img {
+    width: 80px; /* 画像の幅を調整 */
+    height: auto;
+  }
+  
+  .p {
+    font-size: 12px;
+    color: blue;
+    margin-left: auto; /* 詳細・購入を右端に寄せる */
+  }
+  
+  @media (max-width: 768px) {
+    /* 画面が小さい場合のスタイル調整 */
+    .listItem {
+      flex-direction: column;
+      max-width: 100%; /* 最大横幅を100%に設定 */
+    }
+  
+    .img {
+      width: 100%; /* 画面幅いっぱいに表示 */
+      margin-top: 10px;
+    }
+  
+    .rank,
+    .title {
+      margin: 0; /* ランクとタイトルの余白をリセット */
+    }
+  }
+  
+  
