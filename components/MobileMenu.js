@@ -1,7 +1,6 @@
 // components/MobileMenu.js
 import Link from "next/link";
 import styles from "../styles/MobileMenu.module.css";
-import Image from "next/image";
 
 export default function MobileMenu({ onClose }) {
   return (
