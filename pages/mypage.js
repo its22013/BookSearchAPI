@@ -51,7 +51,7 @@ export default function MyPage() {
                 </Link>
               </h3>
               <h3 className={styles.menuItem}>
-                <Link legacyBehavior href="/password">
+                <Link legacyBehavior href="/mypage/edit">
                   <a>パスワード確認・変更</a>
                 </Link>
               </h3>
