@@ -42,6 +42,25 @@
     margin-bottom: 50px;
 }
 
+.mypage02 {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.mypage01 {
+  padding-right: 10px;
+}
+
+.mypage03 {
+  padding-left: 10px;
+}
+
+.mypage {
+  margin: 10px;
+  margin-left: 64px;
+  margin-top: 20px;
+}
+
 /* 追加: スマートフォン用のスタイル調整 */
 @media (max-width: 600px) {
   .container {

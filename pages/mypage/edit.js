@@ -1,4 +1,5 @@
 // pages/mypage/edit.js
+import Link from 'next/link';
 import React, { useState, useEffect } from 'react';
 import Header from '@/components/HeaderSigup';
 import Footer from '@/components/Footer';
@@ -81,7 +82,19 @@ const EditPage = () => {
       <Header />
       
       <main>
-        
+      <div className={styles.mypage}> 
+      <Link legacyBehavior href="/">
+            <a className={styles.mypage01}>トップ</a>
+          </Link>
+          {" > "}
+          <Link legacyBehavior href="/mypage">
+            <a className={styles.mypage02}>マイページ</a>
+          </Link>
+          {" > "}
+          <Link legacyBehavior href="/mypage/edit">
+            <a className={styles.mypage03}>プロフィール編集</a>
+          </Link>
+        </div>     
       <div className={styles.container}>
         <h1>マイプロフィール編集</h1>
         {!isVerified ? (
