@@ -1,0 +1,50 @@
+.container {
+  margin: auto;
+  max-width: 705px; 
+  margin-top: 50px;
+  border: solid 3px #000000;
+  background-color: rgb(255, 241, 220);
+}
+
+.kousin {
+    text-align: center;
+    color: blue;
+    margin-right: auto;
+    margin-left: auto;
+    max-width: 600px; /* 適切な幅に調整してください */
+    margin-top: 20px; /* 修正：上部のマージンを調整 */
+  }
+
+.newName {
+    margin-left: 42px;
+}
+
+.button {
+    text-align: center; /* 修正：ボタンを中央に配置 */
+    margin-top: 20px; /* 修正：上部のマージンを調整 */
+    margin-bottom: 20px;
+  }
+
+.container h1 {
+    margin-left: 170px;
+    
+}
+
+.nyuryoku {
+    margin-left: 30px;
+}
+
+.form {
+    width: 60%;
+    padding: 10px;
+    box-sizing: border-box;
+    margin-top: 40px;
+    margin-bottom: 50px;
+}
+
+/* 追加: スマートフォン用のスタイル調整 */
+@media (max-width: 600px) {
+  .container {
+    padding: 0 10px; /* 画面端からの余白を調整してください */
+  }
+}
