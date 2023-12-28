@@ -46,7 +46,7 @@ export default function MyPage() {
           <div className={styles.menuAndNotification}>
             <div className={styles.menuContainer}>
               <h3 className={styles.menuItem}>
-                <Link legacyBehavior href="/favorites">
+                <Link legacyBehavior href="/mypage/liked_book">
                   <a>お気に入りリスト</a>
                 </Link>
               </h3>
