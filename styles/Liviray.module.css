@@ -86,6 +86,7 @@
 /* 貸出状況の色は表示設定 */
 .display {
   margin-right: 64px;
+  padding-top: 28px;
   display: flex;
 }
 .displayLoaned {
@@ -168,4 +169,32 @@
 /* スペース空け */
 .space {
   margin-right: 10px;
+}
+
+/* お気に入りハートアイコンのスタイル */
+.favoriteContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.heartIcon {
+  padding-top: 10px; /* 上部のパディングを変更 */
+  padding-left: 173px;
+  padding-right: 10px;
+  font-size: 40px;
+  color: #c2c2c2;
+  transition: color 0.3s ease;
+}
+
+.heartIcon:hover {
+  color: #fa00e164;
+}
+
+.displayFavorite {
+  padding-top: 10px; /* 上部のパディングを変更 */
+  padding-left: 173px;
+  padding-right: 10px;
+  font-size: 40px;
+  color: #fc26e7;
 }

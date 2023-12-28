@@ -14,7 +14,7 @@ export default function MobileMenu({ onClose }) {
         </Link>
       </div>
       <div className={styles.menuItem}>
-        <Link legacyBehavior href="/liked-books">
+        <Link legacyBehavior href="/mypage/liked_book">
           <a onClick={onClose}>お気に入り</a>
         </Link>
       </div>

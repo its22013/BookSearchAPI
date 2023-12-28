@@ -7,8 +7,11 @@ import Styles from '../styles/Liviray.module.css';
 import Header from "../components/HeaderSigup";
 import Image from "next/image";
 import Footer from '@/components/Footer';
+import { auth, firestore, useUser } from '@/hooks/firebase';
+import { doc, collection, setDoc, getDoc } from 'firebase/firestore'; 
 
 const Liviray = () => {
+  const user = useUser();
   const [keyword, setKeyword] = useState('');
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -19,6 +22,28 @@ const Liviray = () => {
   const booksPerPage = 10;
   const loadingTimeout = 15000;  // ローディング時間15秒
   const [error, setError] = useState(null);
+  const [showFavoriteButton, setShowFavoriteButton] = useState(true); 
+
+  useEffect(() => {
+    if (user && user.bookmarks) {
+      // ユーザーがログインしている場合かつブックマークが存在する場合、お気に入り情報を更新
+      setBooks((prevBooks) =>
+        prevBooks.map((prevBook) => ({
+          ...prevBook,
+          isFavorite: user.bookmarks.some(
+            (bookmark) => bookmark.title === prevBook.title && bookmark.authors === prevBook.authors
+          ),
+        }))
+      );
+  
+      // 各本ごとのお気に入りステータスを更新
+      const favoriteStatusMap = {};
+      user.bookmarks.forEach((bookmark) => {
+        favoriteStatusMap[`${bookmark.title}-${bookmark.authors}`] = true;
+      });
+      setShowFavoriteButton(favoriteStatusMap);
+    }
+  }, [user, showFavoriteButton]);
 
   useEffect(() => {
     let timer;
@@ -147,6 +172,37 @@ const Liviray = () => {
     return array.slice((page_number - 1) * page_size, page_number * page_size);
   };
 
+  const handleFavoriteButtonClick = async (book) => {
+    try {
+      if (user) {
+        const userDocRef = doc(firestore, 'users', user.uid);
+        const bookmarksCollectionRef = collection(userDocRef, 'bookmarks');
+        const bookDocRef = doc(bookmarksCollectionRef, book.id);
+
+        const bookData = {
+          title: book.title,
+          authors: book.authors,
+        };
+
+        const existingDoc = await getDoc(bookDocRef);
+
+        if (!existingDoc.exists()) {
+          await setDoc(bookDocRef, bookData);
+          console.log('お気に入りに追加しました');
+
+          // ボタンを非表示にするためのステートを更新
+          setShowFavoriteButton((prevStatus) => ({ ...prevStatus, [`${book.title}-${book.authors}`]: true }));
+        } else {
+          console.log('この本は既にお気に入りに追加されています');
+        }
+      } else {
+        console.log('ログインしていません');
+      }
+    } catch (error) {
+      console.error('お気に入り追加エラー:', error);
+    }
+  };
+
   return (
     <div className={Styles.mainContainer}>
       <Header />
@@ -192,40 +248,52 @@ const Liviray = () => {
             </div>
           )}
 
-          {Array.isArray(availability) && availability.length > 0 && !loading && (
-            <div>
-              {paginate(availability, booksPerPage, currentPage).map((bookData, index) => {
-                const book = bookData.book;
-                const bookDetails = bookData.details;
-                const defaultImageUrl = "/images/images.png";
-                const bookImage = bookDetails?.volumeInfo?.imageLinks?.thumbnail || defaultImageUrl;
-                const isLongTitle = book.title.length > 20;
+        {Array.isArray(availability) && availability.length > 0 && !loading && (
+        <div>
+          {paginate(availability, booksPerPage, currentPage).map((bookData, index) => {
+            const book = bookData.book;
+            const bookDetails = bookData.details;
+            const defaultImageUrl = "/images/images.png";
+            const bookImage = bookDetails?.volumeInfo?.imageLinks?.thumbnail || defaultImageUrl;
+            const isLongTitle = book.title.length > 20;
 
-                return (
-                  <div key={index} className={Styles.results}>
-                    <div className={Styles.image01}>
-                      <img src={bookImage} alt="本の画像" style={{ maxWidth: '103px', maxHeight: '150px' }} />
+            const isFavorite = showFavoriteButton[`${book.title}-${book.authors}`];
+
+            return (
+              <div key={index} className={Styles.results}>
+                <div className={Styles.image01}>
+                  <img src={bookImage} alt="本の画像" style={{ maxWidth: '103px', maxHeight: '150px' }} />
+                </div>
+                <strong className={isLongTitle ? `${Styles.bookTitle} ${Styles.breakLine}` : Styles.bookTitle}>{book.title}</strong> - {book.authors}
+                {bookData.availability && bookData.availability.books && Object.keys(bookData.availability.books).length > 0 ? (
+                  <div>
+                    <div className={Styles.display}>
+                      貸出状況: <div className={Styles.space}></div>{getStatusDisplay(bookData.availability.books[Object.keys(bookData.availability.books)[0]])}
                     </div>
-                    <strong className={isLongTitle ? `${Styles.bookTitle} ${Styles.breakLine}` : Styles.bookTitle}>{book.title}</strong> - {book.authors}
-                    {bookData.availability && bookData.availability.books && Object.keys(bookData.availability.books).length > 0 ? (
+                    {bookData.availability.books[Object.keys(bookData.availability.books)[0]][selectedSystemId]?.reserveurl && (
                       <div>
-                        <div className={Styles.display}>
-                          貸出状況: <div className={Styles.space}></div>{getStatusDisplay(bookData.availability.books[Object.keys(bookData.availability.books)[0]])}
-                        </div>
-                        {bookData.availability.books[Object.keys(bookData.availability.books)[0]][selectedSystemId]?.reserveurl && (
-                          <div>
-                            <a href={bookData.availability.books[Object.keys(bookData.availability.books)[0]][selectedSystemId]?.reserveurl} target="_blank" rel="noopener noreferrer">
-                              <div className={Styles.ss1}>予約はこちら</div>
-                            </a>
-                          </div>
-                        )}
+                        <a href={bookData.availability.books[Object.keys(bookData.availability.books)[0]][selectedSystemId]?.reserveurl} target="_blank" rel="noopener noreferrer">
+                          <div className={Styles.ss1}>予約はこちら</div>
+                        </a>
                       </div>
-                    ) : (
-                      <p className={Styles.display}>取り扱いなし</p>
+                    )}
+                    {showFavoriteButton && !isFavorite && (
+                      <a onClick={() => handleFavoriteButtonClick(book)} className={Styles.heartIcon}>
+                       ❤
+                      </a>
+                    )}
+                    {isFavorite && (
+                      <span className={Styles.displayFavorite}>
+                        ❤
+                      </span>
                     )}
                   </div>
-                );
-              })}
+                ) : (
+                  <p className={Styles.display}>取り扱いなし</p>
+                )}
+              </div>
+            );
+          })}
 
               <div className={Styles.pagination}>
                 <button onClick={handlePrevButtonClick}>前へ</button>

@@ -75,11 +75,11 @@ export default function Header() {
           <div className={styles.space}></div>
 
           <div className={styles.linkWithImage02}>
-            <Link href="/liked-books">
+            <Link href="/mypage/liked_book">
               <div className={Styles.heart}></div>
             </Link>
             <div className={styles.linkText02}>
-              <Link href="/liked-books">お気に入り</Link>
+              <Link href="/mypage/liked_book">お気に入り</Link>
             </div>
           </div>
 
