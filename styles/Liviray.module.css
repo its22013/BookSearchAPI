@@ -86,8 +86,8 @@
 /* 貸出状況の色は表示設定 */
 .display {
   margin-right: 64px;
-  padding-top: 28px;
   display: flex;
+  align-items: center;
 }
 .displayLoaned {
   color: darkred;
@@ -106,9 +106,12 @@
 /* 予約Url */
 .ss1 {
   color: blue;
-  text-align: center; /* テキストを中央揃えにする */
-  margin-top: 10px; /* 適切なマージンを設定してください */
+  text-align: center;
+  margin-top: 100px;
+  height: 65px;
+  width: 96px;
   display: flex;
+  cursor: pointer;
 }
 
 /* ページネーション */
@@ -171,30 +174,24 @@
   margin-right: 10px;
 }
 
-/* お気に入りハートアイコンのスタイル */
-.favoriteContainer {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-}
-
 .heartIcon {
-  padding-top: 10px; /* 上部のパディングを変更 */
-  padding-left: 173px;
-  padding-right: 10px;
-  font-size: 40px;
+  margin-bottom: 90px;
+  margin-right: -55px;
+  font-size: 45px;
   color: #c2c2c2;
+  cursor: pointer;
   transition: color 0.3s ease;
 }
 
 .heartIcon:hover {
-  color: #fa00e164;
+  color: #fc26e785;
 }
 
 .displayFavorite {
-  padding-top: 10px; /* 上部のパディングを変更 */
-  padding-left: 173px;
-  padding-right: 10px;
-  font-size: 40px;
+  margin-bottom: 90px;
+  margin-right: -55px;
+  font-size: 45px;
   color: #fc26e7;
+  cursor: pointer;
+  transition: color 0.3s ease;
 }
