@@ -6,8 +6,8 @@ const libraries = [
     { name: '沖縄国際大学図書館', systemid: 'Univ_Okiu' },
     { name: '沖縄大学図書館', systemid: 'Univ_Okinawa' },
     { name: '沖縄県立看護大学図書館', systemid: 'Univ_Okinawa_Nurs' },
+    { name: '南城市立図書館佐敷分館', systemid: 'Okinawa_Nanjo' },
 
-    
     // 他の図書館も同様に追加
   ];
   

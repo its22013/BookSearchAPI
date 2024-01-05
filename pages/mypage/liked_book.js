@@ -27,6 +27,8 @@ const FavoriteBooksPage = () => {
             favoriteBooksData.push({ id: doc.id, ...doc.data() });
           });
 
+          favoriteBooksData.sort((a, b) => b.timestamp - a.timestamp);
+
           setFavoriteBooks(favoriteBooksData);
         }
       } catch (error) {
@@ -58,6 +60,8 @@ const FavoriteBooksPage = () => {
           favoriteBooksData.push({ id: doc.id, ...doc.data() });
         });
 
+        favoriteBooksData.sort((a, b) => b.timestamp - a.timestamp);
+
         setFavoriteBooks(favoriteBooksData);
       }
     } catch (error) {
@@ -65,21 +69,37 @@ const FavoriteBooksPage = () => {
     }
   };
 
+  const formatTimestamp = (timestamp) => {
+    const dateObject = new Date(timestamp);
+    return `${dateObject.getFullYear()}-${(dateObject.getMonth() + 1).toString().padStart(2, '0')}-${dateObject.getDate().toString().padStart(2, '0')} ${dateObject.getHours().toString().padStart(2, '0')}:${dateObject.getMinutes().toString().padStart(2, '0')}:${dateObject.getSeconds().toString().padStart(2, '0')}`;
+  };
+
   return (
     <div className={Styles.mainContainer}>
       <Header />
       <main>
         <div className={Styles.container}>
-          <h1>お気に入りの本</h1>
+          <h1 className={Styles.title01}>お気に入りの本</h1>
           {favoriteBooks.length === 0 ? (
             <p>お気に入りの本はありません。</p>
           ) : (
             <ul>
               {favoriteBooks.map((book) => (
-                <p key={book.id} className={Styles.favoriteBook}>
-                  <span>{book.title} - {book.authors}</span>
-                  <button onClick={() => handleDeleteButtonClick(book.id)}>削除</button>
-                </p>
+                <div key={book.id} className={Styles.favoriteBook}>
+                  <div className={Styles.FavoriteBooksContainer}>
+                    <img src={book.image} alt="本の画像" style={{ maxWidth: '110px', maxHeight: '160px' }} />
+                    <div className={Styles.title}>
+                      <div className={Styles.sd01}>
+                      <h3>{book.title}</h3>
+                      <p>{book.authors}</p>
+                      <p>{formatTimestamp(book.timestamp)}</p>
+                      </div>
+                      <div>
+                      <button onClick={() => handleDeleteButtonClick(book.id)} className={Styles.button01}>削除</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               ))}
             </ul>
           )}

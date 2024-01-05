@@ -94,6 +94,7 @@
   border: 2px solid darkred;
   background-color: #fff;
   border-radius: 4px;
+  margin-right: -55px;
 }
 
 .displayAvailable {
@@ -101,6 +102,7 @@
   border: 2px solid #006bc5;
   background-color: #006bc5;
   border-radius: 4px;
+  margin-right: -55px;
 }
 
 /* 予約Url */
@@ -112,6 +114,7 @@
   width: 96px;
   display: flex;
   cursor: pointer;
+  margin-top: 130px;
 }
 
 /* ページネーション */
@@ -194,4 +197,42 @@
   color: #fc26e7;
   cursor: pointer;
   transition: color 0.3s ease;
+}
+
+.favoriteBook {
+  position: relative;
+}
+
+.FavoriteBooksContainer {
+  position: relative;
+  height: 165px;
+  width: 850px;
+  display: flex;
+  align-items: center;
+  border: 3px solid #3ecfff;
+  margin-right: 10%;
+  background-color: rgb(250, 238, 223);
+  box-sizing: border-box;
+  margin-top: 20px;
+}
+
+.title {
+  margin: auto;
+}
+
+.button01 {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+}
+
+.sd01 {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+
+.title01 {
+  font-family: "MS PMincho";
 }
