@@ -4,8 +4,11 @@ import Header from '../components/HeaderSigup';
 import style from '../styles/search_rakuten.module.css';
 import Footer from '@/components/Footer';
 import { env } from '@/next.config';
+import { auth, firestore, useUser } from '@/hooks/firebase';
+import { doc, collection, setDoc, getDoc } from 'firebase/firestore'; 
 
 const RakutenSearch = () => {
+  const user = useUser();
   const [searchType, setSearchType] = useState('title');
   const [keyword, setKeyword] = useState('');
   const [publisherName, setPublisherName] = useState('');
@@ -13,6 +16,29 @@ const RakutenSearch = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [outOfStockFlag, setOutOfStockFlag] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [showFavoriteButton, setShowFavoriteButton] = useState(true); 
+  const [notification, setNotification] = useState(null);
+
+  useEffect(() => {
+    if (user && user.bookmarks) {
+      // ユーザーがログインしている場合かつブックマークが存在する場合、お気に入り情報を更新
+      setBooks((prevBooks) =>
+        prevBooks.map((prevBook) => ({
+          ...prevBook,
+          isFavorite: user.bookmarks.some(
+            (bookmark) => bookmark.title === prevBook.title && bookmark.authors === prevBook.authors
+          ),
+        }))
+      );
+  
+      // 各本ごとのお気に入りステータスを更新
+      const favoriteStatusMap = {};
+      user.bookmarks.forEach((bookmark) => {
+        favoriteStatusMap[`${bookmark.title}-${bookmark.authors}`] = true;
+      });
+      setShowFavoriteButton(favoriteStatusMap);
+    }
+  }, [user, showFavoriteButton]);
   
   const getOutOfStockFlagValue = (flag) => {
     return flag ? '0' : '1';
@@ -73,6 +99,70 @@ const RakutenSearch = () => {
       default:
         return { text: '不明', color: 'red' };
     }
+  };
+
+
+  // 通知表示の関数
+const showNotification = (message) => {
+  setNotification(message);
+  // 3秒後に通知を非表示にする
+  setTimeout(() => {
+    setNotification(null);
+  }, 3000);
+};
+
+const handleFavoriteButtonClick = async (book) => {
+  try {
+    if (user) {
+      const userDocRef = doc(firestore, 'users', user.uid);
+      const bookmarksCollectionRef = collection(userDocRef, 'bookmarks');
+      const bookDocRef = doc(bookmarksCollectionRef, book.Item.isbn); // ここでは楽天APIのISBNを使用
+
+      const bookData = {
+        title: book.Item.title,
+        authors: book.Item.author,
+        image: book.Item.largeImageUrl,
+        timestamp: new Date().toISOString(),
+      };
+
+      const formattedTimestamp = formatTimestamp(bookData.timestamp);
+      bookData.formattedTimestamp = formattedTimestamp;
+
+      const existingDoc = await getDoc(bookDocRef);
+
+      if (!existingDoc.exists()) {
+        await setDoc(bookDocRef, bookData);
+        console.log('お気に入りに追加しました');
+
+        // お気に入り追加の通知を表示
+        showNotification('お気に入りに追加しました');
+        
+        // お気に入りボタンの状態を更新
+        setShowFavoriteButton((prevStatus) => ({ ...prevStatus, [`${book.Item.title}-${book.Item.author}`]: true }));
+      } else {
+        console.log('この本は既にお気に入りに追加されています');
+      }
+    } else {
+      console.log('ログインしていません');
+    }
+  } catch (error) {
+    console.error('お気に入り追加エラー:', error);
+  }
+};
+
+  const formatTimestamp = (timestamp) => {
+    const dateObject = new Date(timestamp);
+    const options = {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      timeZone: 'Asia/Tokyo', // タイムゾーンを日本時間に設定
+    };
+  
+    return new Intl.DateTimeFormat('ja-JP', options).format(dateObject).replace(/年|月/g, '-').replace(/日/g, ' ');
   };
 
   return (
@@ -145,8 +235,12 @@ const RakutenSearch = () => {
 
           {searchResults.length > 0 && (
             <div style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap' }}>
+
               <h2 style={{ fontSize: '1px' }}>検索結果</h2>
-              {searchResults.map((book, index) => (
+              {searchResults.map((book, index) => {
+                const isFavorite = showFavoriteButton[`${book.Item.title}-${book.Item.author}`];
+
+                return (
                 <div
                   key={book.Item.itemCode}
                   style={{
@@ -155,6 +249,7 @@ const RakutenSearch = () => {
                     padding: '10px',
                     border: '1px solid #ccc',
                     fontSize: '12px',
+                    backgroundColor: '#FFFFEE'
                   }}
                 >
                   <h3 style={{ fontSize: '18px' }}>{book.Item.title}</h3>
@@ -167,7 +262,7 @@ const RakutenSearch = () => {
                         style={{ width: '30%' }}
                       />
                     </div>
-                    <p style={{ fontSize: '20px', color: 'red' }}>
+                    <p style={{ fontSize: '20px', color: 'red', paddingTop: '50px' }}>
                       価格:{book.Item.itemPrice} 円
                     </p>
                     <p
@@ -183,13 +278,21 @@ const RakutenSearch = () => {
                       href={book.Item.itemUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      style={{ fontSize: '12px', color: 'blue' }}
+                      style={{ fontSize: '25px', color: 'blue' }}
                     >
                       詳細・購入
                     </a>
                   </div>
+                  <div className={style.iine}>
+                  {isFavorite ? (
+                      <span className={style.displayFavorite}>❤</span>
+                  ) : (
+                      <a onClick={() => handleFavoriteButtonClick(book)} className={style.heartIcon}>❤</a>
+                  )}
                 </div>
-              ))}
+                </div>
+                );
+              })}
             </div>
           )}
 
@@ -231,4 +334,3 @@ const RakutenSearch = () => {
 };
 
 export default RakutenSearch;
-

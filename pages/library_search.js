@@ -23,6 +23,7 @@ const Liviray = () => {
   const loadingTimeout = 15000;  // ローディング時間15秒
   const [error, setError] = useState(null);
   const [showFavoriteButton, setShowFavoriteButton] = useState(true); 
+  const [notification, setNotification] = useState(null);
 
   useEffect(() => {
     if (user && user.bookmarks) {
@@ -172,6 +173,15 @@ const Liviray = () => {
     return array.slice((page_number - 1) * page_size, page_number * page_size);
   };
 
+  // 通知表示の関数
+const showNotification = (message) => {
+  setNotification(message);
+  // 3秒後に通知を非表示にする
+  setTimeout(() => {
+    setNotification(null);
+  }, 3000);
+};
+
   const handleFavoriteButtonClick = async (book) => {
     try {
       if (user) {
@@ -179,10 +189,20 @@ const Liviray = () => {
         const bookmarksCollectionRef = collection(userDocRef, 'bookmarks');
         const bookDocRef = doc(bookmarksCollectionRef, book.id);
 
+        const googleBooksResponse = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(book.title)}&inauthor=${encodeURIComponent(book.authors)}`);
+        const googleBooksData = await googleBooksResponse.json();
+        const bookDetails = googleBooksData.items ? googleBooksData.items[0] : null;
+
+
         const bookData = {
           title: book.title,
           authors: book.authors,
+          image: bookDetails?.volumeInfo?.imageLinks?.thumbnail || '',
+          timestamp: new Date().toISOString(),
         };
+
+        const formattedTimestamp = formatTimestamp(bookData.timestamp);
+        bookData.formattedTimestamp = formattedTimestamp;
 
         const existingDoc = await getDoc(bookDocRef);
 
@@ -190,6 +210,8 @@ const Liviray = () => {
           await setDoc(bookDocRef, bookData);
           console.log('お気に入りに追加しました');
 
+          // お気に入り追加の通知を表示
+          showNotification('お気に入りに追加しました');
           // ボタンを非表示にするためのステートを更新
           setShowFavoriteButton((prevStatus) => ({ ...prevStatus, [`${book.title}-${book.authors}`]: true }));
         } else {
@@ -201,6 +223,21 @@ const Liviray = () => {
     } catch (error) {
       console.error('お気に入り追加エラー:', error);
     }
+  };
+
+  const formatTimestamp = (timestamp) => {
+    const dateObject = new Date(timestamp);
+    const options = {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      timeZone: 'Asia/Tokyo', // タイムゾーンを日本時間に設定
+    };
+  
+    return new Intl.DateTimeFormat('ja-JP', options).format(dateObject).replace(/年|月/g, '-').replace(/日/g, ' ');
   };
 
   return (
@@ -247,6 +284,12 @@ const Liviray = () => {
               {error}
             </div>
           )}
+
+        {notification && (
+          <div className={Styles.notification}>
+            {notification}
+          </div>
+        )}
 
         {Array.isArray(availability) && availability.length > 0 && !loading && (
         <div>

@@ -1,7 +1,9 @@
 .mainContainer {
+  min-width: 320px;  /* これは一例で、適切な値に調整してください */
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  overflow-x: hidden; /* 横方向のオーバーフローを隠す */
 }
 
 .search {
@@ -48,4 +50,48 @@
 
 .paginationContainer {
   position: relative;
+}
+
+
+.heartIcon {
+  font-size: 40px; /* 40pxに変更 */
+  margin-left: 330px; /* マージンを調整 */
+  margin-inline-end: auto;
+  color: #c2c2c2;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.heartIcon:hover {
+  color: #fc26e785;
+}
+
+.displayFavorite {
+  font-size: 40px; /* 40pxに変更 */
+  margin-left: 330px; /* マージンを調整 */
+  margin-inline-end: auto;
+  color: #fc26e7;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+@media (max-width: 992px) {
+  .heartIcon {
+    margin-left: 120px; /* この値を調整して、枠内に収まるようにします。 */
+    font-size: 40px;
+    color: #c2c2c2;
+    cursor: pointer;
+    transition: color 0.3s ease;
+  }
+  
+  .displayFavorite {
+    margin-left: 120px; 
+    padding-top: 20px;
+    font-size: 40px;
+    color: #fc26e7;
+    cursor: pointer;
+    transition: color 0.3s ease;
+  }
+
+  
 }
