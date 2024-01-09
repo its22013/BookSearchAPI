@@ -39,6 +39,7 @@
 
  .menuItem :hover {
     color: #565656;
+    cursor: pointer;
  } 
 
 .space {
