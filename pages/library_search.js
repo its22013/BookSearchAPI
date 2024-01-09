@@ -209,13 +209,12 @@ const showNotification = (message) => {
         if (!existingDoc.exists()) {
           await setDoc(bookDocRef, bookData);
           console.log('お気に入りに追加しました');
-
-          // お気に入り追加の通知を表示
-          showNotification('お気に入りに追加しました');
+          alert("お気に入りに追加しました")
           // ボタンを非表示にするためのステートを更新
           setShowFavoriteButton((prevStatus) => ({ ...prevStatus, [`${book.title}-${book.authors}`]: true }));
         } else {
           console.log('この本は既にお気に入りに追加されています');
+          alert("この本は既にお気に入りに追加されています")
         }
       } else {
         console.log('ログインしていません');
