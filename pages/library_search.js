@@ -24,6 +24,11 @@ const Liviray = () => {
   const [error, setError] = useState(null);
   const [showFavoriteButton, setShowFavoriteButton] = useState(true); 
   const [notification, setNotification] = useState(null);
+  const getSelectedLibraryName = () => {
+    const selectedLibrary = libraries.find(library => library.systemid === selectedSystemId);
+    return selectedLibrary ? selectedLibrary.name : '';
+  };
+  
 
   useEffect(() => {
     if (user && user.bookmarks) {
@@ -119,10 +124,10 @@ const Liviray = () => {
     if (!libkey || !libkey[selectedSystemId] || !libkey[selectedSystemId].libkey) {
       return <span className={Styles.displayNotAvailable}>蔵書なし</span>;
     }
-
+  
     const systemLibkey = libkey[selectedSystemId].libkey;
     const libraryKeys = Array.isArray(systemLibkey) ? systemLibkey : Object.keys(systemLibkey);
-
+  
     if (libraryKeys.some(libraryKey => systemLibkey[libraryKey] === '貸出中')) {
       return <span className={Styles.displayLoaned}>貸出中</span>;
     } else if (libraryKeys.some(libraryKey => systemLibkey[libraryKey] === '貸出可')) {
@@ -132,7 +137,17 @@ const Liviray = () => {
     } else if (libraryKeys.some(libraryKey => systemLibkey[libraryKey] === '館内のみ')) {
       return <span className={Styles.displayAvailable}>館内のみ</span>;
     } else if (libraryKeys.some(libraryKey => systemLibkey[libraryKey] === '予約中')) {
-      return <span className={Styles.displayAvailable}>予約中</span>;
+      const reserveUrl = systemLibkey[libraryKeys.find(libraryKey => systemLibkey[libraryKey] === '予約中')][selectedSystemId]?.reserveurl;
+      return (
+        <div className={Styles.display}>
+          <span className={Styles.displayAvailable}>予約中</span>
+          {reserveUrl && (
+            <a href={reserveUrl} target="_blank" rel="noopener noreferrer">
+              <div className={Styles.ss1}>予約はこちら</div>
+            </a>
+          )}
+        </div>
+      );
     } else if (libraryKeys.some(libraryKey => systemLibkey[libraryKey] === '準備中')) {
       return <span className={Styles.displayAvailable}>準備中</span>;
     } else if (libraryKeys.some(libraryKey => systemLibkey[libraryKey] === '休館中')) {
@@ -140,7 +155,7 @@ const Liviray = () => {
     } else {
       return <span className={Styles.displayNotAvailable}>蔵書なし</span>;
     }
-  };
+  };  
 
   const handleEnterKeyPress = (e) => {
     if (e.key === 'Enter') {
@@ -244,7 +259,7 @@ const showNotification = (message) => {
       <Header />
       <main>
         <div className={Styles.container}>
-          <h1>図書館で検索</h1>
+          <h1>{getSelectedLibraryName()}で検索</h1>
           <div className={Styles.searchContainer}>
             <select value={selectedSystemId} onChange={(e) => setSelectedSystemId(e.target.value)}>
               {libraries.map((library) => (
