@@ -1,4 +1,7 @@
-const libraries = [
+// pages/libraries/libraries.js
+import React from 'react';
+
+const LibrariesData = [
     { name: '沖縄県立図書館', systemid: 'Okinawa_Pref' },
     { name: '琉球大学図書館', systemid: 'Univ_Ryukyu' },
     { name: '糸満市立中央図書館', systemid: 'Okinawa_Itoman' },
@@ -7,8 +10,16 @@ const libraries = [
     { name: '沖縄大学図書館', systemid: 'Univ_Okinawa' },
     { name: '沖縄県立看護大学図書館', systemid: 'Univ_Okinawa_Nurs' },
     { name: '南城市立図書館佐敷分館', systemid: 'Okinawa_Nanjo' },
+  // 他の図書館も同様に追加
+];
 
-    // 他の図書館も同様に追加
-  ];
-  
-  export default libraries;  
+const Libraries = () => {
+  return (
+    <div>
+      {/* 何も表示する必要がないので空のコンポーネント */}
+    </div>
+  );
+};
+
+export { LibrariesData };
+export default Libraries;

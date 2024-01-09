@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import fetchJsonp from 'fetch-jsonp';
-import libraries from '../pages/libraries/libraries';
+import { LibrariesData } from '../pages/libraries/libraries';
 import Styles from '../styles/Liviray.module.css';
 import Header from "../components/HeaderSigup";
 import Image from "next/image";
@@ -25,7 +25,7 @@ const Liviray = () => {
   const [showFavoriteButton, setShowFavoriteButton] = useState(true); 
   const [notification, setNotification] = useState(null);
   const getSelectedLibraryName = () => {
-    const selectedLibrary = libraries.find(library => library.systemid === selectedSystemId);
+    const selectedLibrary = LibrariesData.find(library => library.systemid === selectedSystemId);
     return selectedLibrary ? selectedLibrary.name : '';
   };
   
@@ -262,7 +262,7 @@ const showNotification = (message) => {
           <h1>{getSelectedLibraryName()}で検索</h1>
           <div className={Styles.searchContainer}>
             <select value={selectedSystemId} onChange={(e) => setSelectedSystemId(e.target.value)}>
-              {libraries.map((library) => (
+              {LibrariesData.map((library) => (
                 <option key={library.systemid} value={library.systemid}>
                   {library.name}
                 </option>
