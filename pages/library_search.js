@@ -84,7 +84,7 @@ const Liviray = () => {
         return;
       }
 
-      const response = await fetch(`http://localhost:3000/api/search?keyword=${encodeURIComponent(keyword)}&library=${selectedSystemId}`);
+      const response = await fetch(`/api/search?keyword=${encodeURIComponent(keyword)}&library=${selectedSystemId}`);
       const data = await response.json();
 
       setBooks(data);
