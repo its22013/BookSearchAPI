@@ -308,26 +308,27 @@ const showNotification = (message) => {
                 </div>
                 <strong className={isLongTitle ? `${Styles.bookTitle} ${Styles.breakLine}` : Styles.bookTitle}>{book.title}</strong> - {book.authors}
                 {bookData.availability && bookData.availability.books && Object.keys(bookData.availability.books).length > 0 ? (
-                <div className={Styles.display}>
-                  貸出状況: <div className={Styles.space}></div>{getStatusDisplay(bookData.availability.books[Object.keys(bookData.availability.books)[0]])}
-                  <a href={bookData.availability.books[Object.keys(bookData.availability.books)[0]][selectedSystemId]?.reserveurl} target="_blank" rel="noopener noreferrer">
-                    <div className={Styles.ss1}>予約はこちら</div>
-                  </a>
-                  {showFavoriteButton && !isFavorite && (
-                    <a onClick={() => handleFavoriteButtonClick(book)} className={Styles.heartIcon}>
-                      ❤
-                    </a>
-                  )}
-                  {isFavorite && (
-                    <span className={Styles.displayFavorite}>
-                      ❤
-                    </span>
-                  )}
-                </div>
-              ) : (
-                <p className={Styles.display}>取り扱いなし</p>
-              )}
-
+                  <div className={Styles.display}>
+                    貸出状況: <div className={Styles.space}></div>{getStatusDisplay(bookData.availability.books[Object.keys(bookData.availability.books)[0]])}
+                    {getStatusDisplay(bookData.availability.books[Object.keys(bookData.availability.books)[0]]) !== '蔵書なし' && (
+                      <a href={bookData.availability.books[Object.keys(bookData.availability.books)[0]][selectedSystemId]?.reserveurl} target="_blank" rel="noopener noreferrer">
+                        <div className={Styles.ss1}>予約はこちら</div>
+                      </a>
+                    )}
+                    {showFavoriteButton && !isFavorite && (
+                      <a onClick={() => handleFavoriteButtonClick(book)} className={Styles.heartIcon}>
+                        ❤
+                      </a>
+                    )}
+                    {isFavorite && (
+                      <span className={Styles.displayFavorite}>
+                        ❤
+                      </span>
+                    )}
+                  </div>
+                ) : (
+                  <p className={Styles.display}>取り扱いなし</p>
+                )}
               </div>
             );
           })}
