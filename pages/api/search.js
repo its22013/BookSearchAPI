@@ -4,7 +4,7 @@ import axios from 'axios';
 import { getISBN } from './utils';
 
 export default async function handler(req, res) {
-  const { keyword } = req.query;
+  const { keyword, library } = req.query;
 
   try {
     const googleBooksResponse = await axios.get(
@@ -19,15 +19,15 @@ export default async function handler(req, res) {
         id: book.id,
         title: volumeInfo.title || 'No Title',
         authors: volumeInfo.authors?.join(', ') || 'Unknown Author',
-        industryIdentifiers,
+        availability: industryIdentifiers.find((id) => id.type === 'ISBN_13')?.identifier || '',
       };
     });
 
     const isbns = await Promise.all(
       booksData.map(async (book) => {
-        const identifier = book.industryIdentifiers.find((id) => id.type === 'ISBN_13');
+        const identifier = book.availability;
         if (identifier) {
-          return identifier.identifier;
+          return identifier;
         } else {
           return await getISBN(book.id);
         }
