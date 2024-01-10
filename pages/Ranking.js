@@ -8,6 +8,20 @@ import Header from '../components/HeaderSigup';
 import Footer from '../components/Footer';
 import { auth, firestore, useUser } from '@/hooks/firebase';
 import { doc, collection, setDoc, getDoc } from 'firebase/firestore'; 
+import { generateEtags } from '@/next.config';
+
+const genres = [
+  { id: '001004', name: '小説' },
+  { id: '001017', name: 'ライトノベル' },
+  { id: '001021', name: 'BL(ボーイズラブ)' },
+  { id: '001029', name: 'ティーンズラブ' },
+  { id: '001001', name: '漫画' },
+  { id: '001013', name: '写真集・タレント' },
+  { id: '001011', name: 'エンタメ・ゲーム' },
+  { id: '001009', name: '美術・スポーツ' },
+  { id: '001028', name: '医学・薬学' },
+  { id: '001010', name: '健康・美容' },
+];
 
 const RankingPage = () => {
   const [rankings, setRankings] = useState([]);
@@ -15,9 +29,51 @@ const RankingPage = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [showFavoriteButton, setShowFavoriteButton] = useState(true);
   const [notification, setNotification] = useState(null);
-  const [userBooks, setUserBooks] = useState([]); // 追加: ユーザーのお気に入り本のステート
-
+  const [userBooks, setUserBooks] = useState([]); // ユーザーのお気に入り本のステート
+  const [genre, setGenre] = useState('');
   const user = useUser();
+
+  const handleGenreChange = () => {
+    // ジャンルが選択されたらページを再読み込み
+    window.location.reload();
+  };
+
+  useEffect(() => {
+    // ジャンルが選択されたときに再読み込みされるように
+    window.addEventListener('beforeunload', handleGenreChange);
+
+    return () => {
+      // コンポーネントがアンマウントされるときにイベントリスナーを削除
+      window.removeEventListener('beforeunload', handleGenreChange);
+    };
+  }, []); // 空の依存リストで初回のみ実行されるように
+
+  useEffect(() => {
+    const fetchRankings = async () => {
+      try {
+        const apiKey = process.env.APP_ID;
+        let apiUrl = `https://app.rakuten.co.jp/services/api/BooksBook/Search/20170404?format=json&applicationId=${apiKey}&hits=20`;
+
+        // ジャンルが選択された場合、クエリに追加
+        if (genre) {
+          apiUrl += `&booksGenreId=${genre}`;
+        }
+
+        // ソートが指定されている場合は追加
+        if (sortOption) {
+          apiUrl += `&sort=${sortOption}`;
+        }
+
+        const response = await axios.get(apiUrl);
+
+        setRankings(response.data.Items || []);
+      } catch (error) {
+        console.error('Error fetching rankings: ', error);
+      }
+    };
+
+    fetchRankings();
+  }, [sortOption, genre]); // genreを追加
 
   useEffect(() => {
     if (user && user.bookmarks) {
@@ -41,28 +97,6 @@ const RankingPage = () => {
     }
   }, [user, showFavoriteButton]);
 
-  useEffect(() => {
-    const fetchRankings = async () => {
-      try {
-        const apiKey = process.env.APP_ID;
-        let apiUrl = `https://app.rakuten.co.jp/services/api/BooksBook/Search/20170404?format=json&applicationId=${apiKey}&hits=20`;
-
-        // ソートが指定されている場合は追加
-        if (sortOption) {
-          apiUrl += `&sort=${sortOption}`;
-        }
-
-        const response = await axios.get(apiUrl);
-
-        setRankings(response.data.Items || []);
-      } catch (error) {
-        console.error('Error fetching rankings: ', error);
-      }
-    };
-
-    fetchRankings();
-  }, [sortOption]);
-
   const handleSort = (sortOption) => {
     // ソートオプションを設定し、再取得
     setSortOption(sortOption);
@@ -75,7 +109,6 @@ const RankingPage = () => {
       setNotification(null);
     }, 3000);
   };
-  
 
   const handleFavoriteButtonClick = async (book) => {
     try {
@@ -84,26 +117,25 @@ const RankingPage = () => {
         const bookmarksCollectionRef = collection(userDocRef, 'bookmarks');
         const bookDocRef = doc(bookmarksCollectionRef, book.Item.isbn || '');
 
-  
         const bookData = {
           title: book.Item.title,
           authors: book.Item.author,
           image: book.Item.largeImageUrl,
           timestamp: new Date().toISOString(),
         };
-  
+
         const formattedTimestamp = formatTimestamp(bookData.timestamp);
         bookData.formattedTimestamp = formattedTimestamp;
-  
+
         const existingDoc = await getDoc(bookDocRef);
-  
+
         if (!existingDoc.exists()) {
           await setDoc(bookDocRef, bookData);
           console.log('お気に入りに追加しました');
-  
+
           // お気に入り追加の通知を表示
           showNotification('お気に入りに追加しました');
-          
+
           // お気に入りボタンの状態を更新
           setShowFavoriteButton((prevStatus) => ({ ...prevStatus, [`${book.Item.title}-${book.Item.author}`]: true }));
         } else {
@@ -116,77 +148,64 @@ const RankingPage = () => {
       console.error('お気に入り追加エラー:', error);
     }
   };
-  
-  
-    const formatTimestamp = (timestamp) => {
-      const dateObject = new Date(timestamp);
-      const options = {
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit',
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit',
-        timeZone: 'Asia/Tokyo', // タイムゾーンを日本時間に設定
-      };
-    
-      return new Intl.DateTimeFormat('ja-JP', options).format(dateObject).replace(/年|月/g, '-').replace(/日/g, ' ');
+
+  const formatTimestamp = (timestamp) => {
+    const dateObject = new Date(timestamp);
+    const options = {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      timeZone: 'Asia/Tokyo', // タイムゾーンを日本時間に設定
     };
+
+    return new Intl.DateTimeFormat('ja-JP', options).format(dateObject).replace(/年|月/g, '-').replace(/日/g, ' ');
+  };
 
   return (
     <div>
       <Header />
       <main>
         <div className={styles.container}>
-          <h1>今日の人気TOP20</h1>
-
-          {/* ラジオボタン */}
-          <div className={styles.radioGroup}>
-            <label>
-              <input
-                type="radio"
-                checked={sortOption === 'standard'}
-                onChange={() => handleSort('standard')}
-              />
-              人気順
-            </label>
-            <label>
-              <input
-                type="radio"
-                checked={sortOption === 'reviewAverage'}
-                onChange={() => handleSort('reviewAverage')}
-              />
-              評価順
-            </label>
+          <h1>{genre ? `今日の${genres.find(g => g.id === genre)?.name} TOP20` : '今日の人気TOP20'}</h1>
+          <div>
+            <select value={genre} onChange={(e) => setGenre(e.target.value)} style={{ fontSize: '18px', marginTop: '10px', marginLeft: '10px'}}>
+              <option value="">全ジャンル</option>
+              {genres.map((genre) => (
+                <option key={genre.id} value={genre.id}>
+                  {genre.name}
+                </option>
+              ))}
+            </select>
           </div>
           {rankings.length > 0 ? (
             <ul>
-            {rankings.map((book, index) => {
-  const isFavorite = showFavoriteButton[`${book.Item.title}-${book.Item.author}`];
-  return (
-    <li key={book.Item.itemCode} className={styles.listItem}>
-      <div className={styles.rank}>{index + 1} 位</div>
-      <div className={styles.content}>
-        <span className={styles.title}><h3>{book.Item.title}</h3></span>
-        <img width="180" src={book.Item.mediumImageUrl} alt={book.Item.title} />
-      </div>
-      <p className={styles.p}>
-        <Link legacyBehavior href={book.Item.itemUrl}>
-          <a target="_blank" rel="noopener noreferrer">詳細・購入</a>
-        </Link>
-      </p>
-      <div className={styles.iine}>
-        {isFavorite ? (
-          <span className={styles.displayFavorite}>❤</span>
-        ) : (
-          <a onClick={() => handleFavoriteButtonClick(book)} className={styles.heartIcon}>❤</a>
-        )}
-      </div>
-    </li>
-  );
-})}
- 
-            
+              {rankings.map((book, index) => {
+                const isFavorite = showFavoriteButton[`${book.Item.title}-${book.Item.author}`];
+                return (
+                  <li key={book.Item.itemCode} className={styles.listItem}>
+                    <div className={styles.rank}>{index + 1} 位</div>
+                    <div className={styles.content}>
+                      <span className={styles.title}><h3>{book.Item.title}</h3></span>
+                      <img width="180" src={book.Item.mediumImageUrl} alt={book.Item.title} />
+                    </div>
+                    <p className={styles.p}>
+                      <Link legacyBehavior href={book.Item.itemUrl}>
+                        <a target="_blank" rel="noopener noreferrer">詳細・購入</a>
+                      </Link>
+                    </p>
+                    <div className={styles.iine}>
+                      {isFavorite ? (
+                        <span className={styles.displayFavorite}>❤</span>
+                      ) : (
+                        <a onClick={() => handleFavoriteButtonClick(book)} className={styles.heartIcon}>❤</a>
+                      )}
+                    </div>
+                  </li>
+                );
+              })}
             </ul>
           ) : (
             <p>ランキング情報がありません。</p>
