@@ -20,7 +20,7 @@ const Liviray = () => {
   const [searchButtonClicked, setSearchButtonClicked] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const booksPerPage = 10;
-  const loadingTimeout = 15000;  // ローディング時間15秒
+  const loadingTimeout = 15000;
   const [error, setError] = useState(null);
   const [showFavoriteButton, setShowFavoriteButton] = useState(true); 
   const [notification, setNotification] = useState(null);
@@ -75,7 +75,7 @@ const Liviray = () => {
     try {
       setLoading(true);
       setSearchButtonClicked(false);
-
+  
       if (!keyword) { 
         setBooks([]);
         setAvailability([]);
@@ -84,42 +84,68 @@ const Liviray = () => {
         return;
       }
 
+      // リクエストを送信する前に1秒待機
+      await new Promise(resolve => setTimeout(resolve, 5000));
+  
       const response = await fetch(`/api/search?keyword=${encodeURIComponent(keyword)}&library=${selectedSystemId}`);
       const data = await response.json();
 
+      if (!Array.isArray(data)) {
+        console.error('検索エラー: レスポンスが配列ではありません');
+        setError('検索中にエラーが発生しました');
+        setLoading(false);
+        return;
+      }
+  
       setBooks(data);
       setError(null);
-
+  
       const availabilityData = await Promise.all(data.map(async (book) => {
         const isbn = book.availability;
-        const availabilityResponse = await fetchAvailability(isbn);
-
+        const availabilityResponse = await fetchAvailabilityWithRetry(isbn);
+  
         const googleBooksResponse = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(book.title)}&inauthor=${encodeURIComponent(book.authors)}`);
         const googleBooksData = await googleBooksResponse.json();
         const bookDetails = googleBooksData.items ? googleBooksData.items[0] : null;
-
+  
         return { book, availability: availabilityResponse, details: bookDetails };
       }));
-
+  
       setAvailability(availabilityData);
     } catch (error) {
       console.error('検索エラー:', error);
       setError('検索中にエラーが発生しました');
     } finally {
-      // setLoading(false); // ローディングがすぐに非表示になるようにコメントアウト
+      setLoading(false);
     }
   };
-
-  const fetchAvailability = async (isbn) => {
+  
+  const fetchAvailabilityWithRetry = async (isbn, retryCount = 3) => {
     try {
-      const response = await fetchJsonp(`https://api.calil.jp/check?appkey=${process.env.NEXT_PUBLIC_CALIL_API_KEY}&isbn=${isbn}&format=json&systemid=${selectedSystemId}`);
-      return await response.json();
+      let response;
+      let availabilityData;
+  
+      for (let i = 0; i < retryCount; i++) {
+        response = await fetchJsonp(`https://api.calil.jp/check?appkey=${process.env.NEXT_PUBLIC_CALIL_API_KEY}&isbn=${isbn}&format=json&systemid=${selectedSystemId}`);
+        availabilityData = await response.json();
+  
+        if (availabilityData && Object.keys(availabilityData.books).length > 0) {
+          // データが取得できたらループを抜ける
+          break;
+        } else {
+          // データが取得できなかった場合、一定の時間待機してリトライ
+          await new Promise(resolve => setTimeout(resolve, 5000));
+        }
+      }
+  
+      return availabilityData;
     } catch (error) {
       console.error('貸出状況の取得エラー:', error);
       return null;
     }
   };
-
+  
+  
   const getStatusDisplay = (libkey) => {
     if (!libkey || !libkey[selectedSystemId] || !libkey[selectedSystemId].libkey) {
       return <span className={Styles.displayNotAvailable}>蔵書なし</span>;
