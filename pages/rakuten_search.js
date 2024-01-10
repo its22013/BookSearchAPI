@@ -12,6 +12,7 @@ const RakutenSearch = () => {
   const [searchType, setSearchType] = useState('title');
   const [keyword, setKeyword] = useState('');
   const [publisherName, setPublisherName] = useState('');
+  const [genre, setGenre] = useState(''); // 新しく追加
   const [searchResults, setSearchResults] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [outOfStockFlag, setOutOfStockFlag] = useState(false);
@@ -19,6 +20,19 @@ const RakutenSearch = () => {
   const [showFavoriteButton, setShowFavoriteButton] = useState(true); 
   const [notification, setNotification] = useState(null);
 
+  // ジャンルの選択肢
+  const genres = [
+    { id: '001004', name: '小説' },
+    { id: '001017', name: 'ライトノベル' },
+    { id: '001021', name: 'BL(ボーイズラブ)' },
+    { id: '001029', name: 'ティーンズラブ' },
+    { id: '001001', name: '漫画' },
+    { id: '001013', name: '写真集・タレント' },
+    { id: '001011', name: 'エンタメ・ゲーム' },
+    { id: '001009', name: '美術・スポーツ' },
+    { id: '001028', name: '医学・薬学' },
+    { id: '001010', name: '健康・美容' },
+  ];
   useEffect(() => {
     if (user && user.bookmarks) {
       // ユーザーがログインしている場合かつブックマークが存在する場合、お気に入り情報を更新
@@ -69,7 +83,9 @@ const RakutenSearch = () => {
       }
       const apiKey = env.APP_ID;
       const outOfStockFlagValue = getOutOfStockFlagValue(outOfStockFlag);
-
+      if (genre) {
+        searchQuery += `&booksGenreId=${genre}`;
+      }
       const response = await axios.get(
         `https://app.rakuten.co.jp/services/api/BooksBook/Search/20170404?format=json&sort=sales&applicationId=${apiKey}&${searchQuery}&page=${page}&outOfStockFlag=${outOfStockFlagValue}`
       );
@@ -228,16 +244,24 @@ const handleFavoriteButtonClick = async (book) => {
             />
             在庫のある商品のみ表示
           </label>
-
+          <select value={genre} onChange={(e) => setGenre(e.target.value)} style={{ fontSize: '18px', marginTop: '10px', marginLeft: '10px'}}>
+            <option value="">ジャンルを選択</option>
+            {genres.map((genre) => (
+              <option key={genre.id} value={genre.id}>
+                {genre.name}
+              </option>
+            ))}
+          </select>
           {errorMessage && (
             <p style={{ color: 'red', fontSize: '16px', marginTop: '10px' }}>{errorMessage}</p>
           )}
 
-          {searchResults.length > 0 && (
-            <div style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap' }}>
-
-              <h2 style={{ fontSize: '1px' }}>検索結果</h2>
-              {searchResults.map((book, index) => {
+{searchResults.length === 0 ? (
+      <p style={{ fontSize: '18px', marginTop: '10px', marginTop: '150px'}}> <h2>書籍が見つかりませんでした</h2></p>
+    ) : (
+      <div style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap' }}>
+        <h2 style={{ fontSize: '1px' }}>検索結果</h2>
+        {searchResults.map((book, index) => {
                 const isFavorite = showFavoriteButton[`${book.Item.title}-${book.Item.author}`];
 
                 return (
