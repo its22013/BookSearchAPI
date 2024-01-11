@@ -163,7 +163,6 @@ const RankingPage = () => {
 
     return new Intl.DateTimeFormat('ja-JP', options).format(dateObject).replace(/年|月/g, '-').replace(/日/g, ' ');
   };
-
   return (
     <div>
       <Header />
@@ -188,7 +187,8 @@ const RankingPage = () => {
                   <li key={book.Item.itemCode} className={styles.listItem}>
                     <div className={styles.rank}>{index + 1} 位</div>
                     <div className={styles.content}>
-                      <span className={styles.title}><h3>{book.Item.title}</h3></span>
+                      <span className={styles.title}><h3>{book.Item.title}</h3>
+                      <p style={{ fontSize: '15px' }}>出版日: {book.Item.salesDate}</p></span>
                       <img width="180" src={book.Item.mediumImageUrl} alt={book.Item.title} />
                     </div>
                     <p className={styles.p}>

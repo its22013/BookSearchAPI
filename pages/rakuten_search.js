@@ -245,7 +245,7 @@ const handleFavoriteButtonClick = async (book) => {
             在庫のある商品のみ表示
           </label>
           <select value={genre} onChange={(e) => setGenre(e.target.value)} style={{ fontSize: '18px', marginTop: '10px', marginLeft: '10px'}}>
-            <option value="">ジャンルを選択</option>
+            <option value="">全ジャンル</option>
             {genres.map((genre) => (
               <option key={genre.id} value={genre.id}>
                 {genre.name}
