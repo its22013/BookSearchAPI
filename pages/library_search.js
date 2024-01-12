@@ -98,8 +98,8 @@ const Liviray = () => {
       }
   
       setBooks(data);
-      setError(null);
-  
+      setError(null);  
+        
       const availabilityData = await Promise.all(data.map(async (book) => {
         const isbn = book.availability;
         const availabilityResponse = await fetchAvailabilityWithRetry(isbn);

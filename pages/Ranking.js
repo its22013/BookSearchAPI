@@ -140,6 +140,7 @@ const RankingPage = () => {
           setShowFavoriteButton((prevStatus) => ({ ...prevStatus, [`${book.Item.title}-${book.Item.author}`]: true }));
         } else {
           console.log('この本は既にお気に入りに追加されています');
+          alert("この本は既にお気に入りに追加されています");
         }
       } else {
         console.log('ログインしていません');

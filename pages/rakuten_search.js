@@ -12,7 +12,7 @@ const RakutenSearch = () => {
   const [searchType, setSearchType] = useState('title');
   const [keyword, setKeyword] = useState('');
   const [publisherName, setPublisherName] = useState('');
-  const [genre, setGenre] = useState(''); // 新しく追加
+  const [genre, setGenre] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [outOfStockFlag, setOutOfStockFlag] = useState(false);
@@ -20,7 +20,6 @@ const RakutenSearch = () => {
   const [showFavoriteButton, setShowFavoriteButton] = useState(true); 
   const [notification, setNotification] = useState(null);
 
-  // ジャンルの選択肢
   const genres = [
     { id: '001004', name: '小説' },
     { id: '001017', name: 'ライトノベル' },
@@ -33,9 +32,9 @@ const RakutenSearch = () => {
     { id: '001028', name: '医学・薬学' },
     { id: '001010', name: '健康・美容' },
   ];
+
   useEffect(() => {
     if (user && user.bookmarks) {
-      // ユーザーがログインしている場合かつブックマークが存在する場合、お気に入り情報を更新
       setBooks((prevBooks) =>
         prevBooks.map((prevBook) => ({
           ...prevBook,
@@ -44,8 +43,7 @@ const RakutenSearch = () => {
           ),
         }))
       );
-  
-      // 各本ごとのお気に入りステータスを更新
+
       const favoriteStatusMap = {};
       user.bookmarks.forEach((bookmark) => {
         favoriteStatusMap[`${bookmark.title}-${bookmark.authors}`] = true;
@@ -60,11 +58,10 @@ const RakutenSearch = () => {
 
   const handleKeyDown = (e) => {
     if (e.key === 'Enter') {
-      e.preventDefault(); // デフォルトのフォーム送信を防ぐ
+      e.preventDefault();
       handleSearch();
     }
   };
-  
 
   const handleSearch = async (page = 1) => {
     try {
@@ -93,6 +90,10 @@ const RakutenSearch = () => {
       setSearchResults(response.data.Items || []);
       setCurrentPage(page);
       window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      if (response.data.Items.length === 0) {
+        setErrorMessage('書籍が見つかりませんでした。');
+      }
     } catch (error) {
       console.error('Error searching books: ', error);
     }
@@ -117,54 +118,48 @@ const RakutenSearch = () => {
     }
   };
 
+  const showNotification = (message) => {
+    setNotification(message);
+    setTimeout(() => {
+      setNotification(null);
+    }, 3000);
+  };
 
-  // 通知表示の関数
-const showNotification = (message) => {
-  setNotification(message);
-  // 3秒後に通知を非表示にする
-  setTimeout(() => {
-    setNotification(null);
-  }, 3000);
-};
+  const handleFavoriteButtonClick = async (book) => {
+    try {
+      if (user) {
+        const userDocRef = doc(firestore, 'users', user.uid);
+        const bookmarksCollectionRef = collection(userDocRef, 'bookmarks');
+        const bookDocRef = doc(bookmarksCollectionRef, book.Item.isbn);
 
-const handleFavoriteButtonClick = async (book) => {
-  try {
-    if (user) {
-      const userDocRef = doc(firestore, 'users', user.uid);
-      const bookmarksCollectionRef = collection(userDocRef, 'bookmarks');
-      const bookDocRef = doc(bookmarksCollectionRef, book.Item.isbn); // ここでは楽天APIのISBNを使用
+        const bookData = {
+          title: book.Item.title,
+          authors: book.Item.author,
+          image: book.Item.largeImageUrl,
+          timestamp: new Date().toISOString(),
+        };
 
-      const bookData = {
-        title: book.Item.title,
-        authors: book.Item.author,
-        image: book.Item.largeImageUrl,
-        timestamp: new Date().toISOString(),
-      };
+        const formattedTimestamp = formatTimestamp(bookData.timestamp);
+        bookData.formattedTimestamp = formattedTimestamp;
 
-      const formattedTimestamp = formatTimestamp(bookData.timestamp);
-      bookData.formattedTimestamp = formattedTimestamp;
+        const existingDoc = await getDoc(bookDocRef);
 
-      const existingDoc = await getDoc(bookDocRef);
-
-      if (!existingDoc.exists()) {
-        await setDoc(bookDocRef, bookData);
-        console.log('お気に入りに追加しました');
-
-        // お気に入り追加の通知を表示
-        showNotification('お気に入りに追加しました');
-        
-        // お気に入りボタンの状態を更新
-        setShowFavoriteButton((prevStatus) => ({ ...prevStatus, [`${book.Item.title}-${book.Item.author}`]: true }));
+        if (!existingDoc.exists()) {
+          await setDoc(bookDocRef, bookData);
+          console.log('お気に入りに追加しました');
+          showNotification('お気に入りに追加しました');
+          setShowFavoriteButton((prevStatus) => ({ ...prevStatus, [`${book.Item.title}-${book.Item.author}`]: true }));
+        } else {
+          console.log('この本は既にお気に入りに追加されています');
+          alert("この本は既にお気に入りに追加されています");
+        }
       } else {
-        console.log('この本は既にお気に入りに追加されています');
+        console.log('ログインしていません');
       }
-    } else {
-      console.log('ログインしていません');
+    } catch (error) {
+      console.error('お気に入り追加エラー:', error);
     }
-  } catch (error) {
-    console.error('お気に入り追加エラー:', error);
-  }
-};
+  };
 
   const formatTimestamp = (timestamp) => {
     const dateObject = new Date(timestamp);
@@ -175,7 +170,7 @@ const handleFavoriteButtonClick = async (book) => {
       hour: '2-digit',
       minute: '2-digit',
       second: '2-digit',
-      timeZone: 'Asia/Tokyo', // タイムゾーンを日本時間に設定
+      timeZone: 'Asia/Tokyo',
     };
   
     return new Intl.DateTimeFormat('ja-JP', options).format(dateObject).replace(/年|月/g, '-').replace(/日/g, ' ');
@@ -219,18 +214,18 @@ const handleFavoriteButtonClick = async (book) => {
               />
             )}
 
-              {searchType === 'publisher' && (
-                <>
-              <input
-              type="text"
-              value={publisherName}
-              onChange={(e) => setPublisherName(e.target.value)}
-              onKeyDown={(e) => handleKeyDown(e)}
-                placeholder="出版社名を入力"
-            style={{ padding: '12px', fontSize: '18px', width: '40%', marginTop: '10px' }}
-            />  
-            </>
-                  )}      
+            {searchType === 'publisher' && (
+              <>
+                <input
+                  type="text"
+                  value={publisherName}
+                  onChange={(e) => setPublisherName(e.target.value)}
+                  onKeyDown={(e) => handleKeyDown(e)}
+                  placeholder="出版社名を入力"
+                  style={{ padding: '12px', fontSize: '18px', width: '40%', marginTop: '10px' }}
+                />
+              </>
+            )}
 
             <button onClick={() => handleSearch()} className={style.search}>
               検索
@@ -256,98 +251,97 @@ const handleFavoriteButtonClick = async (book) => {
             <p style={{ color: 'red', fontSize: '16px', marginTop: '10px' }}>{errorMessage}</p>
           )}
 
-{searchResults.length === 0 ? (
-      <p style={{ fontSize: '18px', marginTop: '10px', marginTop: '150px'}}> <h2>書籍が見つかりませんでした</h2></p>
-    ) : (
-      <div style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap' }}>
-        <h2 style={{ fontSize: '1px' }}>検索結果</h2>
-        {searchResults.map((book, index) => {
+          {searchResults.length === 0 ? (
+            <p> </p>
+          ) : (
+            <div style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap' }}>
+              <h2 style={{ fontSize: '1px' }}>検索結果</h2>
+              {searchResults.map((book, index) => {
                 const isFavorite = showFavoriteButton[`${book.Item.title}-${book.Item.author}`];
 
                 return (
-                <div
-                  key={book.Item.itemCode}
-                  style={{
-                    width: '37%',
-                    margin: '10px',
-                    padding: '10px',
-                    border: '1px solid #ccc',
-                    fontSize: '12px',
-                    backgroundColor: '#FFFFEE'
-                  }}
-                >
-                  <h3 style={{ fontSize: '18px' }}>{book.Item.title}</h3>
-                  <div className="book">
-                    <p style={{ fontSize: '18px' }}>著者: {book.Item.author}</p>
-                    <div className="img">
-                      <img
-                        src={book.Item.largeImageUrl}
-                        alt={book.Item.title}
-                        style={{ width: '30%' }}
-                      />
+                  <div
+                    key={book.Item.itemCode}
+                    style={{
+                      width: '37%',
+                      margin: '10px',
+                      padding: '10px',
+                      border: '1px solid #ccc',
+                      fontSize: '12px',
+                      backgroundColor: '#FFFFEE'
+                    }}
+                  >
+                    <h3 style={{ fontSize: '18px' }}>{book.Item.title}</h3>
+                    <div className="book">
+                      <p style={{ fontSize: '18px' }}>著者: {book.Item.author}</p>
+                      <div className="img">
+                        <img
+                          src={book.Item.largeImageUrl}
+                          alt={book.Item.title}
+                          style={{ width: '30%' }}
+                        />
+                      </div>
+                      <p style={{ fontSize: '20px', color: 'red', paddingTop: '50px' }}>
+                        価格:{book.Item.itemPrice} 円
+                      </p>
+                      <p
+                        style={{
+                          fontSize: '18px',
+                          color: getAvailabilityText(book.Item.availability).color,
+                        }}
+                      >
+                        <span style={{ color: 'black' }}>在庫状況:</span>{' '}
+                        {getAvailabilityText(book.Item.availability).text}
+                      </p>
+                      <a
+                        href={book.Item.itemUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{ fontSize: '25px', color: 'blue' }}
+                      >
+                        詳細・購入
+                      </a>
                     </div>
-                    <p style={{ fontSize: '20px', color: 'red', paddingTop: '50px' }}>
-                      価格:{book.Item.itemPrice} 円
-                    </p>
-                    <p
-                      style={{
-                        fontSize: '18px',
-                        color: getAvailabilityText(book.Item.availability).color,
-                      }}
-                    >
-                      <span style={{ color: 'black' }}>在庫状況:</span>{' '}
-                      {getAvailabilityText(book.Item.availability).text}
-                    </p>
-                    <a
-                      href={book.Item.itemUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={{ fontSize: '25px', color: 'blue' }}
-                    >
-                      詳細・購入
-                    </a>
+                    <div className={style.iine}>
+                      {isFavorite ? (
+                        <span className={style.displayFavorite}>❤</span>
+                      ) : (
+                        <a onClick={() => handleFavoriteButtonClick(book)} className={style.heartIcon}>❤</a>
+                      )}
+                    </div>
                   </div>
-                  <div className={style.iine}>
-                  {isFavorite ? (
-                      <span className={style.displayFavorite}>❤</span>
-                  ) : (
-                      <a onClick={() => handleFavoriteButtonClick(book)} className={style.heartIcon}>❤</a>
-                  )}
-                </div>
-                </div>
                 );
               })}
             </div>
           )}
 
-{searchResults.length > 0 && (
+          {searchResults.length > 0 && (
             <div className={style.paginationContainer}>
-            <div className={style.paginationStyle} style={{ marginTop: '10px', position: 'relative' }}>
-              <button
-                onClick={() => handleSearch(currentPage - 1)}
-                disabled={currentPage === 1}
-                style={{ marginRight: '10px' }}
-              >
-                前へ
-              </button>
-              <span style={{ margin: '0 10px', fontSize: '18px' }}>{currentPage}</span>
-              <button
-                onClick={() => handleSearch(currentPage + 1)}
-                disabled={searchResults.length < 30}
-                style={{ marginRight: '10px' }}
-              >
-                次へ
-              </button>
+              <div className={style.paginationStyle} style={{ marginTop: '10px', position: 'relative' }}>
+                <button
+                  onClick={() => handleSearch(currentPage - 1)}
+                  disabled={currentPage === 1}
+                  style={{ marginRight: '10px' }}
+                >
+                  前へ
+                </button>
+                <span style={{ margin: '0 10px', fontSize: '18px' }}>{currentPage}</span>
+                <button
+                  onClick={() => handleSearch(currentPage + 1)}
+                  disabled={searchResults.length < 30}
+                  style={{ marginRight: '10px' }}
+                >
+                  次へ
+                </button>
               </div>
               <button
-      onClick={() => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      }}
-      className={style.scrollToTopButton}
-    >
-      先頭に戻る
-    </button>
-
+                onClick={() => {
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
+                className={style.scrollToTopButton}
+              >
+                先頭に戻る
+              </button>
             </div>
           )}
         </div>
