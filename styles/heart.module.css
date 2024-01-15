@@ -27,3 +27,55 @@
     right: 14%;
   }
   
+  /* heart.module.css */
+
+.mainContainer {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.favoriteBook {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.FavoriteBooksContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 3px solid #3ecfff;
+  background-color: rgb(250, 238, 223);
+  box-sizing: border-box;
+  margin-top: 20px;
+}
+
+.title {
+  text-align: center;
+  flex-grow: 1;
+}
+
+.title01 {
+  font-family: Georgia, serif;
+}
+
+.button01 {
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-top: 140px;
+}
+
+.space01 {
+  margin-right: 130px;
+}
+
+.space02 {
+  margin-left: 100px;
+}

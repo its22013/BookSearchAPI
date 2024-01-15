@@ -200,7 +200,8 @@
 }
 
 .favoriteBook {
-  position: relative;
+  width: 100%;
+  margin-bottom: 20px;
 }
 
 .FavoriteBooksContainer {
@@ -218,6 +219,7 @@
 
 .title {
   margin: auto;
+  padding: 20px;
 }
 
 .button01 {
