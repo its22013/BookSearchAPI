@@ -6,6 +6,7 @@ import Footer from "@/components/Footer";
 import { useUser, firestore } from '@/hooks/firebase';
 import { doc, collection, getDocs, deleteDoc } from 'firebase/firestore';
 import Styles from '@/styles/Liviray.module.css';
+import Link from 'next/link';
 
 const FavoriteBooksPage = () => {
   const user = useUser();
@@ -15,10 +16,8 @@ const FavoriteBooksPage = () => {
     const fetchFavoriteBooks = async () => {
       try {
         if (user) {
-          // 'users' コレクションに対する DocumentReference を取得
           const usersCollectionRef = collection(firestore, 'users');
           const userDocRef = doc(usersCollectionRef, user.uid);
-
           const bookmarksCollectionRef = collection(userDocRef, 'bookmarks');
           const querySnapshot = await getDocs(bookmarksCollectionRef);
           const favoriteBooksData = [];
@@ -42,17 +41,13 @@ const FavoriteBooksPage = () => {
   const handleDeleteButtonClick = async (bookId) => {
     try {
       if (user) {
-        // 'users' コレクションに対する DocumentReference を取得
         const usersCollectionRef = collection(firestore, 'users');
         const userDocRef = doc(usersCollectionRef, user.uid);
-
-        // 'bookmarks' コレクションに対する DocumentReference を取得
         const bookmarksCollectionRef = collection(userDocRef, 'bookmarks');
         const bookDocRef = doc(bookmarksCollectionRef, bookId);
 
         await deleteDoc(bookDocRef);
 
-        // 削除後、お気に入りの本を再取得して更新
         const querySnapshot = await getDocs(bookmarksCollectionRef);
         const favoriteBooksData = [];
 
@@ -69,11 +64,6 @@ const FavoriteBooksPage = () => {
     }
   };
 
-  const formatTimestamp = (timestamp) => {
-    const dateObject = new Date(timestamp);
-    return `${dateObject.getFullYear()}-${(dateObject.getMonth() + 1).toString().padStart(2, '0')}-${dateObject.getDate().toString().padStart(2, '0')} ${dateObject.getHours().toString().padStart(2, '0')}:${dateObject.getMinutes().toString().padStart(2, '0')}:${dateObject.getSeconds().toString().padStart(2, '0')}`;
-  };
-
   return (
     <div className={Styles.mainContainer}>
       <Header />
@@ -87,15 +77,22 @@ const FavoriteBooksPage = () => {
               {favoriteBooks.map((book) => (
                 <div key={book.id} className={Styles.favoriteBook}>
                   <div className={Styles.FavoriteBooksContainer}>
+                  <Link legacyBehavior href="/book/[bookId]" as={`/book/${book.id}`}>
                     <img src={book.image} alt="本の画像" style={{ maxWidth: '110px', maxHeight: '160px' }} />
+                  </Link>
                     <div className={Styles.title}>
-                      <div className={Styles.sd01}>
-                      <h3>{book.title}</h3>
-                      <p>{book.authors}</p>
-                      <p>{formatTimestamp(book.timestamp)}</p>
-                      </div>
+
+                        <div className={Styles.sd01}>
+                        <Link legacyBehavior href="/book/[bookId]" as={`/book/${book.id}`}>
+                          <a>
+                          <h3>{book.title}</h3>
+                          <p>{book.authors}</p>
+                          </a>
+                          </Link>
+                        </div>
+                      
                       <div>
-                      <button onClick={() => handleDeleteButtonClick(book.id)} className={Styles.button01}>削除</button>
+                        <button onClick={() => handleDeleteButtonClick(book.id)} className={Styles.button01}>削除</button>
                       </div>
                     </div>
                   </div>

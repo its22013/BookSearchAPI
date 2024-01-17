@@ -223,47 +223,54 @@ const showNotification = (message) => {
   }, 3000);
 };
 
-  const handleFavoriteButtonClick = async (book) => {
-    try {
-      if (user) {
-        const userDocRef = doc(firestore, 'users', user.uid);
-        const bookmarksCollectionRef = collection(userDocRef, 'bookmarks');
-        const bookDocRef = doc(bookmarksCollectionRef, book.id);
+const handleFavoriteButtonClick = async (book) => {
+  try {
+    if (user) {
+      const googleBooksResponse = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(book.title)}&inauthor=${encodeURIComponent(book.authors)}`);
+      const googleBooksData = await googleBooksResponse.json();
+      const bookDetails = googleBooksData.items ? googleBooksData.items[0] : null;
 
-        const googleBooksResponse = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(book.title)}&inauthor=${encodeURIComponent(book.authors)}`);
-        const googleBooksData = await googleBooksResponse.json();
-        const bookDetails = googleBooksData.items ? googleBooksData.items[0] : null;
+      const isbn = bookDetails?.volumeInfo?.industryIdentifiers?.find(identifier => identifier.type === 'ISBN_13' || identifier.type === 'ISBN_10')?.identifier;
 
-
-        const bookData = {
-          title: book.title,
-          authors: book.authors,
-          image: bookDetails?.volumeInfo?.imageLinks?.thumbnail || '',
-          timestamp: new Date().toISOString(),
-        };
-
-        const formattedTimestamp = formatTimestamp(bookData.timestamp);
-        bookData.formattedTimestamp = formattedTimestamp;
-
-        const existingDoc = await getDoc(bookDocRef);
-
-        if (!existingDoc.exists()) {
-          await setDoc(bookDocRef, bookData);
-          console.log('お気に入りに追加しました');
-          alert("お気に入りに追加しました")
-          // ボタンを非表示にするためのステートを更新
-          setShowFavoriteButton((prevStatus) => ({ ...prevStatus, [`${book.title}-${book.authors}`]: true }));
-        } else {
-          console.log('この本は既にお気に入りに追加されています');
-          alert("この本は既にお気に入りに追加されています")
-        }
-      } else {
-        console.log('ログインしていません');
+      if (!isbn) {
+        console.error('ISBNが取得できませんでした');
+        return;
       }
-    } catch (error) {
-      console.error('お気に入り追加エラー:', error);
+
+      const userDocRef = doc(firestore, 'users', user.uid);
+      const bookmarksCollectionRef = collection(userDocRef, 'bookmarks');
+      const bookDocRef = doc(bookmarksCollectionRef, isbn);  // ISBNをドキュメントIDとして使用
+
+      const bookData = {
+        title: book.title,
+        authors: book.authors,
+        image: bookDetails?.volumeInfo?.imageLinks?.thumbnail || '',
+        timestamp: new Date().toISOString(),
+        isbn: isbn,
+      };
+
+      const formattedTimestamp = formatTimestamp(bookData.timestamp);
+      bookData.formattedTimestamp = formattedTimestamp;
+
+      const existingDoc = await getDoc(bookDocRef);
+
+      if (!existingDoc.exists()) {
+        await setDoc(bookDocRef, bookData);
+        console.log('お気に入りに追加しました');
+        alert("お気に入りに追加しました")
+        // ボタンを非表示にするためのステートを更新
+        setShowFavoriteButton((prevStatus) => ({ ...prevStatus, [`${book.title}-${book.authors}`]: true }));
+      } else {
+        console.log('この本は既にお気に入りに追加されています');
+        alert("この本は既にお気に入りに追加されています")
+      }
+    } else {
+      console.log('ログインしていません');
     }
-  };
+  } catch (error) {
+    console.error('お気に入り追加エラー:', error);
+  }
+};
 
   const formatTimestamp = (timestamp) => {
     const dateObject = new Date(timestamp);
@@ -347,6 +354,7 @@ const showNotification = (message) => {
                 <div className={Styles.image01}>
                   <img src={bookImage} alt="本の画像" style={{ maxWidth: '103px', maxHeight: '150px' }} />
                 </div>
+               
                 <strong className={isLongTitle ? `${Styles.bookTitle} ${Styles.breakLine}` : Styles.bookTitle}>{book.title}</strong> - {book.authors}
                 {bookData.availability && bookData.availability.books && Object.keys(bookData.availability.books).length > 0 ? (
                   <div className={Styles.display}>
