@@ -27,7 +27,10 @@
   .paginationStyle {
   margin-bottom: 100px;
   }
-
+.booksearch {
+  font-size: 28px;
+  font-family: "MS PMincho";
+}
   /* search_rakuten.module.css */
 
 /* search_rakuten.module.css */

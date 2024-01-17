@@ -5,8 +5,8 @@ import style from '../styles/search_rakuten.module.css';
 import Footer from '@/components/Footer';
 import { env } from '@/next.config';
 import { auth, firestore, useUser } from '@/hooks/firebase';
-import { doc, collection, setDoc, getDoc } from 'firebase/firestore'; 
-
+import { doc, collection, setDoc, getDoc } from 'firebase/firestore';
+import Link from 'next/link'; 
 const RakutenSearch = () => {
   const user = useUser();
   const [searchType, setSearchType] = useState('title');
@@ -181,7 +181,7 @@ const RakutenSearch = () => {
       <Header />
       <main>
         <div style={{ textAlign: 'center', marginTop: '50px' }}>
-          <h1 style={{ fontSize: '28px' }}>本の検索</h1>
+          <h1 className={style.booksearch}>本の検索</h1>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             <label>
               <input
@@ -248,72 +248,68 @@ const RakutenSearch = () => {
             ))}
           </select>
           {errorMessage && (
-            <p style={{ color: 'red', fontSize: '16px', marginTop: '10px' }}>{errorMessage}</p>
+            <p style={{ color: 'red', fontSize: '20px', marginTop: '10px' }}>{errorMessage}</p>
           )}
 
-          {searchResults.length === 0 ? (
-            <p> </p>
-          ) : (
-            <div style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap' }}>
-              <h2 style={{ fontSize: '1px' }}>検索結果</h2>
-              {searchResults.map((book, index) => {
-                const isFavorite = showFavoriteButton[`${book.Item.title}-${book.Item.author}`];
+         
+{searchResults.length === 0 ? (
+  <p> </p>
+) : (
+  <div style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap' }}>
+    <h2 style={{ fontSize: '1px' }}>検索結果</h2>
+    {searchResults.map((book, index) => {
+      const isFavorite = showFavoriteButton[`${book.Item.title}-${book.Item.author}`];
 
-                return (
-                  <div
-                    key={book.Item.itemCode}
-                    style={{
-                      width: '37%',
-                      margin: '10px',
-                      padding: '10px',
-                      border: '1px solid #ccc',
-                      fontSize: '12px',
-                      backgroundColor: '#FFFFEE'
-                    }}
-                  >
-                    <h3 style={{ fontSize: '18px' }}>{book.Item.title}</h3>
-                    <div className="book">
-                      <p style={{ fontSize: '18px' }}>著者: {book.Item.author}</p>
-                      <div className="img">
-                        <img
-                          src={book.Item.largeImageUrl}
-                          alt={book.Item.title}
-                          style={{ width: '30%' }}
-                        />
-                      </div>
-                      <p style={{ fontSize: '20px', color: 'red', paddingTop: '50px' }}>
-                        価格:{book.Item.itemPrice} 円
-                      </p>
-                      <p
-                        style={{
-                          fontSize: '18px',
-                          color: getAvailabilityText(book.Item.availability).color,
-                        }}
-                      >
-                        <span style={{ color: 'black' }}>在庫状況:</span>{' '}
-                        {getAvailabilityText(book.Item.availability).text}
-                      </p>
-                      <a
-                        href={book.Item.itemUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        style={{ fontSize: '25px', color: 'blue' }}
-                      >
-                        詳細・購入
-                      </a>
+      return (
+        <div
+          key={book.Item.itemCode}
+          style={{
+            width: '37%',
+            margin: '10px',
+            padding: '10px',
+            border: '1px solid #ccc',
+            fontSize: '12px',
+            backgroundColor: '#FFFFEE'
+          }}
+        >
+          {/* 画像のみをLinkコンポーネントで囲み、詳細ページへのリンクを設定 */}
+          <Link legacyBehavior href={`/book/${encodeURIComponent(book.Item.isnb)}`}>
+            <a>
+              <h3 style={{ fontSize: '18px' }}>{book.Item.title}</h3>
+              <div className="book">
+                <p style={{ fontSize: '18px' }}>著者: {book.Item.author}</p>
+                {/* 画像部分のみをLinkコンポーネントで囲む */}
+                <Link legacyBehavior href={`/book/${encodeURIComponent(book.Item.isbn)}`}>
+                  <a>
+                    <div className="img">
+                      <img
+                        src={book.Item.mediumImageUrl}
+                        alt={book.Item.title}
+                        style={{ width: '32%' }}
+                      />
                     </div>
-                    <div className={style.iine}>
-                      {isFavorite ? (
-                        <span className={style.displayFavorite}>❤</span>
-                      ) : (
-                        <a onClick={() => handleFavoriteButtonClick(book)} className={style.heartIcon}>❤</a>
-                      )}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          )}
+                  </a>
+                </Link>
+                {/* 他のコンテンツ */}
+                <p style={{ fontSize: '20px', color: 'red', paddingTop: '50px' }}>
+                  価格:{book.Item.itemPrice} 円
+                </p>
+                {/* 他のコンテンツ */}
+              </div>
+              <div className={style.iine}>
+                {isFavorite ? (
+                  <span className={style.displayFavorite}>❤</span>
+                ) : (
+                  <a onClick={() => handleFavoriteButtonClick(book)} className={style.heartIcon}>❤</a>
+                )}
+              </div>
+            </a>
+          </Link>
+        </div>
+      );
+    })}
+  </div>
+)}
 
           {searchResults.length > 0 && (
             <div className={style.paginationContainer}>
