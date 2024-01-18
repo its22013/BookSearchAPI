@@ -186,12 +186,22 @@ const RankingPage = () => {
                 const isFavorite = showFavoriteButton[`${book.Item.title}-${book.Item.author}`];
                 return (
                   <li key={book.Item.itemCode} className={styles.listItem}>
-                    <div className={styles.rank}>{index + 1} 位</div>
+                     <div className={styles.rank}>{index + 1} 位</div>
+                    
                     <div className={styles.content}>
-                      <span className={styles.title}><h3>{book.Item.title}</h3>
-                      <p style={{ fontSize: '15px' }}>出版日: {book.Item.salesDate}</p></span>
+                      <span className={styles.title}>
+                      <Link legacyBehavior href={`/book/${encodeURIComponent(book.Item.isbn)}`}>
+                      <a><h3>{book.Item.title}</h3></a></Link>
+                      <Link legacyBehavior href={`/book/${encodeURIComponent(book.Item.isbn)}`}>
+                      <a> <p style={{ fontSize: '15px' }}>出版日: {book.Item.salesDate}</p></a></Link></span>
+                     
+                      <Link legacyBehavior href={`/book/${encodeURIComponent(book.Item.isbn)}`}>
+                      <a>
                       <img width="180" src={book.Item.mediumImageUrl} alt={book.Item.title} />
+                      </a>
+                    </Link>
                     </div>
+                    
                     <p className={styles.p}>
                       <Link legacyBehavior href={book.Item.itemUrl}>
                         <a target="_blank" rel="noopener noreferrer">詳細・購入</a>
