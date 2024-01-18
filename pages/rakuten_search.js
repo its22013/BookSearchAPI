@@ -273,7 +273,7 @@ const RakutenSearch = () => {
           }}
         >
           {/* 画像のみをLinkコンポーネントで囲み、詳細ページへのリンクを設定 */}
-          <Link legacyBehavior href={`/book/${encodeURIComponent(book.Item.isnb)}`}>
+          <Link legacyBehavior href={`/book/${encodeURIComponent(book.Item.isbn)}`}>
             <a>
               <h3 style={{ fontSize: '18px' }}>{book.Item.title}</h3>
               <div className="book">
