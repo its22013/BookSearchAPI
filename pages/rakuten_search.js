@@ -272,9 +272,7 @@ const RakutenSearch = () => {
             backgroundColor: '#FFFFEE'
           }}
         >
-          {/* 画像のみをLinkコンポーネントで囲み、詳細ページへのリンクを設定 */}
-          <Link legacyBehavior href={`/book/${encodeURIComponent(book.Item.isbn)}`}>
-            <a>
+        
               <h3 style={{ fontSize: '18px' }}>{book.Item.title}</h3>
               <div className="book">
                 <p style={{ fontSize: '18px' }}>著者: {book.Item.author}</p>
@@ -303,8 +301,6 @@ const RakutenSearch = () => {
                   <a onClick={() => handleFavoriteButtonClick(book)} className={style.heartIcon}>❤</a>
                 )}
               </div>
-            </a>
-          </Link>
         </div>
       );
     })}
