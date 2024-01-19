@@ -1,3 +1,4 @@
+
 .mainContainer {
   min-width: 320px;  /* これは一例で、適切な値に調整してください */
   display: flex;
@@ -76,6 +77,26 @@
   color: #fc26e7;
   cursor: pointer;
   transition: color 0.3s ease;
+}
+.showsai {
+	display: block;
+	text-align: center;
+	vertical-align: middle;
+	text-decoration: none;
+	width: 200px;
+	margin: auto;
+	padding: 1rem 4rem;
+	font-weight: bold;
+	background-image: linear-gradient(to top, #D8D9DB 0%, #fff 80%, #FDFDFD 100%);
+	border-radius: 100vh;
+	color: #333;
+	border: 1px solid #999;
+	text-shadow: 0 1px #fff;
+	box-shadow: 0 3px 2px 1px #fcfcfc, 0 4px 6px #cecfd1, 0 -2px 2px #cecfd1, 0 -4px 2px #eee, inset 0 0 2px 2px #cecfd1;
+	transition: 0.5s;
+}
+.showsai:hover {
+	opacity: 0.5;
 }
 
 @media (max-width: 992px) {

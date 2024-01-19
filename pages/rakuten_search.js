@@ -261,7 +261,7 @@ const RakutenSearch = () => {
       const isFavorite = showFavoriteButton[`${book.Item.title}-${book.Item.author}`];
 
       return (
-        <div
+        <div 
           key={book.Item.itemCode}
           style={{
             width: '37%',
@@ -269,14 +269,16 @@ const RakutenSearch = () => {
             padding: '10px',
             border: '1px solid #ccc',
             fontSize: '12px',
-            backgroundColor: '#FFFFEE'
+            backgroundColor: '#FFFF'
           }}
         >
-        
-              <h3 style={{ fontSize: '18px' }}>{book.Item.title}</h3>
+         <Link legacyBehavior href={`/book/${encodeURIComponent(book.Item.isbn)}`}>
+          <a>
+         <h3 style={{ fontSize: '18px' }}>{book.Item.title}</h3>
+         </a>
+         </Link>
               <div className="book">
                 <p style={{ fontSize: '18px' }}>著者: {book.Item.author}</p>
-                {/* 画像部分のみをLinkコンポーネントで囲む */}
                 <Link legacyBehavior href={`/book/${encodeURIComponent(book.Item.isbn)}`}>
                   <a>
                     <div className="img">
@@ -292,7 +294,11 @@ const RakutenSearch = () => {
                 <p style={{ fontSize: '20px', color: 'red', paddingTop: '50px' }}>
                   価格:{book.Item.itemPrice} 円
                 </p>
-                {/* 他のコンテンツ */}
+                <div className={style.showsai}>
+                 <a href={book.Item.itemUrl} target="_blank" rel="noopener noreferrer">
+                    詳細・購入
+                  </a>
+                 </div>
               </div>
               <div className={style.iine}>
                 {isFavorite ? (
