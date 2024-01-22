@@ -8,6 +8,9 @@ export default function FirstPost() {
     <div className={Styles.mainContainer}>
       <Header />
       <main>   
+
+        <div className={Styles.space}></div>
+
         <div className={`${Styles.all} ${Styles.buttonCentered}`}>
           <Link legacyBehavior href="/rakuten_search">
           <div className={`${Styles.buttonWithPadding}`}>
