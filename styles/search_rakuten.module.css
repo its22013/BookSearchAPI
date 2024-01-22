@@ -33,7 +33,20 @@
   font-family: "MS PMincho";
 }
   /* search_rakuten.module.css */
-
+.kakaku{
+  font-size: 20px;
+  color: red;
+  paddingTop: '50px'; 
+}
+.page {
+  margin-right: 10px;
+}
+.number {
+  margin: '0 10px';
+  font-size: '18px';
+  margin-right: 10px;
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
 /* search_rakuten.module.css */
 .scrollToTopButton {
   position: fixed;

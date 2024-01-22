@@ -291,7 +291,7 @@ const RakutenSearch = () => {
                   </a>
                 </Link>
                 {/* 他のコンテンツ */}
-                <p style={{ fontSize: '20px', color: 'red', paddingTop: '50px' }}>
+                <p className={style.kakaku}>
                   価格:{book.Item.itemPrice} 円
                 </p>
                 <div className={style.showsai}>
@@ -316,25 +316,24 @@ const RakutenSearch = () => {
           {searchResults.length > 0 && (
             <div className={style.paginationContainer}>
               <div className={style.paginationStyle} style={{ marginTop: '10px', position: 'relative' }}>
-                <button
+                <button className={style.page}
                   onClick={() => handleSearch(currentPage - 1)}
                   disabled={currentPage === 1}
-                  style={{ marginRight: '10px' }}
+                  
                 >
                   前へ
                 </button>
-                <span style={{ margin: '0 10px', fontSize: '18px' }}>{currentPage}</span>
-                <button
+                <span className={style.number}>{currentPage}</span>
+                <button className={style.page}
                   onClick={() => handleSearch(currentPage + 1)}
                   disabled={searchResults.length < 30}
-                  style={{ marginRight: '10px' }}
                 >
                   次へ
                 </button>
               </div>
               <button
                 onClick={() => {
-                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                  window.scrollTo({ top: 0, behavior: 'smooth', });
                 }}
                 className={style.scrollToTopButton}
               >
