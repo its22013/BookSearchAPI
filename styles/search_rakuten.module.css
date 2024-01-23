@@ -92,26 +92,23 @@
   transition: color 0.3s ease;
 }
 .showsai {
-	display: block;
-	text-align: center;
-	vertical-align: middle;
-	text-decoration: none;
-	width: 200px;
-	margin: auto;
-	padding: 1rem 4rem;
-	font-weight: bold;
-	background-image: linear-gradient(to top, #D8D9DB 0%, #fff 80%, #FDFDFD 100%);
-	border-radius: 100vh;
-	color: #333;
-	border: 1px solid #999;
-	text-shadow: 0 1px #fff;
-	box-shadow: 0 3px 2px 1px #fcfcfc, 0 4px 6px #cecfd1, 0 -2px 2px #cecfd1, 0 -4px 2px #eee, inset 0 0 2px 2px #cecfd1;
-	transition: 0.5s;
+  display: inline-block;
+  width: 300px;
+  max-width: 350px; /* ボタン幅 */
+  color: #4D9BC1; /* 文字色 */
+  border: 2px solid #4D9BC1; /* 線幅・種類・色 */
+  background: #fff; /* 背景色 */
+  padding: 1em 2em;
+  font-weight: bold; /* 文字の太さ */
+  text-decoration: none;
+  text-align: center;
+  transition: 0.3s;
+  margin-top: 40px;
 }
 .showsai:hover {
-	opacity: 0.5;
+  color: #fff; /* 文字色 */
+  background: #4D9BC1; /* 背景色 */
 }
-
 @media (max-width: 992px) {
   .heartIcon {
     margin-left: 120px; /* この値を調整して、枠内に収まるようにします。 */
