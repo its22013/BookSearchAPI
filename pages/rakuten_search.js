@@ -31,6 +31,10 @@ const RakutenSearch = () => {
     { id: '001009', name: '美術・スポーツ' },
     { id: '001028', name: '医学・薬学' },
     { id: '001010', name: '健康・美容' },
+    { id: '001005', name: 'パソコン・技術書'},
+    { id: '001008', name: '人文・思想'},
+    { id: '001016', name: '資格・検定'},
+    { id: '001003', name: '絵本・図鑑'}
   ];
 
   useEffect(() => {
@@ -294,11 +298,12 @@ const RakutenSearch = () => {
                 <p className={style.kakaku}>
                   価格:{book.Item.itemPrice} 円
                 </p>
-                <div className={style.showsai}>
-                 <a href={book.Item.itemUrl} target="_blank" rel="noopener noreferrer">
-                    詳細・購入
-                  </a>
-                 </div>
+                <button   className={style.showsai}
+               onClick={() => window.open(book.Item.itemUrl, '_blank')}
+             >
+               詳細・購入
+             </button>
+              
               </div>
               <div className={style.iine}>
                 {isFavorite ? (

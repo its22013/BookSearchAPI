@@ -93,8 +93,8 @@
 }
 .showsai {
   display: inline-block;
-  width: 300px;
-  max-width: 350px; /* ボタン幅 */
+  width: 100%;
+  max-width: 250px; /* ボタン幅 */
   color: #4D9BC1; /* 文字色 */
   border: 2px solid #4D9BC1; /* 線幅・種類・色 */
   background: #fff; /* 背景色 */
@@ -108,6 +108,14 @@
 .showsai:hover {
   color: #fff; /* 文字色 */
   background: #4D9BC1; /* 背景色 */
+}
+.showsai a {
+  text-decoration: none; /* リンクの下線をなくす */
+  color: inherit; /* リンクの文字色を親要素と同じにする */
+  display: block; /* リンクをブロック要素に変更 */
+  width: 100%;
+  height: 100%;
+
 }
 @media (max-width: 992px) {
   .heartIcon {
