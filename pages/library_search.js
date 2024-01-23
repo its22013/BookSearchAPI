@@ -9,6 +9,7 @@ import Image from "next/image";
 import Footer from '@/components/Footer';
 import { auth, firestore, useUser } from '@/hooks/firebase';
 import { doc, collection, setDoc, getDoc } from 'firebase/firestore'; 
+import { ST } from 'next/dist/shared/lib/utils';
 
 const Liviray = () => {
   const user = useUser();
@@ -234,6 +235,7 @@ const handleFavoriteButtonClick = async (book) => {
 
       if (!isbn) {
         console.error('ISBNが取得できませんでした');
+        alert("その本はお気に入りできません")
         return;
       }
 
@@ -292,9 +294,10 @@ const handleFavoriteButtonClick = async (book) => {
       <Header />
       <main>
         <div className={Styles.container}>
-          <h1>{getSelectedLibraryName()}で検索</h1>
+          <h1 className={Styles.h1}>{getSelectedLibraryName()}で検索</h1>
           <div className={Styles.searchContainer}>
-            <select value={selectedSystemId} onChange={(e) => setSelectedSystemId(e.target.value)}>
+
+            <select value={selectedSystemId} onChange={(e) => setSelectedSystemId(e.target.value)} className={Styles.form01}>
               {LibrariesData.map((library) => (
                 <option key={library.systemid} value={library.systemid}>
                   {library.name}
@@ -312,7 +315,9 @@ const handleFavoriteButtonClick = async (book) => {
                 placeholder="キーワードを入力"
               />
             </div>
-            <button onClick={handleSearchButtonClick}><Image src="/images/search.png" alt="Search Image" width={30} height={30}/></button>
+            <div className={Styles.button02}>
+            <button onClick={handleSearchButtonClick}><Image src="/images/search.png" alt="Search Image" width={30} height={30} className={Styles.button}/></button>
+            </div>
           </div>
 
           {(loading || searchButtonClicked) && (
@@ -354,8 +359,9 @@ const handleFavoriteButtonClick = async (book) => {
                 <div className={Styles.image01}>
                   <img src={bookImage} alt="本の画像" style={{ maxWidth: '103px', maxHeight: '150px' }} />
                 </div>
-               
+               <div className={Styles.title92}>
                 <strong className={isLongTitle ? `${Styles.bookTitle} ${Styles.breakLine}` : Styles.bookTitle}>{book.title}</strong> - {book.authors}
+              </div>
                 {bookData.availability && bookData.availability.books && Object.keys(bookData.availability.books).length > 0 ? (
                   <div className={Styles.display}>
                     貸出状況: <div className={Styles.space}></div>{getStatusDisplay(bookData.availability.books[Object.keys(bookData.availability.books)[0]])}

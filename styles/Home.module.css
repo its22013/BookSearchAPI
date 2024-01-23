@@ -1,72 +1,107 @@
 /* ボタンを横並び */
 .all {
-    display: flex;
+  display: flex;
 }
 
 .button {
-    display: inline-block;
-    align-items: center;
-    height: 200px;
-    width: 280px;
-    padding: 60px 20px;
-    font-size: 40px;
-    text-align: center;
-    text-decoration: none;
-    background-color: #007bff; 
-    color: #fff;
-    border-radius: 5px;
-    cursor: pointer;
+  display: inline-block;
+  align-items: center;
+  height: 200px;
+  width: 280px;
+  padding: 60px 20px;
+  font-size: 40px;
+  text-align: center;
+  text-decoration: none;
+  background-color: #007bff; 
+  color: #fff;
+  border-radius: 5px;
+  cursor: pointer;
 } 
 
 .button:hover {
-    background-color: #0056b3; 
-  }
+  background-color: #0056b3; 
+}
 
 /* ボタン1の高さを設定するスタイル */
 .button1 {
-    margin-top: 120px;
-    height: 250px; 
-  }
-  
-  /* ボタン2の高さを設定するスタイル */
-  .button2 {
-    height: 250px; 
-  }
-  
-  /* テキストを中央揃えにするスタイル */
-  .centerText {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-  }
-  
-  /* ボタンに隙間を追加するスタイル */
-  .buttonWithPadding {
-    padding: 60px;
-  }
-  
-  /* ボタンを中央配置するスタイル */
-  .buttonCentered {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  /* ボタン間のスペースを追加するスタイル */
-  .buttonSpacing {
-    margin-top: 120px; 
+  margin-top: 120px;
+  height: 250px; 
+}
+
+/* ボタン2の高さを設定するスタイル */
+.button2 {
+  height: 250px; 
+}
+
+/* テキストを中央揃えにするスタイル */
+.centerText {
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* 垂直方向にも中央寄せ */
+  align-items: center;
+  text-align: center;
+}
+
+/* ボタンに隙間を追加するスタイル */
+.buttonWithPadding {
+  padding: 60px;
+}
+
+/* ボタンを中央配置するスタイル */
+.buttonCentered {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* ボタン間のスペースを追加するスタイル */
+.buttonSpacing {
+  margin-top: 120px; 
+}
+
+/* Footerの固定  */
+.mainContainer {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+@media (max-width: 750px) {
+  .rk {
+      font-size: 34px;
   }
 
-  /*Footerの固定  */
-  .mainContainer {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
+  .button:hover {
+    background-color: #0056b3; 
   }
-  
-  @media (max-width: 768px) {
-    .rk {
-      font-size: 34px;
-    }
-  }  
+
+  .all {
+      flex-direction: column; /* スマートフォン用に縦に並べる */
+      align-items: center; /* 中央に配置 */
+  }
+
+  .button {
+      height: 150px;
+      width: 186px;
+      font-size: 24px; /* ボタンのフォントサイズを調整 */
+  }
+
+  .button1,
+  .button2 {
+      height: 150px;
+  }
+
+  .buttonWithPadding {
+      padding: 40px;
+  }
+
+  .buttonSpacing,
+  .button1 {
+      margin-bottom: 10px; /* スマートフォン用にマージンを調整 */
+      margin-top: 0; /* 上マージンをリセット */
+  }
+
+  .space {
+    margin-top: 50px; /* スペースのマージンを調整 */
+  }
+}

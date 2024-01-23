@@ -1,5 +1,18 @@
-import '@/styles/globals.css'
+// pages/_app.js
 
-export default function App({ Component, pageProps }) {
-  return <Component {...pageProps} />
+import Head from 'next/head';
+import '@/styles/globals.css';
+
+function MyApp({ Component, pageProps }) {
+  return (
+    <>
+      <Head>
+        {/* 他のメタ情報やスタイルシートのリンクなどをここに追加できます */}
+        <link rel="icon" href="/book_search.ico" sizes="16x16" type="image/x-icon" />
+      </Head>
+      <Component {...pageProps} />
+    </>
+  );
 }
+
+export default MyApp;
