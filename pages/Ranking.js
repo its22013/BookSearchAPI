@@ -197,7 +197,7 @@ const RankingPage = () => {
                      
                       <Link legacyBehavior href={`/book/${encodeURIComponent(book.Item.isbn)}`}>
                       <a>
-                      <img width="180" src={book.Item.mediumImageUrl} alt={book.Item.title} />
+                      <img width="180" src={book.Item.largeImageUrl} alt={book.Item.title} />
                       </a>
                     </Link>
                     </div>

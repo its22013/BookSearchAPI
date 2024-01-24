@@ -287,7 +287,7 @@ const RakutenSearch = () => {
                   <a>
                     <div className="img">
                       <img
-                        src={book.Item.mediumImageUrl}
+                        src={book.Item.largeImageUrl}
                         alt={book.Item.title}
                         style={{ width: '32%' }}
                       />
