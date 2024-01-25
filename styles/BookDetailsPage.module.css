@@ -11,3 +11,10 @@
     margin-top: 10px;
     margin-left: 350px;
 }
+
+@media (max-width: 932px) {
+    .bookDetailsContainer {
+        margin-left: 80px;
+        margin-right: 80px;
+    }
+}

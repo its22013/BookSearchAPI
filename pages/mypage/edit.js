@@ -8,6 +8,7 @@ import styles from "@/styles/Edit.module.css";
 import { useUser, useAuth } from "@/hooks/firebase";
 import { useRouter } from 'next/router';
 import { getAuth, reauthenticateWithCredential, EmailAuthProvider, updateProfile, updatePassword } from 'firebase/auth';
+import Breadcrumbs from '@/components/Breadcrumbs';
 
 const EditPage = () => {
   const currentUser = useUser();
@@ -77,24 +78,18 @@ const EditPage = () => {
     router.push('/mypage');
   };
 
+  const breadcrumbs = [
+    { label: 'トップ', path: '/' },
+    { label: 'マイページ', path: '/mypage' },
+    { label: 'プロフィール編集', path: '/mypage/edit' },
+  ];
+
   return (
     <div className={Styles.mainContainer}>
       <Header />
       
       <main>
-      <div className={styles.mypage}> 
-      <Link legacyBehavior href="/">
-            <a className={styles.mypage01}>トップ</a>
-          </Link>
-          {" > "}
-          <Link legacyBehavior href="/mypage">
-            <a className={styles.mypage02}>マイページ</a>
-          </Link>
-          {" > "}
-          <Link legacyBehavior href="/mypage/edit">
-            <a className={styles.mypage03}>プロフィール編集</a>
-          </Link>
-        </div>     
+      <Breadcrumbs crumbs={breadcrumbs} />  
       <div className={styles.container}>
         <h1>マイプロフィール編集</h1>
         {!isVerified ? (

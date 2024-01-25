@@ -9,8 +9,7 @@ import Image from "next/image";
 import Footer from '@/components/Footer';
 import { auth, firestore, useUser } from '@/hooks/firebase';
 import { doc, collection, setDoc, getDoc } from 'firebase/firestore'; 
-import { ST } from 'next/dist/shared/lib/utils';
-
+import Link from 'next/link';
 const Liviray = () => {
   const user = useUser();
   const [keyword, setKeyword] = useState('');
@@ -316,7 +315,7 @@ const handleFavoriteButtonClick = async (book) => {
               />
             </div>
             <div className={Styles.button02}>
-            <button onClick={handleSearchButtonClick}><Image src="/images/search.png" alt="Search Image" width={30} height={30} className={Styles.button}/></button>
+            <button onClick={handleSearchButtonClick}><Image src="/images/search.png" alt="Search Image" width={34} height={34} className={Styles.button}/></button>
             </div>
           </div>
 
@@ -351,14 +350,17 @@ const handleFavoriteButtonClick = async (book) => {
             const defaultImageUrl = "/images/images.png";
             const bookImage = bookDetails?.volumeInfo?.imageLinks?.thumbnail || defaultImageUrl;
             const isLongTitle = book.title.length > 20;
+            
 
             const isFavorite = showFavoriteButton[`${book.title}-${book.authors}`];
 
             return (
               <div key={index} className={Styles.results}>
+                <Link legacyBehavior href="/book/[bookId]" as={`/book/${book.id}`}>
                 <div className={Styles.image01}>
                   <img src={bookImage} alt="本の画像" style={{ maxWidth: '103px', maxHeight: '150px' }} />
                 </div>
+                </Link>
                <div className={Styles.title92}>
                 <strong className={isLongTitle ? `${Styles.bookTitle} ${Styles.breakLine}` : Styles.bookTitle}>{book.title}</strong> - {book.authors}
               </div>

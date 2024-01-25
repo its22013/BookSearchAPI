@@ -7,6 +7,7 @@ import { useUser, firestore } from '@/hooks/firebase';
 import { doc, collection, getDocs, deleteDoc } from 'firebase/firestore';
 import Styles from '@/styles/Liviray.module.css';
 import Link from 'next/link';
+import Breadcrumbs from '@/components/Breadcrumbs';
 
 const FavoriteBooksPage = () => {
   const user = useUser();
@@ -64,10 +65,17 @@ const FavoriteBooksPage = () => {
     }
   };
 
+  const breadcrumbs = [
+    { label: 'トップ', path: '/' },
+    { label: 'マイページ', path: '/mypage' },
+    { label: 'お気に入りリスト', path: '/mypage/liked_book' },
+  ];
+
   return (
     <div className={Styles.mainContainer}>
       <Header />
       <main>
+        <Breadcrumbs crumbs={breadcrumbs} />
         <div className={Styles.container}>
           <h1 className={Styles.title01}>お気に入りの本</h1>
           {favoriteBooks.length === 0 ? (

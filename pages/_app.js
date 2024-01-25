@@ -8,7 +8,7 @@ function MyApp({ Component, pageProps }) {
     <>
       <Head>
         {/* 他のメタ情報やスタイルシートのリンクなどをここに追加できます */}
-        <link rel="icon" href="/book_search.ico" sizes="16x16" type="image/x-icon" />
+        <link rel="icon" href="/Bs_serarch.ico" sizes="16x16" type="image/x-icon" />
       </Head>
       <Component {...pageProps} />
     </>

@@ -8,4 +8,7 @@ module.exports = {
   env: {
     APP_ID: process.env.APP_ID,
   },
+  images: {
+    domains: ['thumbnail.image.rakuten.co.jp'],
+  },
 };

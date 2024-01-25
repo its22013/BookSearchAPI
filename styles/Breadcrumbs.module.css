@@ -1,0 +1,24 @@
+/* styles/Breadcrumbs.module.css */
+.breadcrumbs {
+    font-size: 16px;
+    margin-bottom: 10px;
+    margin-top: 24px;
+    justify-items: left;
+    margin-left: 7%;
+  }
+  
+  .crumbLink {
+    text-decoration: none;
+    color: #0070f3;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  
+  .crumbLink:hover {
+    text-decoration: underline;
+  }
+  
+  .currentCrumb {
+    color: #555;
+    font-weight: bold;
+  }

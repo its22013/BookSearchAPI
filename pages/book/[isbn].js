@@ -53,9 +53,16 @@ const BookDetailsPage = () => {
           const response = await fetch(`https://app.rakuten.co.jp/services/api/BooksBook/Search/20170404?format=json&isbn=${isbn}&applicationId=${apiKey}`);
           const data = await response.json();
 
-          // Itemsプロパティが存在し、かつ最初のアイテムが存在する場合に詳細情報をセット
           if (data.Items && data.Items.length > 0) {
-            setBookDetails(data.Items[0].Item);
+            const bookDetails = data.Items[0].Item;
+
+            // 最近見た本の情報をlocalStorageに保存
+            const recentlyViewedBooks = JSON.parse(localStorage.getItem('recentlyViewedBooks')) || [];
+            const newBook = { isbn: bookDetails.isbn, title: bookDetails.title };
+            const updatedRecentlyViewedBooks = [newBook, ...recentlyViewedBooks.slice(0, 4)]; // 最新の5冊まで保存
+            localStorage.setItem('recentlyViewedBooks', JSON.stringify(updatedRecentlyViewedBooks));
+
+            setBookDetails(bookDetails);
           } else {
             console.error('楽天BooksAPIからの詳細情報が見つかりませんでした。', data);
           }

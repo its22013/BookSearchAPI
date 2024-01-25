@@ -32,8 +32,12 @@ export default function Header() {
           />
         </a>
       </Link>
+
+      
       <div className={styles.s1}>
+        <Link legacyBehavior href="/">
         <h1>Book Search</h1>
+        </Link>
       </div>
 
       {/* ハンバーガーメニューのトグルボタン */}
