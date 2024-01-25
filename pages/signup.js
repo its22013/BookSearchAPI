@@ -112,19 +112,21 @@ export default function Signup() {
             flexDirection="column"
             justifyContent="center"
           >
-            <Box
-              boxShadow="lg"
-              w="600px"
-              paddingTop="40px"
-              paddingBottom="32px"
-              borderRadius="8px"
-              border="1px solid"
-              borderColor="gray.100"
-              m="0 auto"
-              display="flex"
-              flexDirection="column"
-              alignItems="center"
-              bg="white" // ここで背景色を指定
+            <Box 
+                          boxShadow="lg"
+                          w="700px"
+                          paddingTop="40px"
+                          paddingBottom="32px"
+                          borderRadius="8px"
+                          border="1px solid"
+                          borderColor="gray.100"
+                          m="0 auto"
+                          display="flex"
+                          flexDirection="column"
+                          alignItems="center"
+                          bg="rgba(255, 255, 255, 0.9)" 
+
+
             >
               <Heading color="gray.800" mb="60px" textAlign="center" size="2xl">
                 新規登録
@@ -185,7 +187,7 @@ export default function Signup() {
                       size="lg"
                       borderRadius="md"
                       height="30px"
-                      width="300px"
+                      width="350px"
                     />
                     <IconButton
                       icon={isPasswordVisible ? <ViewOffIcon /> : <ViewIcon />}
@@ -213,7 +215,7 @@ export default function Signup() {
                       {...register("confirmationPassword", { required: true })}
                       size="lg"
                       borderRadius="md"
-                      width="300px"
+                      width="350px"
                       height="30px"
                     />
                     <IconButton

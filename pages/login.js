@@ -176,7 +176,7 @@ export default function Login() {
                     }}
                     onClick={handleGoogleLogin}
                   >
-                    Googleでログイン
+                    <span style={{color:'black'}}>Googleでログイン</span>
                   </Button>
                 </Flex>
               </form>

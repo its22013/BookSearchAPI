@@ -7,6 +7,8 @@ import { env } from '@/next.config';
 import { auth, firestore, useUser } from '@/hooks/firebase';
 import { doc, collection, setDoc, getDoc } from 'firebase/firestore';
 import Link from 'next/link'; 
+import { ExternalLinkIcon, TriangleUpIcon,ArrowRightIcon, ArrowLeftIcon, ChevronDownIcon} from '@chakra-ui/icons';
+
 const RakutenSearch = () => {
   const user = useUser();
   const [searchType, setSearchType] = useState('title');
@@ -70,12 +72,12 @@ const RakutenSearch = () => {
   const handleSearch = async (page = 1) => {
     try {
       setErrorMessage('');
-
+  
       if (!keyword.trim() && !publisherName.trim()) {
         setErrorMessage('書籍名または出版社名の入力がありません。');
         return;
       }
-
+  
       let searchQuery = '';
       if (searchType === 'title') {
         searchQuery = `title=${encodeURIComponent(keyword)}`;
@@ -84,17 +86,15 @@ const RakutenSearch = () => {
       }
       const apiKey = env.APP_ID;
       const outOfStockFlagValue = getOutOfStockFlagValue(outOfStockFlag);
-      if (genre) {
-        searchQuery += `&booksGenreId=${genre}`;
-      }
+      const itemsPerPage = 18; // 一度に表示する本の数
       const response = await axios.get(
-        `https://app.rakuten.co.jp/services/api/BooksBook/Search/20170404?format=json&sort=sales&applicationId=${apiKey}&${searchQuery}&page=${page}&outOfStockFlag=${outOfStockFlagValue}`
+        `https://app.rakuten.co.jp/services/api/BooksBook/Search/20170404?format=json&sort=sales&applicationId=${apiKey}&${searchQuery}&page=${page}&hits=${itemsPerPage}&outOfStockFlag=${outOfStockFlagValue}`
       );
-
+  
       setSearchResults(response.data.Items || []);
       setCurrentPage(page);
       window.scrollTo({ top: 0, behavior: 'smooth' });
-
+  
       if (response.data.Items.length === 0) {
         setErrorMessage('書籍が見つかりませんでした。');
       }
@@ -217,7 +217,7 @@ const RakutenSearch = () => {
                 style={{ padding: '12px', fontSize: '18px', width: '40%', marginTop: '10px' }}
               />
             )}
-
+            
             {searchType === 'publisher' && (
               <>
                 <input
@@ -244,7 +244,7 @@ const RakutenSearch = () => {
             在庫のある商品のみ表示
           </label>
           <select value={genre} onChange={(e) => setGenre(e.target.value)} style={{ fontSize: '18px', marginTop: '10px', marginLeft: '10px'}}>
-            <option value="">全ジャンル</option>
+            <option value="">全ジャンル<ChevronDownIcon boxSize={20}/></option>
             {genres.map((genre) => (
               <option key={genre.id} value={genre.id}>
                 {genre.name}
@@ -298,10 +298,13 @@ const RakutenSearch = () => {
                 <p className={style.kakaku}>
                   価格:{book.Item.itemPrice} 円
                 </p>
+                <p style={{ fontSize: '16px', color: getAvailabilityText(book.Item.availability).color }}>
+                <span style={{ color: 'black' }}>在庫状況:</span>{getAvailabilityText(book.Item.availability).text}
+                </p>
                 <button   className={style.showsai}
                onClick={() => window.open(book.Item.itemUrl, '_blank')}
              >
-               詳細・購入
+               詳細・購入<ExternalLinkIcon boxSize={18} ml={8} />
              </button>
               
               </div>
@@ -326,23 +329,23 @@ const RakutenSearch = () => {
                   disabled={currentPage === 1}
                   
                 >
-                  前へ
+                  <ArrowLeftIcon boxSize={20}/>
                 </button>
                 <span className={style.number}>{currentPage}</span>
                 <button className={style.page}
                   onClick={() => handleSearch(currentPage + 1)}
-                  disabled={searchResults.length < 30}
+                  disabled={searchResults.length < 18}
                 >
-                  次へ
+                  <ArrowRightIcon boxSize={20}/>
                 </button>
               </div>
-              <button
+              <button 
                 onClick={() => {
                   window.scrollTo({ top: 0, behavior: 'smooth', });
                 }}
                 className={style.scrollToTopButton}
               >
-                先頭に戻る
+                <TriangleUpIcon boxSize={18} />
               </button>
             </div>
           )}
