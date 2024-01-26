@@ -101,7 +101,7 @@ export default function Login() {
               display="flex"
               flexDirection="column"
               alignItems="center"
-              bg="white"
+              bg="rgba(255, 255, 255, 0.9)" 
             >
               <Heading color="gray.800" mb="60px" textAlign="center" size="2xl" marginBottom="38px">
                 ログイン
