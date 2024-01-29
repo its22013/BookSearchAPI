@@ -109,7 +109,7 @@
 
   /* 最近見た本 */
   .notification01 {
-    margin-left: 10%;
+    margin-left: 5%;
     margin-right: 10px;
   }
   .menuItem01 {
@@ -149,7 +149,8 @@
     flex-grow: 1;
     padding: 20px;
     text-align: center; /* テキストを中央揃えにする */
-    margin-left: 120px;
+    margin-left: 150px;
+    margin-right: 10px;
   }
   
   .bookDetails p {

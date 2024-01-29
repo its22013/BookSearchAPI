@@ -1,5 +1,3 @@
-// pages/book/[isbn].js
-
 import { useEffect, useState } from 'react';
 import Header from "@/components/HeaderSigup";
 import Footer from "@/components/Footer";
@@ -7,11 +5,17 @@ import { useRouter } from 'next/router';
 import Styles from '@/styles/Liviray.module.css';
 import styles from '@/styles/BookDetailsPage.module.css'
 import Link from 'next/link';
+import { doc, setDoc, collection, firestore } from 'firebase/firestore'; // 追加
+import { useUser } from '@/hooks/firebase';
 
-const BookDetailsPage = () => {
+const BookDetailsPage = () => { 
   const router = useRouter();
   const { isbn } = router.query;
   const [bookDetails, setBookDetails] = useState(null);
+  const user = useUser();
+  const goBack = () => {
+    router.back(); 
+  };
 
   const getAvailabilityStatus = (availability) => {
     switch (availability) {
@@ -45,6 +49,28 @@ const BookDetailsPage = () => {
     }
   };
 
+  const saveRecentlyViewedBook = async (bookDetails) => {
+    try {
+      if (!user) return; // ユーザー情報がなければ処理を中断
+
+      const userId = user.uid;
+      const userDocRef = doc(firestore, 'users', userId); // ユーザードキュメント参照を作成
+      const recentlyViewedRef = collection(userDocRef, 'recently_viewed'); // 最近閲覧した本のコレクション参照を作成
+
+      await setDoc(doc(recentlyViewedRef), { // コレクション参照を使用
+        title: bookDetails.title,
+        author: bookDetails.author,
+        imageUrl: bookDetails.largeImageUrl,
+        salesDate: bookDetails.salesDate
+        // 他の必要な情報をここに追加
+      });
+
+      console.log('最近閲覧した本を保存しました');
+    } catch (error) {
+      console.error('最近閲覧した本の保存中にエラーが発生しました:', error);
+    }
+  };
+
   useEffect(() => {
     const fetchBookDetails = async () => {
       try {
@@ -55,14 +81,8 @@ const BookDetailsPage = () => {
 
           if (data.Items && data.Items.length > 0) {
             const bookDetails = data.Items[0].Item;
-
-            // 最近見た本の情報をlocalStorageに保存
-            const recentlyViewedBooks = JSON.parse(localStorage.getItem('recentlyViewedBooks')) || [];
-            const newBook = { isbn: bookDetails.isbn, title: bookDetails.title };
-            const updatedRecentlyViewedBooks = [newBook, ...recentlyViewedBooks.slice(0, 4)]; // 最新の5冊まで保存
-            localStorage.setItem('recentlyViewedBooks', JSON.stringify(updatedRecentlyViewedBooks));
-
             setBookDetails(bookDetails);
+            saveRecentlyViewedBook(bookDetails); // ブックディテールを保存する
           } else {
             console.error('楽天BooksAPIからの詳細情報が見つかりませんでした。', data);
           }
@@ -73,7 +93,7 @@ const BookDetailsPage = () => {
     };
 
     fetchBookDetails();
-  }, [isbn]);
+  }, [isbn, user]);
 
   return (
     <div className={Styles.mainContainer}>
@@ -82,7 +102,6 @@ const BookDetailsPage = () => {
         {bookDetails ? (
           // 詳細情報を表示する部分
           <div className={styles.bookDetailsContainer}>
-          
             <img src={bookDetails.largeImageUrl} alt="本の画像" />
             <h1>{bookDetails.title}</h1>
             <p>著者名: {bookDetails.author}</p>
@@ -97,6 +116,9 @@ const BookDetailsPage = () => {
             </a>
             <p>レビュー件数: {bookDetails.reviewCount}</p>
             {/* リンクやプレビューなども必要に応じて表示 */}
+            <button className={styles.backButton} onClick={goBack}>
+              前のページに戻る
+            </button>
           </div>
         ) : (
           // ローディングなどの表示

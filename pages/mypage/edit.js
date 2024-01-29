@@ -40,7 +40,10 @@ const EditPage = () => {
         // 認証が成功した場合
         setIsVerified(true);
       } else {
-        alert('Googleログインのユーザーはパスワードとユーザー名の変更ができません。');
+        // Googleログインの場合はパスワードの再入力が不要なので、ここで直接ユーザー名の更新処理を行う
+        await updateProfile(currentUser, { displayName: newName });
+        console.log('プロファイルが更新されました');
+        setUpdateSuccess(true);
       }
     } catch (error) {
       console.error('認証エラー:', error);

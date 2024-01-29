@@ -10,7 +10,29 @@
 .bookDetailsContainer {
     margin-top: 10px;
     margin-left: 350px;
+    margin-right: 350px;
 }
+
+.backButton {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #3ecfff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    margin-bottom: 10px;
+  }
+  
+  .backButton:hover {
+    background-color: #1e8fd4;
+  }
+  
+  .backButton:active {
+    transform: scale(0.95);
+  }
 
 @media (max-width: 932px) {
     .bookDetailsContainer {

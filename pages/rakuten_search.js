@@ -8,6 +8,7 @@ import { auth, firestore, useUser } from '@/hooks/firebase';
 import { doc, collection, setDoc, getDoc } from 'firebase/firestore';
 import Link from 'next/link'; 
 import { ExternalLinkIcon, TriangleUpIcon,ArrowRightIcon, ArrowLeftIcon, ChevronDownIcon} from '@chakra-ui/icons';
+import Breadcrumbs from '../components/Breadcrumbs';
 
 const RakutenSearch = () => {
   const user = useUser();
@@ -180,10 +181,16 @@ const RakutenSearch = () => {
     return new Intl.DateTimeFormat('ja-JP', options).format(dateObject).replace(/年|月/g, '-').replace(/日/g, ' ');
   };
 
+  const breadcrumbs = [
+    { label: 'トップ', path: '/' },
+    { label: '楽天検索', path: '/rakuten_search' },
+  ];
+
   return (
     <div className={style.mainContainer}>
       <Header />
       <main>
+        <Breadcrumbs crumbs={breadcrumbs} />
         <div style={{ textAlign: 'center', marginTop: '50px' }}>
           <h1 className={style.booksearch}>本の検索</h1>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
