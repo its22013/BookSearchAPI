@@ -26,7 +26,8 @@ export default function Signup() {
     handleSubmit,
     formState: { errors },
   } = useForm();
-
+  const [passwordError, setPasswordError] = useState("");
+  const [emailError, setEmailError] = useState(""); 
   const auth = useAuth();
   const currentUser = useUser();
   const [isProcessingSignup, setIsProcessingSignup] = useState(false);
@@ -39,6 +40,7 @@ export default function Signup() {
   const signup = async (email, password, displayName) => {
     try {
       setIsProcessingSignup(true);
+   
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
   
@@ -52,7 +54,14 @@ export default function Signup() {
       setIsProcessingSignup(false);
       if (error.code === 'auth/email-already-in-use') {
         alert('すでにアカウントが存在します');
-      } else {
+      } else if (error.code === 'auth/invalid-email') {
+        setEmailError('正しいメールアドレスを入力してください');
+        alert("正しいメールアドレスを入力してください") // メールアドレスが無効な場合のエラー
+      }else if (error.code === 'auth/weak-password') {
+        setPasswordError('パスワードは少なくとも6文字以上で設定してください');
+        alert("パスワードは6文字以上である必要があります")
+      } 
+      else {
         console.error('Signup Error:', error);
       }
     }
@@ -60,12 +69,12 @@ export default function Signup() {
 
   const onSubmit = async ({ email, password, confirmationPassword, displayName }) => {
     if (password === confirmationPassword) {
+      setEmailError(""); // エラーが解消されたらクリアする
       signup(email, password, displayName);
-    } else {
+    }  else {
       alert("パスワードが一致しません");
     }
   };
-  
   useEffect(() => {
     console.log("currentUser:", currentUser);
     console.log("pathname:", router.pathname);
@@ -138,7 +147,7 @@ export default function Signup() {
                   </FormLabel>
                   {errors.displayName && (
                     <Text color="red.400" mb="2">
-                      ユーザー名が入力されていません
+                      <font color="red">ユーザー名が入力されていません</font>
                     </Text>
                   )}
                   <Input
