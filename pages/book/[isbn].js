@@ -62,6 +62,7 @@ const BookDetailsPage = () => {
       // 最新の閲覧した本をFirestoreに保存
       await setDoc(doc(recentlyViewedRef, isbn), {
         title: bookDetails.title,
+        isbn: bookDetails.isbn,
         author: bookDetails.author,
         imageUrl: bookDetails.largeImageUrl,
         salesDate: bookDetails.salesDate,
