@@ -44,7 +44,10 @@ export default function MyPage() {
           const snapshot = await getDocs(recentlyViewedRef);
           const recentlyViewedBooks = snapshot.docs.map(doc => doc.data());
 
-          setUniqueRecentlyViewedBooks(recentlyViewedBooks);
+
+          // 日付で降順にソートして最新の3件を取得
+          const sortedRecentlyViewedBooks = recentlyViewedBooks.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).slice(0, 3);
+          setUniqueRecentlyViewedBooks(sortedRecentlyViewedBooks);
         }
       } catch (error) {
         console.error('最近閲覧した本の取得中にエラーが発生しました:', error);
@@ -59,7 +62,7 @@ export default function MyPage() {
       <Header />
       <main>
         <Breadcrumbs crumbs={breadcrumbs} />
-        <div className={styles.secondContainer}>
+        <div className={styles.secondContainer}>  
           <h1 className={styles.h1}>MY PAGE</h1>
           <div className={styles.box1}>
             {currentUser && currentUser.displayName && (
@@ -69,6 +72,20 @@ export default function MyPage() {
 
           <div className={styles.menuAndNotification}>
             <div className={styles.menuContainer}>
+              {/* お気に入りリストへのリンク */}
+              <Link legacyBehavior href="/mypage/liked_book">
+                <h3 className={styles.menuItem}>
+                  <a>お気に入りリスト</a>
+                </h3>
+              </Link>
+
+              {/* パスワード確認・変更へのリク */}
+              <Link legacyBehavior href="/mypage/edit">
+                <h3 className={styles.menuItem}>
+                  <a>パスワード確認・変更</a>
+                </h3>
+              </Link>
+
               {/* ログアウト */}
               <h3 className={styles.menuItem}>
                 <a onClick={handleLogout} className={styles.logout}>ログアウト</a>
@@ -82,6 +99,7 @@ export default function MyPage() {
                   height={100}
                 />
               </div>
+              
             </div>
             <div className={styles.notification01}>
               <div className={styles.menuItem01}>
