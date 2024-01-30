@@ -5,16 +5,18 @@ import { useRouter } from 'next/router';
 import Styles from '@/styles/Liviray.module.css';
 import styles from '@/styles/BookDetailsPage.module.css'
 import Link from 'next/link';
-import { doc, setDoc, collection, firestore } from 'firebase/firestore'; // 追加
+import { doc, setDoc, collection, firestore, deleteDoc, getDocs } from 'firebase/firestore';
 import { useUser } from '@/hooks/firebase';
+import { getFirestore } from 'firebase/firestore';
 
-const BookDetailsPage = () => { 
+const BookDetailsPage = () => {
   const router = useRouter();
   const { isbn } = router.query;
   const [bookDetails, setBookDetails] = useState(null);
   const user = useUser();
+  const firestoreDB = getFirestore();
   const goBack = () => {
-    router.back(); 
+    router.back();
   };
 
   const getAvailabilityStatus = (availability) => {
@@ -38,7 +40,7 @@ const BookDetailsPage = () => {
 
   const getPostageFlag = (postageFlag) => {
     switch (postageFlag) {
-      case 0: 
+      case 0:
         return '送料別';
       case 1:
         return '宅配送料無料';
@@ -51,19 +53,29 @@ const BookDetailsPage = () => {
 
   const saveRecentlyViewedBook = async (bookDetails) => {
     try {
-      if (!user) return; // ユーザー情報がなければ処理を中断
+      if (!user) return;
 
       const userId = user.uid;
-      const userDocRef = doc(firestore, 'users', userId); // ユーザードキュメント参照を作成
-      const recentlyViewedRef = collection(userDocRef, 'recently_viewed'); // 最近閲覧した本のコレクション参照を作成
+      const userDocRef = doc(firestoreDB, 'users', userId);
+      const recentlyViewedRef = collection(userDocRef, 'recently_viewed');
 
-      await setDoc(doc(recentlyViewedRef), { // コレクション参照を使用
+      // 最新の閲覧した本をFirestoreに保存
+      await setDoc(doc(recentlyViewedRef, isbn), {
         title: bookDetails.title,
         author: bookDetails.author,
         imageUrl: bookDetails.largeImageUrl,
-        salesDate: bookDetails.salesDate
-        // 他の必要な情報をここに追加
+        salesDate: bookDetails.salesDate,
+        createdAt: new Date().toISOString() // 追加：ドキュメントの作成日時をISO文字列に変換
       });
+
+      // 最新の5件のみを保存するため、古いデータを削除する
+      const snapshot = await getDocs(recentlyViewedRef);
+      const docs = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      if (docs.length > 5) {
+        const sortedDocs = docs.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt)); // 追加：日付で昇順ソート
+        const oldestDoc = sortedDocs[0];
+        await deleteDoc(doc(recentlyViewedRef, oldestDoc.id));
+      }
 
       console.log('最近閲覧した本を保存しました');
     } catch (error) {

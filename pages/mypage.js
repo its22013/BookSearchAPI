@@ -7,14 +7,17 @@ import Styles from "../styles/Home.module.css";
 import Footer from "@/components/Footer";
 import styles from "../styles/MyPage.module.css";
 import Image from "next/image";
-import { useUser, useAuth } from "../hooks/firebase";  
+import { useUser, useAuth, firestore} from "../hooks/firebase";  
 import Breadcrumbs from '../components/Breadcrumbs';
+import { getFirestore, collection, doc, getDocs } from 'firebase/firestore'; // firestore から必要な関数をインポート
+
 
 export default function MyPage() {
   const currentUser = useUser();
   const router = useRouter();
   const auth = useAuth();
   const [uniqueRecentlyViewedBooks, setUniqueRecentlyViewedBooks] = useState([]);
+  const firestoreDB = getFirestore();
 
   const handleLogout = async () => {
     try {
@@ -54,16 +57,29 @@ export default function MyPage() {
   };
 
   useEffect(() => {
-    const recentlyViewedBooks = JSON.parse(localStorage.getItem('recentlyViewedBooks')) || [];
-    const uniqueBooks = Array.from(new Set(recentlyViewedBooks.map(book => book.isbn)))
-      .map(async (isbn) => {
-        const bookInfo = await fetchBookInfo(isbn);
-        return { ...bookInfo, isbn };
-      })
-      .slice(0, 5);
-
-    Promise.all(uniqueBooks).then((books) => setUniqueRecentlyViewedBooks(books.filter(Boolean)));
-  }, []);
+    const fetchRecentlyViewedBooks = async () => {
+      try {
+        if (currentUser) {
+          const userId = currentUser.uid;
+          const userDocRef = doc(firestoreDB, 'users', userId);
+          const recentlyViewedRef = collection(userDocRef, 'recently_viewed');
+  
+          // ユーザーごとに最近閲覧した本を取得して表示する
+          const snapshot = await getDocs(recentlyViewedRef);
+          const recentlyViewedBooks = snapshot.docs.map(doc => doc.data());
+  
+          // 日付で降順にソートして最新の3件を取得
+          const sortedRecentlyViewedBooks = recentlyViewedBooks.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).slice(0, 3);
+  
+          setUniqueRecentlyViewedBooks(sortedRecentlyViewedBooks);
+        }
+      } catch (error) {
+        console.error('最近閲覧した本の取得中にエラーが発生しました:', error);
+      }
+    };
+  
+    fetchRecentlyViewedBooks();
+  }, [currentUser]);
 
 
   return (
