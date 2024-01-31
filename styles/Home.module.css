@@ -105,3 +105,67 @@
     margin-top: 50px; /* スペースのマージンを調整 */
   }
 }
+
+.sliderContainer {
+  width: 80%; /* コンテナの幅を指定 */
+  margin: 0 auto; /* 左右中央に配置 */
+  padding: 20px; /* コンテナの内側の余白を指定 */
+  background-color: #fffdcf; /* 背景色を指定 */
+  border-radius: 10px; /* 角丸を指定 */
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* ボックスシャドウを指定 */
+  margin-bottom: 34px;
+}
+
+.slider {
+  width: 100%; /* スライダー全体の幅を調整 */
+}
+
+/* スライド間のマージンを0に設定 */
+.slick-slider {
+  margin: 0 auto;
+}
+
+/* スライド間のマージンを0に設定 */
+.slick-slide {
+  margin-right: 0px;
+}
+
+/* スライド間のマージンを0に設定 */
+.slick-list {
+  margin: 0 -10px; /* スライドの左右にマージンを持つことで間隔を調整 */
+}
+
+/* スライダーの間隔を調整 */
+.slick-slide div {
+  padding: 0 5px; /* スライド内の要素の左右のパディングを設定 */
+}
+
+.slick-prev,
+.slick-next {
+  font-size: 20px; /* ボタンのサイズを調整 */
+  color: white; /* ボタンの文字色を白に設定 */
+  background-color: rgba(0, 0, 0, 0.5); /* ボタンの背景色を半透明の黒に設定 */
+  border-radius: 50%; /* ボタンの角丸を50%に設定 */
+}
+
+/* スライダーのボタンにマウスを乗せたときのスタイル */
+.slick-prev:hover,
+.slick-next:hover {
+  background-color: rgba(0, 0, 0, 0.7); /* マウスを乗せたときの背景色を濃いめの黒に変更 */
+}
+
+/* スライダーのボタンを中央配置するスタイル */
+.slick-prev {
+  left: 20px; /* 左ボタンの位置を調整 */
+  z-index: 1; /* ボタンを手前に表示 */
+}
+
+.slick-next {
+  right: 20px; /* 右ボタンの位置を調整 */
+  z-index: 1; /* ボタンを手前に表示 */
+}
+
+.book_h2 {
+  text-align: center;
+  
+}
