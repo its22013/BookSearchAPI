@@ -9,7 +9,7 @@ import { doc, collection, setDoc, getDoc } from 'firebase/firestore';
 import Link from 'next/link'; 
 import { ExternalLinkIcon, TriangleUpIcon,ArrowRightIcon, ArrowLeftIcon, ChevronDownIcon} from '@chakra-ui/icons';
 import Breadcrumbs from '../components/Breadcrumbs';
-
+import BookDetailsModal from '../components/BookDetailsModal';
 const RakutenSearch = () => {
   const user = useUser();
   const [searchType, setSearchType] = useState('title');
@@ -22,6 +22,8 @@ const RakutenSearch = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [showFavoriteButton, setShowFavoriteButton] = useState(true); 
   const [notification, setNotification] = useState(null);
+  const [selectedBook, setSelectedBook] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const genres = [
     { id: '001004', name: '小説' },
@@ -62,14 +64,22 @@ const RakutenSearch = () => {
   const getOutOfStockFlagValue = (flag) => {
     return flag ? '0' : '1';
   };
+  const handleBookClick = (book) => {
+    setSelectedBook(book);
+    setIsModalOpen(true);
+    console.log("erorr");
+  };
 
+  const closeModal = () => {
+    setSelectedBook(null);
+    setIsModalOpen(false);
+  };
   const handleKeyDown = (e) => {
     if (e.key === 'Enter') {
       e.preventDefault();
       handleSearch();
     }
   };
-
   const handleSearch = async (page = 1) => {
     try {
       setErrorMessage('');
@@ -283,25 +293,22 @@ const RakutenSearch = () => {
             backgroundColor: '#FFFF'
           }}
         >
-         <Link legacyBehavior href={`/book/${encodeURIComponent(book.Item.isbn)}`}>
-          <a>
-         <h3 style={{ fontSize: '18px' }}>{book.Item.title}</h3>
-         </a>
-         </Link>
+         
               <div className="book">
-                <p style={{ fontSize: '18px' }}>著者: {book.Item.author}</p>
-                <Link legacyBehavior href={`/book/${encodeURIComponent(book.Item.isbn)}`}>
-                  <a>
-                    <div className="img">
-                      <img
-                        src={book.Item.largeImageUrl}
-                        alt={book.Item.title}
-                        style={{ width: '32%' }}
-                      />
-                    </div>
-                  </a>
-                </Link>
-                {/* 他のコンテンツ */}
+              <h3
+                  style={{ fontSize: '23px', cursor: 'pointer' }}
+                  onClick={() => handleBookClick(book)}
+                >
+                  {book.Item.title}
+                </h3>
+                <p style={{fontSize: '15px'}}>著者名: {book.Item.author}</p>
+              <img
+                  src={book.Item.largeImageUrl}
+                  alt={book.Item.title}
+                  style={{ width: '32%', cursor: 'pointer' }}
+                  onClick={() => handleBookClick(book)}
+                />
+               
                 <p className={style.kakaku}>
                   価格:{book.Item.itemPrice} 円
                 </p>
@@ -327,7 +334,9 @@ const RakutenSearch = () => {
     })}
   </div>
 )}
-
+{isModalOpen && selectedBook && (
+        <BookDetailsModal book={selectedBook} onClose={closeModal} />
+      )}
           {searchResults.length > 0 && (
             <div className={style.paginationContainer}>
               <div className={style.paginationStyle} style={{ marginTop: '10px', position: 'relative' }}>
