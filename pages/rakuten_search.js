@@ -91,7 +91,6 @@ const RakutenSearch = () => {
       const response = await axios.get(
         `https://app.rakuten.co.jp/services/api/BooksBook/Search/20170404?format=json&sort=sales&applicationId=${apiKey}&${searchQuery}&page=${page}&hits=${itemsPerPage}&outOfStockFlag=${outOfStockFlagValue}`
       );
-  
       setSearchResults(response.data.Items || []);
       setCurrentPage(page);
       window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -251,13 +250,14 @@ const RakutenSearch = () => {
             在庫のある商品のみ表示
           </label>
           <select value={genre} onChange={(e) => setGenre(e.target.value)} style={{ fontSize: '18px', marginTop: '10px', marginLeft: '10px'}}>
-            <option value="">全ジャンル<ChevronDownIcon boxSize={20}/></option>
+            <option value={0}><div className={style.myStyle} >全ジャンル</div><ChevronDownIcon boxSize={20}/></option>
             {genres.map((genre) => (
               <option key={genre.id} value={genre.id}>
                 {genre.name}
               </option>
             ))}
           </select>
+          
           {errorMessage && (
             <p style={{ color: 'red', fontSize: '20px', marginTop: '10px' }}>{errorMessage}</p>
           )}

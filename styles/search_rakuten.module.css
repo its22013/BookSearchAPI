@@ -21,6 +21,17 @@
     transition: 0.3s;
     margin-top: 40px;
   }
+  .myStyle {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    line-height: 1em;
+    -webkit-flex-shrink: 0;
+    -ms-flex-negative: 0;
+    flex-shrink: 0;
+    color: currentColor;
+    vertical-align: middle;
+  }
   .search:hover {
     color: #fff; /* 文字色 */
     background: #4D9BC1; /* 背景色 */
