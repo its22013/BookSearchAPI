@@ -2,6 +2,9 @@ import Link from "next/link";
 import Header from "../components/HeaderSigup";
 import Styles from "../styles/Home.module.css";
 import Footer from "@/components/Footer";
+import GoogleBooksSlider from "@/components/RandomBook";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 export default function FirstPost() {
   return (
@@ -26,6 +29,10 @@ export default function FirstPost() {
             </a>
           </div>
           </Link>
+        </div>
+        <h2 className={Styles.book_h2}>オススメの本</h2>
+        <div className={`${Styles.sliderContainer} slider-container`}>
+          <GoogleBooksSlider />
         </div>
       </main>
       <Footer />

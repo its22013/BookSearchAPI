@@ -13,6 +13,7 @@ const BookDetailsPage = () => {
   const router = useRouter();
   const { isbn } = router.query;
   const [bookDetails, setBookDetails] = useState(null);
+  const [ebookDetails, setEbookDetails] = useState(null);
   const user = useUser();
   const firestoreDB = getFirestore();
   const goBack = () => {
@@ -106,6 +107,29 @@ const BookDetailsPage = () => {
     };
 
     fetchBookDetails();
+  }, [isbn, user]);
+
+  useEffect(() => {
+    const fetchEbookDetails = async () => {
+      try {
+        if (isbn) {
+          const apiKey = process.env.APP_ID;
+          const response = await fetch(`https://app.rakuten.co.jp/services/api/IchibaItem/Search/20170706?format=json&isbn=${isbn}&applicationId=${apiKey}`);
+          const data = await response.json();
+
+          if (data.Items && data.Items.length > 0) {
+            const ebookDetails = data.Items[0];
+            setEbookDetails(ebookDetails);
+          } else {
+            console.error('楽天BooksAPIからの電子書籍情報が見つかりませんでした。', data);
+          }
+        }
+      } catch (error) {
+        console.error('楽天BooksAPIからの電子書籍情報取得中にエラーが発生しました:', error);
+      }
+    };
+
+    fetchEbookDetails();
   }, [isbn, user]);
 
   return (
