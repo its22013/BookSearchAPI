@@ -340,7 +340,7 @@ const RakutenSearch = () => {
           {searchResults.length > 0 && (
             <div className={style.paginationContainer}>
               <div className={style.paginationStyle} style={{ marginTop: '10px', position: 'relative' }}>
-                <button className={style.page}
+                <button 
                   onClick={() => handleSearch(currentPage - 1)}
                   disabled={currentPage === 1}
                   
@@ -348,14 +348,14 @@ const RakutenSearch = () => {
                   <ArrowLeftIcon boxSize={20}/>
                 </button>
                 <span className={style.number}>{currentPage}</span>
-                <button className={style.page}
+                <button
                   onClick={() => handleSearch(currentPage + 1)}
                   disabled={searchResults.length < 18}
                 >
                   <ArrowRightIcon boxSize={20}/>
                 </button>
               </div>
-              <button 
+              <button
                 onClick={() => {
                   window.scrollTo({ top: 0, behavior: 'smooth', });
                 }}
