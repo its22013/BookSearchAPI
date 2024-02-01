@@ -169,6 +169,10 @@
   
 
   @media (max-width: 992px) {
+    .menuItem01 {
+      margin-left: 25px;
+      margin-right: 40px;
+    }
     .menuItem01 h3:before {
       width: 100%;
     }
@@ -178,8 +182,9 @@
     }
   
     .FavoriteBooksContainer {
-      width: 410px;
-      margin-right: 20px;
+      height: 100%;
+      width: 150%;
+      margin-right: 20zpx;   
     }
   
     .notification h3 {
@@ -195,11 +200,21 @@
         font-size: 24px;
       }
 
-      .notification01 {
-        margin-right: 120px;
-      }
-      .bookDetails {
-        margin-left: 10px;
-        margin-right: 15px;
-      }
+    .notification01 {
+      margin-left: -25px;
+      margin-right: 130px;
+    }
+    .bookDetails {
+       margin-left: 10px;
+       margin-right: 5px;
+    }
+    .menuAndNotification {
+      display: contents;
+    }
+    .Image {
+      display: none;
+    }
+    .saikin {
+      margin-right: 200px;
+    }
   }

@@ -82,6 +82,7 @@ const FavoriteBooksPage = () => {
             <p>お気に入りの本はありません。</p>
           ) : (
             <ul>
+              <div className={Styles.sd02}>
               {favoriteBooks.map((book) => (
                 <div key={book.id} className={Styles.favoriteBook}>
                   <div className={Styles.FavoriteBooksContainer}>
@@ -106,6 +107,7 @@ const FavoriteBooksPage = () => {
                   </div>
                 </div>
               ))}
+              </div>
             </ul>
           )}
         </div>

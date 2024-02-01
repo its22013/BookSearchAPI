@@ -67,6 +67,12 @@
 }
 
 @media (max-width: 750px) {
+  .slider {
+    width: 90%; /* スライダーの幅をデバイスの幅の90%に設定 */
+    margin: 0 auto; /* 中央寄せ */
+    margin-right: 20px;
+  }
+
   .rk {
       font-size: 34px;
   }

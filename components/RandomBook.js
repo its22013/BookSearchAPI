@@ -17,13 +17,18 @@ const RakutenBooksSlider = () => {
           "Java",
           "AWS",
           "Python",
+          "Kotlin",
+          "料理",
+          "Node.js",
+          "ITパスポート",
+          "mysql"
         ];
         const randomKeyword = keywords[Math.floor(Math.random() * keywords.length)];
 
         const API_KEY = process.env.APP_ID;
 
         const response = await axios.get(
-          `https://app.rakuten.co.jp/services/api/BooksBook/Search/20170404?format=json&title=${randomKeyword}&applicationId=${API_KEY}&hits=10`
+          `https://app.rakuten.co.jp/services/api/BooksBook/Search/20170404?format=json&title=${randomKeyword}&applicationId=${API_KEY}&hits=30`
         );
         setBooks(response.data.Items);
       } catch (error) {
@@ -50,19 +55,20 @@ const RakutenBooksSlider = () => {
   const settings = {
     dots: false,
     infinite: true,
-    slidesToShow: 2.8,
+    slidesToShow: 3,
     slidesToScroll: 1,
     centerMode: true,
     centerPadding: "60px",
     autoplay: true,
-    autoplaySpeed: 2000
+    autoplaySpeed: 3000
   };
+
 
   // 代替の画像URL
   const fallbackImageUrl = "/images/images.png";
 
   return (
-    <div>
+    <div className={styles.slider}>
       <Slider {...settings} className={styles.slider}>
         {books.map((book, index) => (
           <div key={index}>

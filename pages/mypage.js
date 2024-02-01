@@ -97,6 +97,7 @@ export default function MyPage() {
                   alt="Ranking Image"
                   width={100}
                   height={100}
+                  className={styles.Image}
                 />
               </div>
               
@@ -105,10 +106,11 @@ export default function MyPage() {
               <div className={styles.menuItem01}>
                 <h3 className={styles.additionalInfo}>最近見た本</h3>
               </div>
+              <div className={styles.saikin}></div>
               <ul className={styles.recentlyViewedList}>
                 {uniqueRecentlyViewedBooks.map((book, index) => (
-                  <div key={index} className={styles.FavoriteBooksContainer}>
-                    <div className={Styles.FavoriteBooksContainer}>
+                  
+                  <div key={index} className={styles.FavoriteBooksContainer}>                    
                       <Link legacyBehavior href={`/book/${book.isbn}`} passHref>
                         <a>
                           <div className={styles.bookInfo}>
@@ -127,8 +129,8 @@ export default function MyPage() {
                         </a>
                       </Link>
                     </div>
-                  </div>
                 ))}
+
               </ul>
             </div>
           </div>
