@@ -5,24 +5,25 @@ import style from '../styles/BookDetailsModal.module.css';
 import {CloseIcon, ExternalLinkIcon} from '@chakra-ui/icons';
 
 const BookDetailsModal = ({ book, onClose }) => {
-    const getAvailabilityStatus = (availability) => {
-        switch (availability) {
-          case '1':
-            return '在庫あり';
-          case '2':
-            return '通常3～7日程度で発送';
-          case '3':
-            return '通常3～9日程度で発送';
-          case '4':
-            return 'メーカー取り寄せ';
-          case '5':
-            return '予約受付中';
-          case '6':
-            return 'メーカーに在庫確認';
-          default:
-            return '不明';
-        }
-      };
+  const getAvailabilityText = (availability) => {
+    switch (availability) {
+      case '1':
+        return { text: '在庫あり', color: 'blue' };
+      case '2':
+        return { text: '通常３〜７日程度で発送', color: 'blue' };
+      case '3':
+        return { text: '通常３〜９日程度で発送', color: 'blue' };
+      case '4':
+        return { text: 'メーカー取り寄せ', color: 'blue' };
+      case '5':
+        return { text: '予約受付中', color: 'blue' };
+      case '6':
+        return { text: 'メーカーに在庫確認', color: 'blue' };
+      default:
+        return { text: '不明', color: 'red' };
+    }
+  };
+
       const getPostageFlag = (postageFlag) => {
         switch (postageFlag) {
           case 0:
@@ -41,13 +42,15 @@ const BookDetailsModal = ({ book, onClose }) => {
       <div className={style.Icons}>
         <CloseIcon boxSize={25} onClick={onClose}/>
         </div>
-      <img src={book.Item.largeImageUrl} alt="本の画像" />
+      <img style={{height:'250px'}} src={book.Item.largeImageUrl} alt="本の画像" />
             <h1>{book.Item.title}</h1>
-            <p>著者名: {book.Item.author}</p>
-            <p>価格: {book.Item.itemPrice}円</p>
-            <p>商品説明: {book.Item.itemCaption}</p>
-            <p>在庫確認: {getAvailabilityStatus(book.Item.availability)}</p>
-            <p>出版日: {book.Item.salesDate}</p>
+            <p style={{fontSize:'18px'}}>著者名: {book.Item.author}</p>
+            <p style={{ fontSize: '20px'}}>価格: <span style={{color:'red'}}>{book.Item.itemPrice}円</span></p>
+            <p style={{fontSize:'20px'}}>商品説明: {book.Item.itemCaption}</p>
+            <p style={{ fontSize: '20px', color: getAvailabilityText(book.Item.availability).color }}>
+                <span style={{ color: 'black' }}>在庫状況:</span>{getAvailabilityText(book.Item.availability).text}
+                </p>
+            <p style={{fontSize:'20px'}}>出版日: {book.Item.salesDate}</p>
             <p>送料: {getPostageFlag(book.Item.postageFlag)}</p>
             <button   className={style.showsai}
                onClick={() => window.open(book.Item.itemUrl, '_blank')}
