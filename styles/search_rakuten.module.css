@@ -49,13 +49,12 @@
   color: red;
   paddingTop: '50px'; 
 }
-.page {
-  margin-right: 10px;
-}
+
 .number {
   margin: '0 10px';
   font-size: '18px';
   margin-right: 10px;
+  margin-left: 10px;
   font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 /* search_rakuten.module.css */
