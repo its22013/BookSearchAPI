@@ -24,7 +24,23 @@ const RakutenSearch = () => {
   const [notification, setNotification] = useState(null);
   const [selectedBook, setSelectedBook] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedSort, setSelectedSort] = useState('sales');
 
+
+  const handleSortChange = (event) => {
+    const newSort = event.target.value;
+    setSelectedSort(newSort);
+  
+    // URLのクエリパラメーターを更新
+    const urlParams = new URLSearchParams(window.location.search);
+    urlParams.set('sort', newSort);
+    window.history.pushState({}, '', `${window.location.pathname}?${urlParams.toString()}`);
+  };
+  
+  const handleSearchButtonClick = () => {
+    // 検索ボタンがクリックされたときに検索を実行
+    handleSearch();
+  };
   const genres = [
     { id: '001004', name: '小説' },
     { id: '001017', name: 'ライトノベル' },
@@ -99,7 +115,7 @@ const RakutenSearch = () => {
       const outOfStockFlagValue = getOutOfStockFlagValue(outOfStockFlag);
       const itemsPerPage = 18; // 一度に表示する本の数
       const response = await axios.get(
-        `https://app.rakuten.co.jp/services/api/BooksBook/Search/20170404?format=json&sort=sales&applicationId=${apiKey}&${searchQuery}&page=${page}&hits=${itemsPerPage}&outOfStockFlag=${outOfStockFlagValue}`
+        `https://app.rakuten.co.jp/services/api/BooksBook/Search/20170404?format=json&sort=${selectedSort}&applicationId=${apiKey}&${searchQuery}&page=${page}&hits=${itemsPerPage}&outOfStockFlag=${outOfStockFlagValue}`
       );
       setSearchResults(response.data.Items || []);
       setCurrentPage(page);
@@ -247,9 +263,9 @@ const RakutenSearch = () => {
               </>
             )}
 
-            <button onClick={() => handleSearch()} className={style.search}>
-              検索
-            </button>
+              <button onClick={handleSearchButtonClick} className={style.search}>
+                    検索
+              </button>
           </div>
           <label>
             <input
@@ -267,6 +283,14 @@ const RakutenSearch = () => {
               </option>
             ))}
           </select>
+          <select
+      value={selectedSort}
+      onChange={handleSortChange}
+      style={{ fontSize: '18px', marginTop: '10px', marginLeft: '10px' }}
+    >
+      <option value="-releaseDate">新しい順</option>
+      <option value="sales">売れている順</option>
+    </select>
           
           {errorMessage && (
             <p style={{ color: 'red', fontSize: '20px', marginTop: '10px' }}>{errorMessage}</p>
@@ -315,6 +339,7 @@ const RakutenSearch = () => {
                 <p style={{ fontSize: '16px', color: getAvailabilityText(book.Item.availability).color }}>
                 <span style={{ color: 'black' }}>在庫状況:</span>{getAvailabilityText(book.Item.availability).text}
                 </p>
+                <p style={{fontSize:'20px'}}>出版日: {book.Item.salesDate}</p>
                 <button   className={style.showsai}
                onClick={() => window.open(book.Item.itemUrl, '_blank')}
              >
@@ -371,5 +396,4 @@ const RakutenSearch = () => {
     </div>
   );
 };
-
 export default RakutenSearch;
