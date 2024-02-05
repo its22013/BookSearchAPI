@@ -25,6 +25,7 @@ const RakutenSearch = () => {
   const [selectedBook, setSelectedBook] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedSort, setSelectedSort] = useState('sales');
+  const [totalPageCount, setTotalPageCount] = useState(0);
 
 
   const handleSortChange = (event) => {
@@ -117,8 +118,12 @@ const RakutenSearch = () => {
       const response = await axios.get(
         `https://app.rakuten.co.jp/services/api/BooksBook/Search/20170404?format=json&sort=${selectedSort}&applicationId=${apiKey}&${searchQuery}&page=${page}&hits=${itemsPerPage}&outOfStockFlag=${outOfStockFlagValue}`
       );
+      const totalCount = response.data.count || 0;
+      const pageCount = Math.ceil(totalCount / itemsPerPage);
+
       setSearchResults(response.data.Items || []);
       setCurrentPage(page);
+      setTotalPageCount(pageCount);
       window.scrollTo({ top: 0, behavior: 'smooth' });
   
       if (response.data.Items.length === 0) {
@@ -372,7 +377,9 @@ const RakutenSearch = () => {
                 >
                   <ArrowLeftIcon boxSize={20}/>
                 </button>
-                <span className={style.number}>{currentPage}</span>
+                <span className={style.number}>
+                  {`${totalPageCount}ページ中${currentPage}ページ`}
+                </span>
                 <button
                   onClick={() => handleSearch(currentPage + 1)}
                   disabled={searchResults.length < 18}
