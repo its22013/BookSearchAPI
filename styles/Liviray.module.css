@@ -5,6 +5,28 @@
   min-height: 100vh;
 }
 
+.contentContainer {
+  display: flex;
+  justify-content: space-between; /* コンポーネント間のスペースを均等に配置 */
+  gap: 7px; /* コンポーネント間の間隔 */
+  margin-left: 300px;
+  margin-right: 40px;
+}
+
+.NearbyLibrariesContainer {
+  position: sticky; /* 右側に固定 */
+  top: 0; /* 上端に固定 */
+  flex: 1; /* 幅を均等に分割 */
+  margin-left: 100px;
+
+}
+
+/* Liviray と NearbyLibraries に適用するスタイル */
+.Liviray,
+.NearbyLibraries {
+  flex: 1; /* 幅を均等に分割 */
+}
+
 .container {
   display: flex;
   flex-direction: column;
@@ -21,6 +43,15 @@
   /* width: 300px;
   height: 10em; */
   
+}
+
+.text01 {
+  font-size: 20px;
+}
+
+.text02 {
+  color: navy;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
 .text {
@@ -140,8 +171,8 @@
 
 /* 結果表示の全体 */
 .results {
-  height: 150px;
-  width: 850px;
+  height: 100%;
+  width: 100%;
   display: flex;
   margin-bottom: 30px;
   margin-top: 34px;
@@ -152,6 +183,29 @@
   background-color: rgb(250, 238, 223);
   box-sizing: border-box;
 }
+
+.scrollableContainer {
+  max-height: 450px; /* 例: 適切な高さに調整してください */
+  max-width: 400px;
+  overflow-y: auto;
+}
+
+
+.title92 {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  font-size: 15px;
+  margin-left: 14px;
+}
+
+.display {
+  font-size: 12px;
+  margin-left: 15px;
+  white-space: 10px;
+}
+
+
 
 /* タイトルと著者のスタイル */
 .title-author {
@@ -175,6 +229,10 @@
 /* スペース空け */
 .space {
   margin-right: 10px;
+}
+
+.space01 {
+  margin-left: 40px;
 }
 
 .heartIcon {
