@@ -132,8 +132,8 @@ const Liviray = () => {
           // データが取得できたらループを抜ける
           break;
         } else {
-          // データが取得できなかった場合、一定の時間待機してリトライ
-          await new Promise(resolve => setTimeout(resolve, 5000));
+          // データが取得できなかった場合、指数バックオフでリトライ
+          await new Promise(resolve => setTimeout(resolve, 1000 * Math.pow(2, i)));
         }
       }
   
@@ -143,6 +143,7 @@ const Liviray = () => {
       return null;
     }
   };
+  
   
   
   const getStatusDisplay = (libkey) => {

@@ -60,8 +60,10 @@ const Libraries = () => {
   };
 
   return (
-    <div className={styles.sapce01}>
+    <div>
+      <div className={styles.space01}>
       <h2>近くの図書館を検索</h2>
+      </div>
       <button onClick={handleShowLibraries}>
         {showLibraries ? '近くの図書館を非表示にする' : '近くの図書館を表示する'}
       </button>
@@ -71,15 +73,12 @@ const Libraries = () => {
           <ul>
             {nearbyLibraries.map(library => (
               <p key={library.systemid} className={styles.text01}>
-                <div className={styles.text02}>{library.name}</div>
+                <div className={styles.text02}>
+                <a href={library.url_pc} target="_blank" rel="noopener noreferrer">{library.name}</a>
+                </div>
                 <div>現在地からの距離: {library.distance.toFixed(2)}km</div>
                 <div>電話番号: {library.tel}</div>
                 <div>住所: {library.post}</div>
-                <div>
-                  <button>
-                  <a href={library.url_pc} target="_blank" rel="noopener noreferrer">図書館のページへ</a>
-                  </button>
-                </div>
               </p>
             ))}
           </ul>
