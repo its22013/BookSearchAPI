@@ -16,6 +16,7 @@ const Liviray = () => {
   const [loading, setLoading] = useState(false);
   const [availability, setAvailability] = useState([]);
   const [selectedSystemId, setSelectedSystemId] = useState('Okinawa_Pref');
+  const [selectedRegion, setSelectedRegion] = useState('');
   const [searchButtonClicked, setSearchButtonClicked] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const booksPerPage = 5;
@@ -295,13 +296,28 @@ const handleFavoriteButtonClick = async (book) => {
           <h1 className={Styles.h1}>{getSelectedLibraryName()}で検索</h1>
           <div className={Styles.searchContainer}>
 
-            <select value={selectedSystemId} onChange={(e) => setSelectedSystemId(e.target.value)} className={Styles.form01}>
-              {LibrariesData.map((library) => (
-                <option key={library.systemid} value={library.systemid}>
-                  {library.name}
-                </option>
-              ))}
-            </select>
+          <select value={selectedRegion} onChange={(e) => setSelectedRegion(e.target.value)} className={Styles.form01}>
+            <optgroup label="地域を選択"></optgroup>
+            <option value="" className={Styles.sentaku}>地域を選択</option>
+            <option value="北部">北部</option>
+            <option value="中部">中部</option>
+            <option value="南部">南部</option>
+            <option value="離島">離島エリア</option>
+          </select>
+          {/* 図書館を地域でフィルタリング */}
+          <select value={selectedSystemId} onChange={(e) => setSelectedSystemId(e.target.value)} className={Styles.form01}>
+            <optgroup label="図書館を選択">
+              {/* デフォルトの選択肢を追加 */}
+              <option value="" className={Styles.sentaku}>選択してください</option>
+            </optgroup>
+            {/* selectedRegion が空でない場合のみフィルタリング */}
+            {selectedRegion && LibrariesData.filter(library => library.region === selectedRegion).map((library) => (
+              <option key={library.systemid} value={library.systemid}>
+                {library.name}
+              </option>
+            ))}
+          </select>
+
             
             <div className={Styles.form}>
               <input

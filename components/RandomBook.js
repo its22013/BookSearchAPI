@@ -26,7 +26,9 @@ const RakutenBooksSlider = () => {
           "プログラミング",
           "スマホ",
           "ChatGPT",
-
+          "沖縄",
+          "ワンピース",
+          "ジャンプコミックス",
         ];
         const randomKeyword = keywords[Math.floor(Math.random() * keywords.length)];
 
@@ -83,7 +85,7 @@ const RakutenBooksSlider = () => {
                 <img src={book.Item.largeImageUrl} alt={book.Item.itemCaption} onError={(e) => { e.target.src = fallbackImageUrl }} />
               </Link>
             ) : (
-              <img src={fallbackImageUrl} alt="No Image" style={{ width: "130px", height: "100%" }} />
+              <img src={fallbackImageUrl} alt="No Image" style={{ width: "130px", height: "100%" }} className={styles.s1}/>
             )}
           </div>
         ))}

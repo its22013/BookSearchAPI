@@ -12,6 +12,7 @@
   margin-left: 300px;
   margin-right: 40px;
   margin-top: 10px;
+  margin-bottom: 34px;
 }
 
 .NearbyLibrariesContainer {
@@ -19,6 +20,7 @@
   top: 0; /* 上端に固定 */
   flex: 1; /* 幅を均等に分割 */
   margin-left: 100px;
+  margin-top: -54px;
 }
 
 /* Liviray と NearbyLibraries に適用するスタイル */
@@ -32,6 +34,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin-top: -34px
 }
 .errorContainer {
   color: red;
@@ -187,11 +190,15 @@
   box-sizing: border-box;
 }
 
+.buuton01 {
+  margin-left: 80px;
+}
+
 .scrollableContainer {
   max-height: 450px; /* 例: 適切な高さに調整してください */
   max-width: 400px;
   overflow-y: auto;
-  background-color: #efefef;
+  background-color: #feffe6;
 }
 
 .scrollableContainer01 {
@@ -243,7 +250,7 @@
 }
 
 .space01 {
-  margin-left: 40px;
+  margin-left: 70px;
   margin-top: 50px;
 }
 
@@ -309,7 +316,9 @@
   font-family: "MS PMincho";
 }
 
-
+.sentaku {
+  display: none;
+}
 
 /* スマホ用のスタイル */
 @media (max-width: 932px) {

@@ -139,7 +139,9 @@ const BookDetailsPage = () => {
         {bookDetails ? (
           // 詳細情報を表示する部分
           <div className={styles.bookDetailsContainer}>
-            <img src={bookDetails.largeImageUrl} alt="本の画像" />
+            <div>
+            <img src={bookDetails.largeImageUrl} alt="本の画像" className={styles.s1}/>
+            </div>
             <h1>{bookDetails.title}</h1>
             <p>著者名: {bookDetails.author}</p>
             <p>価格: {bookDetails.itemPrice}円</p>

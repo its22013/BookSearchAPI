@@ -66,6 +66,14 @@
   min-height: 100vh;
 }
 
+.s1 {
+  border: double 10px #900;
+  background-color: #c60;
+  max-width: 100%; 
+  max-height: 100%; 
+}
+
+
 @media (max-width: 750px) {
   .slider {
     width: 90%; /* スライダーの幅をデバイスの幅の90%に設定 */

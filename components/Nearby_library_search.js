@@ -64,9 +64,11 @@ const Libraries = () => {
       <div className={styles.space01}>
       <h2>近くの図書館を検索</h2>
       </div>
+      <div className={styles.buuton01}>
       <button onClick={handleShowLibraries}>
         {showLibraries ? '近くの図書館を非表示にする' : '近くの図書館を表示する'}
       </button>
+      </div>
       {error && <div>{error}</div>} {/* エラーメッセージの表示 */}
       {showLibraries && (
         <div className={styles.scrollableContainer}>
