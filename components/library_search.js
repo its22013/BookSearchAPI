@@ -303,6 +303,7 @@ const handleFavoriteButtonClick = async (book) => {
             <option value="中部">中部</option>
             <option value="南部">南部</option>
             <option value="離島">離島エリア</option>
+            <option value="大学">大学</option>
           </select>
           {/* 図書館を地域でフィルタリング */}
           <select value={selectedSystemId} onChange={(e) => setSelectedSystemId(e.target.value)} className={Styles.form01}>

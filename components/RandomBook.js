@@ -26,9 +26,9 @@ const RakutenBooksSlider = () => {
           "プログラミング",
           "スマホ",
           "ChatGPT",
-          "沖縄",
+          "ドラゴンボール",
           "ワンピース",
-          "ジャンプコミックス",
+          "ガンダム",
         ];
         const randomKeyword = keywords[Math.floor(Math.random() * keywords.length)];
 

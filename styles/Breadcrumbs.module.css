@@ -1,8 +1,9 @@
 /* styles/Breadcrumbs.module.css */
+
 .breadcrumbs {
     font-size: 16px;
     margin-bottom: 10px;
-    margin-top: 24px;
+    margin-top: 12px;
     justify-items: left;
     margin-left: 7%;
   }

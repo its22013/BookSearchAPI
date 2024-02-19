@@ -4,6 +4,7 @@ import styles from '../styles/Breadcrumbs.module.css';
 
 const Breadcrumbs = ({ crumbs }) => {
   return (    
+    <div className={styles.container}>
     <div className={styles.breadcrumbs}>
       {crumbs.map((crumb, index) => (
         <span key={index}>
@@ -17,6 +18,7 @@ const Breadcrumbs = ({ crumbs }) => {
           )}
         </span>
       ))}
+    </div>
     </div>
   );
 };
