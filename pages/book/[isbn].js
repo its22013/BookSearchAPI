@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 import Styles from '@/styles/Liviray.module.css';
 import styles from '@/styles/BookDetailsPage.module.css'
 import Link from 'next/link';
-import { doc, setDoc, collection, firestore, deleteDoc, getDocs } from 'firebase/firestore';
+import { doc, setDoc, collection, deleteDoc, getDoc } from 'firebase/firestore';
 import { useUser } from '@/hooks/firebase';
 import { getFirestore } from 'firebase/firestore';
 
@@ -13,9 +13,9 @@ const BookDetailsPage = () => {
   const router = useRouter();
   const { isbn } = router.query;
   const [bookDetails, setBookDetails] = useState(null);
-  const [ebookDetails, setEbookDetails] = useState(null);
   const user = useUser();
   const firestoreDB = getFirestore();
+  const [isFavorite, setIsFavorite] = useState(false); // お気に入りステートを修正
   const goBack = () => {
     router.back();
   };
@@ -110,37 +110,65 @@ const BookDetailsPage = () => {
   }, [isbn, user]);
 
   useEffect(() => {
-    const fetchEbookDetails = async () => {
+    const checkFavoriteStatus = async () => {
       try {
-        if (isbn) {
-          const apiKey = process.env.APP_ID;
-          const response = await fetch(`https://app.rakuten.co.jp/services/api/IchibaItem/Search/20170706?format=json&isbn=${isbn}&applicationId=${apiKey}`);
-          const data = await response.json();
-
-          if (data.Items && data.Items.length > 0) {
-            const ebookDetails = data.Items[0];
-            setEbookDetails(ebookDetails);
-          } else {
-            console.error('楽天BooksAPIからの電子書籍情報が見つかりませんでした。', data);
-          }
+        if (user && isbn) {
+          const userId = user.uid;
+          const userDocRef = doc(firestoreDB, 'users', userId);
+          const bookmarksCollectionRef = collection(userDocRef, 'bookmarks');
+          const bookDocRef = doc(bookmarksCollectionRef, isbn);
+          const existingDoc = await getDoc(bookDocRef);
+          setIsFavorite(existingDoc.exists());
         }
       } catch (error) {
-        console.error('楽天BooksAPIからの電子書籍情報取得中にエラーが発生しました:', error);
+        console.error('お気に入りステータスの確認中にエラーが発生しました:', error);
       }
     };
 
-    fetchEbookDetails();
-  }, [isbn, user]);
+    checkFavoriteStatus();
+  }, [user, isbn]);
+
+  const handleFavoriteButtonClick = async () => {
+    try {
+      if (!user) {
+        console.log('ログインしていません');
+        return;
+      }
+  
+      const userId = user.uid;
+      const userDocRef = doc(firestoreDB, 'users', userId);
+      const bookmarksCollectionRef = collection(userDocRef, 'bookmarks');
+      const bookDocRef = doc(bookmarksCollectionRef, isbn);
+  
+      const existingDoc = await getDoc(bookDocRef);
+  
+      if (!existingDoc.exists()) {
+        // largeImageUrl を image に変更して保存
+        await setDoc(bookDocRef, { ...bookDetails, image: bookDetails.largeImageUrl });
+        console.log('お気に入りに追加しました');
+        alert('お気に入りに追加しました');
+        setIsFavorite(true);
+      } else {
+        await deleteDoc(bookDocRef);
+        console.log('お気に入りから削除しました');
+        alert("この本は既にお気に入りに追加されています");
+        setIsFavorite(false);
+      }
+    } catch (error) {
+      console.error('お気に入りの更新中にエラーが発生しました:', error);
+    }
+  };
+  
+
 
   return (
     <div className={Styles.mainContainer}>
       <Header />
       <main>
         {bookDetails ? (
-          // 詳細情報を表示する部分
           <div className={styles.bookDetailsContainer}>
             <div>
-            <img src={bookDetails.largeImageUrl} alt="本の画像" className={styles.s1}/>
+              <img src={bookDetails.largeImageUrl} alt="本の画像" className={styles.s1}/>
             </div>
             <h1>{bookDetails.title}</h1>
             <p>著者名: {bookDetails.author}</p>
@@ -154,13 +182,23 @@ const BookDetailsPage = () => {
               詳細・購入
             </a>
             <p>レビュー件数: {bookDetails.reviewCount}</p>
-            {/* リンクやプレビューなども必要に応じて表示 */}
+            <div className={styles.heartIcon01}>
+              {!isFavorite && (
+                <a onClick={() => handleFavoriteButtonClick(bookDetails)} className={Styles.heartIcon}>
+                  ❤
+                </a>
+              )}
+              {isFavorite && (
+                <span className={Styles.displayFavorite}>
+                  ❤
+                </span>
+              )}
+            </div>
             <button className={styles.backButton} onClick={goBack}>
               前のページに戻る
             </button>
           </div>
         ) : (
-          // ローディングなどの表示
           <h1 className={styles.nobook}>その本の詳細は現時点では見つかりません！</h1>
         )}
       </main>
