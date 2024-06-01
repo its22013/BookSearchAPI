@@ -3,13 +3,16 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px;
+  padding: 10px 20px;
   height: 99px;
   background-color: #54e4e4;
   color: rgb(255, 255, 255);
-  flex-direction: row;
+  position: fixed; /* ヘッダーを固定 */
+  top: 0;
+  width: 100%;
+  box-sizing: border-box; /* パディングを含む幅計算 */
+  z-index: 1000;
 }
-
 .space {
   margin-right: 15px;
 }
@@ -78,6 +81,13 @@
   font-size: 15px;
   text-shadow: 3px 3px 0 rgb(221, 85, 171);
   -webkit-text-stroke: 1px #ffffff;
+}
+
+.menu01 {
+  text-align: center;
+  display: flex;
+  padding-top: 10px;
+  padding-right: 10px;
 }
 
 .hamburgerIcon {

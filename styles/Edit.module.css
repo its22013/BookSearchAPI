@@ -1,7 +1,7 @@
 .container {
   margin: auto;
   max-width: 705px; 
-  margin-top: 50px;
+  margin-top: 100px;
   border: solid 3px #000000;
   background-color: rgb(255, 241, 220);
 }
