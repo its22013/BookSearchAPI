@@ -115,6 +115,8 @@
     cursor: pointer;
     transition: color 0.3s ease;
   }
-
+  .container {
+    margin-top: 88px;
+  }
   
 }

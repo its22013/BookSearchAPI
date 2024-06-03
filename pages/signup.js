@@ -32,9 +32,7 @@ export default function Signup() {
   const currentUser = useUser();
   const [isProcessingSignup, setIsProcessingSignup] = useState(false);
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-  const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] = useState(
-    false
-  );
+  const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] = useState(false);
   const router = useRouter();
 
   const signup = async (email, password, displayName) => {
@@ -75,6 +73,7 @@ export default function Signup() {
       alert("パスワードが一致しません");
     }
   };
+
   useEffect(() => {
     console.log("currentUser:", currentUser);
     console.log("pathname:", router.pathname);
@@ -104,197 +103,174 @@ export default function Signup() {
       alert("ログインに失敗しました");
     }
   };
-  
+
   return (
     <div className={style.mainContainer}>
       <main>
-
-        
         <Flex
           minHeight="100vh"
           alignItems="center"
           justifyContent="center"
         >
           <Box
-            w="60%"
-            display="flex"
-            flexDirection="column"
-            justifyContent="center"
+            className={style.boxShadow}
           >
-            <Box 
-                          boxShadow="lg"
-                          w="700px"
-                          paddingTop="40px"
-                          paddingBottom="32px"
-                          borderRadius="8px"
-                          border="1px solid"
-                          borderColor="gray.100"
-                          m="0 auto"
-                          display="flex"
-                          flexDirection="column"
-                          alignItems="center"
-                          bg="rgba(255, 255, 255, 0.9)" 
-
-
-            >
-              <Heading color="gray.800" mb="60px" textAlign="center" size="2xl">
-                新規登録
-              </Heading>
-              <form onSubmit={handleSubmit(onSubmit)}>
-              <Flex flexDirection="column" mb="25" alignItems="center">
-                  <FormLabel fontWeight="bold" mb="2">
-                    ユーザー名
-                  </FormLabel>
-                  {errors.displayName && (
-                    <Text color="red.400" mb="2">
-                      <font color="red">ユーザー名が入力されていません</font>
-                    </Text>
-                  )}
-                  <Input
-                    type="text"
-                    size="2lg"
-                    borderRadius="md"
-                    placeholder="ユーザー名を入力してください"
-                    {...register("displayName", { required: true })}
-                    width="100%"
-                    height="30px"
-                  />
-                </Flex>
-
-                <Flex flexDirection="column" mb="25" alignItems="center">
-                  <FormLabel fontWeight="bold" mb="2">
-                    Email
-                  </FormLabel>
-                  {errors.email && (
-                    <Text color="red.400" mb="2">
-                      <font color="red"> Emailが入力されていません</font>
-                    </Text>
-                  )}
-                  <Input
-                    type="email"
-                    size="2lg"
-                    borderRadius="md"
-                    placeholder="example@test.com"
-                    {...register("email", { required: true })}
-                    width="100%"
-                    height="30px"
-                  />
-                </Flex>
-                <Flex flexDirection="column" mb="25" alignItems="center">
-                  <FormLabel fontWeight="bold" mb="2">
-                    パスワード
-                  </FormLabel>
-                  {errors.password && (
-                    <Text color="red.400" mb="2">
-                      <font color="red">パスワードが入力されていません</font>
-                    </Text>
-                  )}
-                  <Flex alignItems="center">
-                    <Input
-                      type={isPasswordVisible ? "text" : "password"}
-                      {...register("password", { required: true })}
-                      size="lg"
-                      borderRadius="md"
-                      height="30px"
-                      width="350px"
-                    />
-                    <IconButton
-                      icon={isPasswordVisible ? <ViewOffIcon /> : <ViewIcon />}
-                      onClick={() => setIsPasswordVisible(!isPasswordVisible)}
-                      aria-label={
-                        isPasswordVisible ? "Hide Password" : "Show Password"
-                      }
-                      size="lg"
-                      mb="2"
-                    />
-                  </Flex>
-                </Flex>
-                <Flex flexDirection="column" mb="40" alignItems="center">
-                  <FormLabel fontWeight="bold" mb="2">
-                    パスワード(再確認)
-                  </FormLabel>
-                  {errors.confirmationPassword && (
-                    <Text color="red.400" mb="2">
-                      <font color="red">パスワード(再確認)が入力されていません</font>
-                    </Text>
-                  )}
-                  <Flex alignItems="center">
-                    <Input
-                      type={isConfirmPasswordVisible ? "text" : "password"}
-                      {...register("confirmationPassword", { required: true })}
-                      size="lg"
-                      borderRadius="md"
-                      width="350px"
-                      height="30px"
-                    />
-                    <IconButton
-                      icon={
-                        isConfirmPasswordVisible ? <ViewOffIcon /> : <ViewIcon />
-                      }
-                      onClick={() =>
-                        setIsConfirmPasswordVisible(!isConfirmPasswordVisible)
-                      }
-                      aria-label={
-                        isConfirmPasswordVisible
-                          ? "Hide Confirm Password"
-                          : "Show Confirm Password"
-                      }
-                      size="lg"
-                      mb="2"
-                    />
-                  </Flex>
-                </Flex>
-                <Flex flexDirection="column" alignItems="center">
-                  <Button
-                    className={style.touroku}
-                    type="submit"
-                    color="black"
-                    background="gray.800"
-                    size="lg"
-                    paddingX="60px"
-                    m="0 auto"
-                    marginBottom="30"
-                    isLoading={isProcessingSignup}
-                    _hover={{
-                      background: "gray.700",
-                    }}
-                  >
-                    登録
-                  </Button>
-                  <h3>または</h3>
-                  <Button
-                    className={style.google}
-                    type="button"
-                    color="black"
-                    background="gray.800"
-                    size="lg"
-                    paddingX="80px"
-                    m="0 auto"
-                    marginBottom="4"
-                    isLoading={isProcessingSignup}
-                    _hover={{
-                      background: "gray.700",
-                    }}
-                    onClick={handleGoogleLogin}
-                  >
-                    <Flex align="center">
-                      <IconButton
-                        icon={<FaGoogle />}
-                        fontSize="20px"
-                        marginRight="2"
-                      />
-                      Googleで登録・ログイン
-                    </Flex>
-                  </Button>
-                  <Text mb="8" textAlign="center">
-                    すでにアカウントをお持ちですか?{" "}
-                    <Link legacyBehavior href="/login">
-                      <a style={{ color: 'blue' }}>ログイン</a>
-                    </Link>
+            <Heading color="gray.800" mb="60px" textAlign="center" size="2xl">
+              新規登録
+            </Heading>
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <Flex flexDirection="column" mb="4" alignItems="center" width="100%">
+                <FormLabel fontWeight="bold" mb="2">
+                  ユーザー名
+                </FormLabel>
+                {errors.displayName && (
+                  <Text color="red.400" mb="2">
+                    <font color="red">ユーザー名が入力されていません</font>
                   </Text>
+                )}
+                <Input
+                  type="text"
+                  size="lg"
+                  borderRadius="md"
+                  placeholder="ユーザー名を入力してください"
+                  {...register("displayName", { required: true })}
+                  width="100%"
+                  height="30px"
+                />
+              </Flex>
+
+              <Flex flexDirection="column" mb="4" alignItems="center" width="100%">
+                <FormLabel fontWeight="bold" mb="2">
+                  Email
+                </FormLabel>
+                {errors.email && (
+                  <Text color="red.400" mb="2">
+                    <font color="red"> Emailが入力されていません</font>
+                  </Text>
+                )}
+                <Input
+                  type="email"
+                  size="lg"
+                  borderRadius="md"
+                  placeholder="example@test.com"
+                  {...register("email", { required: true })}
+                  width="100%"
+                  height="30px"
+                />
+              </Flex>
+
+              <Flex flexDirection="column" mb="4" alignItems="center" width="100%">
+                <FormLabel fontWeight="bold" mb="2">
+                  パスワード
+                </FormLabel>
+                {errors.password && (
+                  <Text color="red.400" mb="2">
+                    <font color="red">パスワードが入力されていません</font>
+                  </Text>
+                )}
+                <Flex alignItems="center" width="100%">
+                  <Input
+                    type={isPasswordVisible ? "text" : "password"}
+                    {...register("password", { required: true })}
+                    size="lg"
+                    borderRadius="md"
+                    height="30px"
+                    width="100%"
+                  />
+                  <IconButton
+                    icon={isPasswordVisible ? <ViewOffIcon /> : <ViewIcon />}
+                    onClick={() => setIsPasswordVisible(!isPasswordVisible)}
+                    aria-label={
+                      isPasswordVisible ? "Hide Password" : "Show Password"
+                    }
+                    size="lg"
+                    mb="2"
+                  />
                 </Flex>
-              </form>
-            </Box>
+              </Flex>
+
+              <Flex flexDirection="column" mb="6" alignItems="center" width="100%">
+                <FormLabel fontWeight="bold" mb="2">
+                  パスワード(再確認)
+                </FormLabel>
+                {errors.confirmationPassword && (
+                  <Text color="red.400" mb="2">
+                    <font color="red">パスワード(再確認)が入力されていません</font>
+                  </Text>
+                )}
+                <Flex alignItems="center" width="100%">
+                  <Input
+                    type={isConfirmPasswordVisible ? "text" : "password"}
+                    {...register("confirmationPassword", { required: true })}
+                    size="lg"
+                    borderRadius="md"
+                    width="100%"
+                    height="30px"
+                  />
+                  <IconButton
+                    icon={isConfirmPasswordVisible ? <ViewOffIcon /> : <ViewIcon />}
+                    onClick={() => setIsConfirmPasswordVisible(!isConfirmPasswordVisible)}
+                    aria-label={
+                      isConfirmPasswordVisible
+                        ? "Hide Confirm Password"
+                        : "Show Confirm Password"
+                    }
+                    size="lg"
+                    mb="2"
+                  />
+                </Flex>
+              </Flex>
+
+              <Flex flexDirection="column" alignItems="center" width="100%">
+                <Button
+                  className={style.touroku}
+                  type="submit"
+                  color="black"
+                  background="gray.800"
+                  size="lg"
+                  paddingX="60px"
+                  m="0 auto"
+                  mb="6"
+                  isLoading={isProcessingSignup}
+                  _hover={{
+                    background: "gray.700",
+                  }}
+                >
+                  登録
+                </Button>
+                <Text mb="4" textAlign="center">または</Text>
+                <Button
+                  className={style.google}
+                  type="button"
+                  color="black"
+                  background="gray.800"
+                  size="lg"
+                  paddingX="80px"
+                  m="0 auto"
+                  mb="4"
+                  isLoading={isProcessingSignup}
+                  _hover={{
+                    background: "gray.700",
+                  }}
+                  onClick={handleGoogleLogin}
+                >
+                  <Flex align="center">
+                    <IconButton
+                      icon={<FaGoogle />}
+                      fontSize="20px"
+                      mr="2"
+                    />
+                    Googleで登録・ログイン
+                  </Flex>
+                </Button>
+                <Text mb="8" textAlign="center">
+                  すでにアカウントをお持ちですか?{" "}
+                  <Link legacyBehavior href="/login">
+                    <a style={{ color: 'blue' }}>ログイン</a>
+                  </Link>
+                </Text>
+              </Flex>
+            </form>
           </Box>
         </Flex>
       </main>

@@ -1,6 +1,7 @@
 /* ボタンを横並び */
 .all {
   display: flex;
+  /* margin-top: 100px; */
 }
 
 .button {
@@ -92,6 +93,7 @@
   .all {
       flex-direction: column; /* スマートフォン用に縦に並べる */
       align-items: center; /* 中央に配置 */
+      margin-top: 100px;
   }
 
   .button {

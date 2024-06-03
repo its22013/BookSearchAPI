@@ -4,6 +4,7 @@
   min-height: 100vh;
   background-image: url('../public/images/Bookshodow.png');
 }
+
 .touroku {
   border: 3px solid #2544c6;
   border-radius: 5px;
@@ -18,34 +19,87 @@
   text-align: center;
   margin: 10px 0;
 }
-.touroku:hover{
+
+.touroku:hover {
   color: #ABE1FA;
   background-color: white;
 }
+
+.google {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 320px;
+  height: 40px;
+  padding: 8px 24px;
+  font-family: sans-serif;
+  font-size: 16px;
+  color: #f6bfbc;
+  text-align: center;
+  overflow-wrap: anywhere;
+  background-color: transparent;
+  border: 2px solid black;
+}
+
+@media (any-hover: hover) {
   .google {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    transition: background-color 0.2s;
+  }
+
+  .google:hover {
+    background-color: #b8b8b8;
+  }
+}
+
+.boxShadow {
+  box-shadow: lg;
+  width: 700px;
+  padding-top: 40px;
+  padding-bottom: 32px;
+  border-radius: 8px;
+  border: 1px solid;
+  border-color: gray.100;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.9);
+}
+
+/* スマホ用のスタイル */
+@media (max-width: 962px) {
+  .touroku {
     width: 100%;
-    max-width: 320px;
-    height: 40px;
-    padding: 8px 24px;
-    font-family: sans-serif;
-    font-size: 16px;
-    color: #f6bfbc;
-    text-align: center;
-    overflow-wrap: anywhere;
-    background-color: transparent;
-    border: 2px solid black;
+    height: auto;
+    padding: 10px;
+    font-size: 14px;
+    margin: 8px 0;
   }
- 
-  
-  @media (any-hover: hover) {
-    .google {
-      transition: background-color 0.2s;
-    }
-  
-    .google:hover {
-      background-color: #b8b8b8;
-    }
+
+  .google {
+    max-width: 100%;
+    width: 100%;
+    height: auto;
+    padding: 10px;
+    font-size: 14px;
   }
+
+  .boxShadow {
+    margin-top: 50px;
+    margin-bottom: 50px;
+    width: 120%;
+  }
+  .form {
+    width: 100%;
+  }
+
+  .form .chakra-form-control {
+    width: 100%;
+  }
+
+  .form .chakra-input__inner,
+  .form .chakra-button {
+    width: 100%;
+  }
+}
